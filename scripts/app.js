@@ -178,7 +178,7 @@ var app = {
 			}
 		}
 
-		return msg ? msg : 'Unknown server error';
+		return msg ? msg : 'Erro desconhecido do servidor';
 	},
 
 	version: 1.1

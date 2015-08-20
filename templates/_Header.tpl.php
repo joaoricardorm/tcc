@@ -10,7 +10,8 @@
 		<meta name="author" content="phreeze builder | phreeze.com" />
 
 		<!-- Le styles -->
-		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="bootstrap/css/bootstrap-original-unminified.css" rel="stylesheet" />
+		
 		<link href="styles/style.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link href="bootstrap/css/font-awesome.min.css" rel="stylesheet" />
@@ -68,14 +69,14 @@
 							</ul>
 							<ul class="nav">
 								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 								<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras">Palestras</a></li>
 								<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes">PalestraPalestrantes</a></li>
 								<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes">PalestraParticipantes</a></li>
 								<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes">Palestrantes</a></li>
 								<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes">Participantes</a></li>
-								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a href="./usuarios">Usuarios</a></li>
+								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a href="./usuarios">Usuários</a></li>
 								</ul>
 								</li>
 							</ul>
@@ -85,9 +86,6 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> Olá <?php $this->eprint($this->CURRENT_USER->Nome); ?> <i class="caret"></i></a>
 								<ul class="dropdown-menu">
 									<li><a href="./logout">Sair</a></li>
-									<li class="divider"></li>
-									<li><a href="./secureuser">Example User Page <i class="icon-lock"></i></a></li>
-									<li><a href="./secureadmin">Example Admin Page <i class="icon-lock"></i></a></li>
 								</ul>
 								</li>
 							</ul>

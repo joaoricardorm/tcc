@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /** @package    Certificados FAROL::Controller */
 
 /** import supporting libraries */
@@ -171,7 +171,7 @@ class CertificadoController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Please check the form for errors',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors);
 			}
 			else
 			{
@@ -220,7 +220,7 @@ class CertificadoController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Please check the form for errors',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors);
 			}
 			else
 			{

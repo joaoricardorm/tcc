@@ -96,10 +96,10 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deleteParticipanteButton" class="btn btn-mini btn-danger"><i class="icon-trash icon-white"></i> Delete Participante</button>
+						<button id="deleteParticipanteButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Participante</button>
 						<span id="confirmDeleteParticipanteContainer" class="hide">
-							<button id="cancelDeleteParticipanteButton" class="btn btn-mini">Cancel</button>
-							<button id="confirmDeleteParticipanteButton" class="btn btn-mini btn-danger">Confirm</button>
+							<button id="cancelDeleteParticipanteButton" class="btn">Cancelar</button>
+							<button id="confirmDeleteParticipanteButton" class="btn btn-success">Confirmar</button>
 						</span>
 					</div>
 				</div>
@@ -110,9 +110,9 @@
 	<!-- modal edit dialog -->
 	<div class="modal hide fade" id="participanteDetailDialog">
 		<div class="modal-header">
-			<a class="close" data-dismiss="modal">&times;</a>
+			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Edit Participante
+				<i class="icon-edit"></i> Editar Participante
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
@@ -121,8 +121,8 @@
 			<div id="participanteModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" >Cancel</button>
-			<button id="saveParticipanteButton" class="btn btn-primary">Save Changes</button>
+			<button id="saveCertificadoButton" class="btn btn-primary">Salvar</button>
+			<button class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>
 
@@ -132,7 +132,7 @@
 	</div>
 
 	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newParticipanteButton" class="btn btn-primary">Add Participante</button>
+		<button id="newParticipanteButton" class="btn btn-primary">Cadastrar Participante</button>
 	</p>
 
 </div> <!-- /container -->

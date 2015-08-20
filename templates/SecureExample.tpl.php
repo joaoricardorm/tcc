@@ -16,31 +16,34 @@
 	
 	<!-- #### this view/tempalate is used for multiple pages.  the controller sets the 'page' variable to display differnet content ####  -->
 	
+	<!--<div class="hero-unit">
+			<h1>Exemplo de autenticação</h1>
+			<p>Este é um exemplo da autenticação do framework.</p>
+			<p>
+				<a href="secureuser" class="btn btn-primary">Visitar a Página de Usuário</a>&nbsp;&nbsp;&nbsp;
+				<a href="secureadmin" class="btn btn-primary">Visitar a Página de Administrador</a>
+				<?php //if (isset($this->currentUser)) { ?>
+					<a href="logout" class="btn btn-primary btn-large">Logout</a>
+				<?php //} ?>
+			</p>
+	</div>-->
+	
 	<?php if ($this->page == 'login') { ?>
 	
-		<div class="hero-unit">
-			<h1>Login Example</h1>
-			<p>This is an example of Phreeze authentication.  The default credentials are <strong>demo/pass</strong> and <strong>admin/pass</strong>.</p>
-			<p>
-				<a href="secureuser" class="btn btn-primary btn-large">Visit User Page</a>
-				<a href="secureadmin" class="btn btn-primary btn-large">Visit Admin Page</a>
-				<?php if (isset($this->currentUser)) { ?>
-					<a href="logout" class="btn btn-primary btn-large">Logout</a>
-				<?php } ?>
-			</p>
-		</div>
-	
-		<form class="well" method="post" action="login">
+		<form class="well formlogin" method="post" action="login">
+			<h1><i class="icon-user"></i> Autenticação necessária</h1>
 			<fieldset>
-			<legend>Enter your credentials</legend>
-				<div class="control-group">
-				<input id="username" name="username" type="text" placeholder="Username..." />
+			<legend>Entre com suas credenciais</legend>
+				<div>
+					<label>Usuário</label>
+					<input id="username" name="username" type="text" placeholder="Usuário"" />
+					</div>
+					<div class="control-group">
+					<label style="float:left;">Senha</label>
+					<input id="password" name="password" type="password" placeholder="Senha" />
 				</div>
 				<div class="control-group">
-				<input id="password" name="password" type="password" placeholder="Password..." />
-				</div>
-				<div class="control-group">
-				<button type="submit" class="btn btn-primary">Login</button>
+				<button type="submit" class="btn btn-primary">Entrar</button>
 				</div>
 			</fieldset>
 		</form>
@@ -48,14 +51,9 @@
 	<?php } else { ?>
 	
 		<div class="hero-unit">
-			<h1>Secure <?php $this->eprint($this->page == 'userpage' ? 'User' : 'Admin'); ?> Page</h1>
-			<p>This page is accessible only to <?php $this->eprint($this->page == 'userpage' ? 'authenticated users' : 'administrators'); ?>.  
-			You are currently logged in as '<strong><?php $this->eprint($this->currentUser->Nome); ?></strong>'</p>
-			<p>
-				<a href="secureuser" class="btn btn-primary btn-large">Visit User Page</a>
-				<a href="secureadmin" class="btn btn-primary btn-large">Visit Admin Page</a>
-				<a href="logout" class="btn btn-primary btn-large">Logout</a>
-			</p>
+			<h1>Página segura de <?php $this->eprint($this->page == 'userpage' ? 'Usuário Padrão' : 'Usuário Administrador'); ?></h1>
+			<p>Essa página está acessível apenas para <?php $this->eprint($this->page == 'userpage' ? 'usuários padrão' : 'admnistradores'); ?>.  
+			Agora você está autenticado como '<strong><?php echo ($this->CURRENT_USER) ? $this->CURRENT_USER->Nome : ''; ?></strong>'</p>
 		</div>
 	<?php } ?>
 

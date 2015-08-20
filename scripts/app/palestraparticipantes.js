@@ -168,7 +168,7 @@ var page = {
 	showDetailDialog: function(m) {
 
 		// show the modal dialog
-		$('#palestraParticipanteDetailDialog').modal({ show: true });
+		$('#palestraParticipanteDetailDialog').modal({ backdrop: 'static', show: true });
 
 		// if a model was specified then that means a user is editing an existing record
 		// if not, then the user is creating a new record
@@ -188,6 +188,7 @@ var page = {
 				success: function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
+$('.modal .modal-footer .btn:first').focus();
 				},
 
 				error: function(m, r) {
@@ -350,7 +351,7 @@ var page = {
 			wait: true,
 			success: function(){
 				$('#palestraParticipanteDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('PalestraParticipante was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('PalestraParticipante foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				// if the collection was initally new then we need to add it to the collection now

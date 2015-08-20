@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /** @package    Certificados FAROL::Controller */
 /** import supporting libraries */
@@ -52,7 +52,7 @@ class UsuarioController extends AppBaseController
             $filter = RequestUtil::Get('filter');
             if ($filter)
                 $criteria->AddFilter(
-                        new CriteriaFilter('IdUsuario,Nome,Email,Login,Senha,TipoUsuario'
+                        new CriteriaFilter('Nome,Email,Login,TipoUsuario'
                         , '%' . $filter . '%')
                 );
 
@@ -141,13 +141,16 @@ class UsuarioController extends AppBaseController
             $usuario->Email = $this->SafeGetVal($json, 'email');
             $usuario->Login = $this->SafeGetVal($json, 'login');
             $usuario->Senha = $this->SafeGetVal($json, 'senha');
-            $usuario->TipoUsuario = $this->SafeGetVal($json, 'tipoUsuario');
+			$usuario->ConfirmarSenha = $this->SafeGetVal($json, 'confirmarSenha');
+            
+			//converte a string do tipo de usuario para o formato do banco
+            $usuario->TipoUsuario = ($this->SafeGetVal($json, 'tipoUsuario', $usuario->TipoUsuario) == 'admin') ? 1 : 0;
 
             $usuario->Validate();
             $errors = $usuario->GetValidationErrors();
 
             if (count($errors) > 0) {
-                $this->RenderErrorJSON('Please check the form for errors', $errors);
+                $this->RenderErrorJSON('Verifique erros no preenchimento do formulário', $errors);
             } else {
                 $usuario->Save();
                 $this->RenderJSON($usuario, $this->JSONPCallback(), true, $this->SimpleObjectParams());
@@ -179,14 +182,20 @@ class UsuarioController extends AppBaseController
             $usuario->Nome = $this->SafeGetVal($json, 'nome', $usuario->Nome);
             $usuario->Email = $this->SafeGetVal($json, 'email', $usuario->Email);
             $usuario->Login = $this->SafeGetVal($json, 'login', $usuario->Login);
-            $usuario->Senha = $this->SafeGetVal($json, 'senha', $usuario->Senha);
-            $usuario->TipoUsuario = $this->SafeGetVal($json, 'tipoUsuario', $usuario->TipoUsuario);
+            
+			$senha = $this->SafeGetVal($json, 'senha', $usuario->Senha);
+			if($senha != ''){ $usuario->Senha = $senha; }
+			
+			$usuario->ConfirmarSenha = $this->SafeGetVal($json, 'confirmarSenha');
+			
+			//converte a string do tipo de usuario para o formato do banco
+            $usuario->TipoUsuario = ($this->SafeGetVal($json, 'tipoUsuario', $usuario->TipoUsuario) == 'admin') ? 1 : 0;
 
             $usuario->Validate();
             $errors = $usuario->GetValidationErrors();
 
             if (count($errors) > 0) {
-                $this->RenderErrorJSON('Please check the form for errors', $errors);
+                $this->RenderErrorJSON('Verifique erros no preenchimento do formulário', $errors);
             } else {
                 $usuario->Save();
                 $this->RenderJSON($usuario, $this->JSONPCallback(), true, $this->SimpleObjectParams());

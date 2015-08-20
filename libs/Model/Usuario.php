@@ -30,6 +30,8 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 	static $P_USUARIO = 0;
 	static $P_ADMIN = 1;
 	
+	public $ConfirmarSenha;
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -74,6 +76,7 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 		$criteria->Login_Equals = $username;
 		
 		try {
+			
 			$user = $this->_phreezer->GetByCriteria("Usuario", $criteria);
 			
 			// WE NEED TO STRIP OFF THE "!!!" PREFIX THAT WAS ADDED IN "OnSave" BELOW:
@@ -124,8 +127,16 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 		$errors = $this->GetValidationErrors();
 
 		// THESE ARE CUSTOM VALIDATORS
-		if (!$this->Login) $this->AddValidationError('Username','Username is required');
-		if (!$this->Senha) $this->AddValidationError('Password','Password is required');
+		if (!$this->Nome) $this->AddValidationError('Nome','Nome é obrigatório');
+		if (!$this->Email) $this->AddValidationError('Email','E-mail é obrigatório');
+		if (!$this->Login) $this->AddValidationError('Login','Login é obrigatório');
+		if (!$this->Senha) $this->AddValidationError('Senha','Senha é obrigatória');
+		if ($this->Senha && substr($this->Senha, 0,3) != '!!!'){
+			if(strlen($this->Senha) < 3) $this->AddValidationError('Senha','Mínimo 3 caracteres');
+			if(strlen($this->Senha) > 25) $this->AddValidationError('Senha','Máximo 25 caracteres');
+			if (!$this->ConfirmarSenha) $this->AddValidationError('ConfirmarSenha','Confirmação da senha é obrigatória');
+			if ($this->ConfirmarSenha && (string)$this->Senha != (string)$this->ConfirmarSenha) $this->AddValidationError('ConfirmarSenha','As senhas não correspondem  '.$this->ConfirmarSenha);
+		}
 		
 		return !$this->HasValidationErrors();
 	}

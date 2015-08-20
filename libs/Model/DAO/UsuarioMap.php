@@ -55,7 +55,7 @@ class UsuarioMap implements IDaoMap, IDaoMap2
 			self::$FM["Nome"] = new FieldMap("Nome","usuario","nome",false,FM_TYPE_VARCHAR,50,null,false);
 			self::$FM["Email"] = new FieldMap("Email","usuario","email",false,FM_TYPE_VARCHAR,50,null,false);
 			self::$FM["Login"] = new FieldMap("Login","usuario","login",false,FM_TYPE_VARCHAR,25,null,false);
-			self::$FM["Senha"] = new FieldMap("Senha","usuario","senha",false,FM_TYPE_VARCHAR,32,null,false);
+			self::$FM["Senha"] = new FieldMap("Senha","usuario","senha",false,FM_TYPE_VARCHAR,150,null,false);
 			self::$FM["TipoUsuario"] = new FieldMap("TipoUsuario","usuario","tipo_usuario",false,FM_TYPE_TINYINT,1,null,false);
 		}
 		return self::$FM;

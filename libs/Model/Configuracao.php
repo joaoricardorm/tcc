@@ -27,8 +27,15 @@ class Configuracao extends ConfiguracaoDAO
 		// $errors = $this->GetValidationErrors();
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
+		
+		// EXAMPLE OF CUSTOM VALIDATION LOGIC
+		$this->ResetValidationErrors();
+		$errors = $this->GetValidationErrors();
 
-		return parent::Validate();
+		// THESE ARE CUSTOM VALIDATORS
+		if (!$this->NomeInstituicao) $this->AddValidationError('NomeInstituicao','Nome é obrigatório');
+		
+		return !$this->HasValidationErrors();
 	}
 
 	/**

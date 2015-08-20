@@ -5,6 +5,7 @@
 /**
  * application logic specific to the Usuario listing page
  */
+ 
 var page = {
 
 	usuarios: new model.UsuarioCollection(),
@@ -21,7 +22,7 @@ var page = {
 	/**
 	 *
 	 */
-	init: function() {
+	init: function() {		
 		// ensure initialization only occurs once
 		if (page.isInitialized || page.isInitializing) return;
 		page.isInitializing = true;
@@ -168,7 +169,7 @@ var page = {
 	showDetailDialog: function(m) {
 
 		// show the modal dialog
-		$('#usuarioDetailDialog').modal({ show: true });
+		$('#usuarioDetailDialog').modal({ backdrop: 'static', show: true });
 
 		// if a model was specified then that means a user is editing an existing record
 		// if not, then the user is creating a new record
@@ -188,6 +189,9 @@ var page = {
 				success: function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
+$('.modal .modal-footer .btn:first').focus();
+					
+					$('.modal .modal-footer .btn:first').focus();
 				},
 
 				error: function(m, r) {
@@ -223,8 +227,31 @@ var page = {
 		
 		$('.timepicker-default').timepicker({ defaultTime: 'value' });
 
-
+		//altera mensagem de dica sobre a permissao do usuario padrao e administrador
+		var textoPadrao = $('#tipoUsuarioInputContainer .help-inline .padrao').text();	
+		var textoAdmin = $('#tipoUsuarioInputContainer .help-inline .admin').text();	
+		function help_inline_tipoUsuario(){
+			texto = $('#tipoUsuario').val() === 'padrao' ? textoPadrao : textoAdmin; 
+			$('#tipoUsuarioInputContainer .help-inline').text(texto); 
+		}
+		//executa on change select
+		$('#tipoUsuario').change(function(){ help_inline_tipoUsuario(); });
+		//executa ao exibir form
+		help_inline_tipoUsuario();
+		
+		//mostra campo de alterar de senha		
+		$('#alterarSenhaUsuarioButton').click(function(e) {
+				e.preventDefault();
+				$('#alterarSenhaUsuarioContainer').show('fast');
+				$('#alterarSenhaUsuarioButton').hide();
+		});
+		
 		if (showDeleteButton) {
+			
+			//mostra campo de alterar senha somente quando tiver usuario do bd
+			$('#alterarSenhaUsuarioContainer').hide();
+			$('#alterarSenhaInputContainer').show();
+			
 			// attach click handlers to the delete buttons
 
 			$('#deleteUsuarioButton').click(function(e) {
@@ -234,7 +261,7 @@ var page = {
 
 			$('#cancelDeleteUsuarioButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteUsuarioContainer').hide('fast');
+				$('#confirmDeleteUsuarioContainer').hide();
 			});
 
 			$('#confirmDeleteUsuarioButton').click(function(e) {
@@ -268,12 +295,13 @@ var page = {
 			'email': $('input#email').val(),
 			'login': $('input#login').val(),
 			'senha': $('input#senha').val(),
-			'tipoUsuario': $('input#tipoUsuario').val()
+			'confirmarSenha': $('input#confirmarSenha').val(),
+			'tipoUsuario': $('select#tipoUsuario').val()
 		}, {
 			wait: true,
 			success: function(){
 				$('#usuarioDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('Usuario was sucessfully " + (isNew ? "inserted" : "updated") + "','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('Usuário foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				// if the collection was initally new then we need to add it to the collection now
@@ -320,7 +348,7 @@ var page = {
 			wait: true,
 			success: function(){
 				$('#usuarioDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Usuario record was deleted','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('O usuário foi excluido','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				if (model.reloadCollectionOnModelUpdate) {

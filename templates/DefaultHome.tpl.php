@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','Certificados FAROL | Home');
+	$this->assign('title','Certificados FAROL | Início');
 	$this->assign('nav','home');
 
 	$this->display('_Header.tpl.php');
@@ -7,7 +7,7 @@
 
 	<div class="modal hide fade" id="getStartedDialog">
 		<div class="modal-header">
-			<a class="close" data-dismiss="modal">&times;</a>
+			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>Getting Started With Phreeze</h3>
 		</div>
 		<div class="modal-body" style="max-height: 300px">

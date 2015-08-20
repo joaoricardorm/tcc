@@ -3,13 +3,43 @@
  */
 
 /* note that this gets overridden by bootstrap-responsive.min.css when screen size changes */
+@import url(http://fonts.googleapis.com/css?family=Lato);
+
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
+	background-color:#e5e5e5;
+	font-family: 'Lato', Arial,Helvetica,sans-serif;
 }
 
-h1 {
-	margin-bottom: 8px;
+body .hero-unit:first-child, body .formlogin:first-child  { margin-top:20px; }
+
+.modal { 
+	width:60%; 
+	margin-left:-30%;  
+	overflow-y:auto;
+    max-height:90%;
+}
+.modal .control-group:last-child { margin-bottom:0; }
+.modal .modal-body { max-height:none; }
+.modal .close {
+    width: 30px;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 22px;
+	opacity:1;
+	-webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+h1,h2,h3,h4,h5,h6{
+	color:#37474f;
+	text-rendering: optimizelegibility;
+}
+
+h1, .hero-unit h1 {
+	margin-bottom: 15px;
 }
 
 hr {
@@ -17,18 +47,37 @@ hr {
 }
 
 p.buttonContainer {
-
+	margin-bottom:15px;
 }
 
+.footer hr {
+	border-top: 1px solid #bbb;
+    border-bottom: 1px solid #fff;
+}
+
+table.collection { background:#FFF; }
+table.collection thead {
+	background: #8695a4;
+    color: white;
+}
+table.collection th { 	font-weight:600; }
 table.collection tr:hover {
     cursor: pointer;
 }
 
 table.collection th:hover {
     cursor: pointer;
-    opacity: 0.5;
+	text-decoration:underline;
+	transition: opacity 250ms ease-in-out;
 }
-
+.table-bordered, .table-bordered th, .table-bordered td {
+	border-color:#eee;
+	border-color: rgba(0,0,0,0.2);
+}
+.table-bordered th {
+	box-shadow: -1px 1px rgba(255,255,255,0.3);
+}
+.table-bordered th:first-child { box-shadow:none; }
 .alert {
 	clear:both;
 }
@@ -57,23 +106,32 @@ table.collection th:hover {
 	margin-left: 0px;
 }
 
-.searchContainer input, searchContainer button
+.searchContainer input, .searchContainer button
 {
-	margin-top: 8px;
+	margin-top: 0;
+    padding: 8px;
 }
 
-.searchContainer input
-{
-	margin-top: 8px;
+.formlogin {
+	max-width:500px;
+	margin-left:auto;
+	margin-right:auto;
 }
+.formlogin input { 
+	width: 100%;
+    box-sizing: border-box;
+    padding: 15px 10px;
+}
+.formlogin h2 { margin-top:0; }
+.control-group:last-child { margin-bottom:0; }
+
 
 /* search filter button */
 .input-append button.add-on {
     height: inherit !important;
     color: #999999;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 8px;
+    padding: 8px 20px;
+    margin-top:0;
 }
 
 span.loader {
