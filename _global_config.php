@@ -25,6 +25,9 @@
  */
 class GlobalConfig
 {
+	/** @var versao do sistema */
+	public static $VERSAO = '0.0.3';
+	
 	/** @var set to true to send debug info to the browser */
 	public static $DEBUG_MODE = false;
 
@@ -208,6 +211,7 @@ class GlobalConfig
 			$this->render_engine->assign("ROOT_URL",self::$ROOT_URL);
 			$this->render_engine->assign("PHREEZE_VERSION",Phreezer::$Version);
 			$this->render_engine->assign("PHREEZE_PHAR",Phreezer::PharPath());
+			$this->render_engine->assign("VERSAO",self::$VERSAO);
 		}
 
 		return $this->render_engine;

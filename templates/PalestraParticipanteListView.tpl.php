@@ -31,7 +31,7 @@
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="palestraParticipanteCollectionTemplate">
-		<table class="collection table table-bordered table-hover">
+		<table class="collection table table-bordered table-hover table-striped">
 		<thead>
 			<tr>
 				<th id="header_Id">Id<% if (page.orderBy == 'Id') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>

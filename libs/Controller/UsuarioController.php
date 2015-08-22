@@ -218,12 +218,16 @@ class UsuarioController extends AppBaseController
             $pk = $this->GetRouter()->GetUrlParam('idUsuario');
             $usuario = $this->Phreezer->Get('Usuario', $pk);
 
-            $usuario->Delete();
+			$usuario->Delete();
 
             $output = new stdClass();
 
-            $this->RenderJSON($output, $this->JSONPCallback());
+            $this->RenderJSON($output,$this->JSONPCallback());
         } catch (Exception $ex) {
+			
+			if($ex->getCode() == 2)
+				throw new Exception('Não é possível excluir um usúario do sistema que possui certificados emitidos por ele',$ex->getCode());
+			
             $this->RenderExceptionJSON($ex);
         }
     }

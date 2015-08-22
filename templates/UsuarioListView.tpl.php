@@ -36,7 +36,7 @@
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="usuarioCollectionTemplate">
-		<table class="collection table table-bordered table-hover">
+		<table class="collection table table-bordered table-hover table-striped">
 		<thead>
 			<tr>
 				<th id="header_Nome">Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
@@ -109,14 +109,14 @@
 					<div id="senhaInputContainer" class="control-group">
 						<label class="control-label" for="senha">Senha</label>
 						<div class="controls inline-inputs">
-							<input type="password" autocomplete="off class="input-xlarge" id="senha" placeholder="Senha">
+							<input type="password" autocomplete="off" class="input-xlarge" id="senha" placeholder="Senha">
 							<span class="help-inline"></span>
 						</div>
 					</div>
 					<div id="confirmarSenhaInputContainer" class="control-group">
 						<label class="control-label" for="confirmarSenha">Confirmar Senha</label>
 						<div class="controls inline-inputs">
-							<input type="password" autocomplete="off class="input-xlarge" id="confirmarSenha" name="confirmarSenha" placeholder="Confirmar senha">
+							<input type="password" autocomplete="off" class="input-xlarge" id="confirmarSenha" name="confirmarSenha" placeholder="Confirmar senha">
 							<span class="help-inline"></span>
 						</div>
 					</div>
@@ -130,7 +130,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deleteUsuarioButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Usuario</button>
+						<button id="deleteUsuarioButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Usuário</button>
 						<span id="confirmDeleteUsuarioContainer" class="hide">
 							<button id="cancelDeleteUsuarioButton" class="btn">Cancelar</button>
 							<button id="confirmDeleteUsuarioButton" class="btn btn-success">Confirmar</button>

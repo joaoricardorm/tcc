@@ -122,20 +122,27 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 
 		//return parent::Validate();
 		
-		// EXAMPLE OF CUSTOM VALIDATION LOGIC
+		// validaco
 		$this->ResetValidationErrors();
 		$errors = $this->GetValidationErrors();
 
-		// THESE ARE CUSTOM VALIDATORS
+		// validacoes de preenchimento
 		if (!$this->Nome) $this->AddValidationError('Nome','Nome é obrigatório');
 		if (!$this->Email) $this->AddValidationError('Email','E-mail é obrigatório');
 		if (!$this->Login) $this->AddValidationError('Login','Login é obrigatório');
 		if (!$this->Senha) $this->AddValidationError('Senha','Senha é obrigatória');
+		//validacao do login
+		if ($this->Login && !preg_match('/^[A-Za-z][A-Za-z0-9]*(?:(_|\.)[A-Za-z0-9]+)*$/', $this->Login)) 
+			$this->AddValidationError('Login','Usuário inválido. Só é permitidos caracteres alfanuméricos, e "." e "_" como separadores'); 
+		//validacao do email
+		if($this->Email && !filter_var($this->Email, FILTER_VALIDATE_EMAIL)) 
+			$this->AddValidationError('Email','E-mail inválido'); 
+		//validacao da senha
 		if ($this->Senha && substr($this->Senha, 0,3) != '!!!'){
 			if(strlen($this->Senha) < 3) $this->AddValidationError('Senha','Mínimo 3 caracteres');
 			if(strlen($this->Senha) > 25) $this->AddValidationError('Senha','Máximo 25 caracteres');
 			if (!$this->ConfirmarSenha) $this->AddValidationError('ConfirmarSenha','Confirmação da senha é obrigatória');
-			if ($this->ConfirmarSenha && (string)$this->Senha != (string)$this->ConfirmarSenha) $this->AddValidationError('ConfirmarSenha','As senhas não correspondem  '.$this->ConfirmarSenha);
+			if ($this->ConfirmarSenha && (string)$this->Senha != (string)$this->ConfirmarSenha) $this->AddValidationError('ConfirmarSenha','As senhas não correspondem');
 		}
 		
 		return !$this->HasValidationErrors();
