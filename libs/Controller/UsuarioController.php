@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /** @package    Certificados FAROL::Controller */
 /** import supporting libraries */
@@ -33,11 +33,11 @@ class UsuarioController extends AppBaseController
 				'Please login to access this page',
 				'Edit permission is required to manage users'); */
     }
-
-    /**
+	
+	/**
      * Displays a list view of Usuario objects
      */
-    public function ListView() {
+    public function ListView() {		
         $this->Render();
     }
 
@@ -156,6 +156,7 @@ class UsuarioController extends AppBaseController
                 $this->RenderJSON($usuario, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }
         } catch (Exception $ex) {
+			$this->StartObserving();
             $this->RenderExceptionJSON($ex);
         }
     }
@@ -200,9 +201,7 @@ class UsuarioController extends AppBaseController
                 $usuario->Save();
                 $this->RenderJSON($usuario, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }
-        } catch (Exception $ex) {
-
-
+        } catch (Exception $ex) {			
             $this->RenderExceptionJSON($ex);
         }
     }
@@ -217,17 +216,22 @@ class UsuarioController extends AppBaseController
 
             $pk = $this->GetRouter()->GetUrlParam('idUsuario');
             $usuario = $this->Phreezer->Get('Usuario', $pk);
-
-			$usuario->Delete();
+		
+		    //Verifica se existem certificados emitidos pelo usuario, senao existerem, permite a exclusao
+			require_once("Model/Certificado.php");
+			$criteria = new CertificadoCriteria();
+			$criteria->IdUsuario_Equals = $pk;			
+			try {
+				$certificados = $this->Phreezer->GetByCriteria("Certificado", $criteria);	
+				throw new Exception('Não é possível excluir um usúario do sistema que possui certificados emitidos por ele');
+			} catch(NotFoundException $nfex){
+				$usuario->Delete();
+			}
 
             $output = new stdClass();
 
             $this->RenderJSON($output,$this->JSONPCallback());
         } catch (Exception $ex) {
-			
-			if($ex->getCode() == 2)
-				throw new Exception('Não é possível excluir um usúario do sistema que possui certificados emitidos por ele',$ex->getCode());
-			
             $this->RenderExceptionJSON($ex);
         }
     }

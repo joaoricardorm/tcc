@@ -1,18 +1,11 @@
 <?php
-	$this->assign('title','CERTIFICADOSV3 Secure Example');
+	$this->assign('title','Certificados FAROL | Autenticação');
 	$this->assign('nav','secureexample');
 
 	$this->display('_Header.tpl.php');
 ?>
 
 <div class="container">
-
-	<?php if ($this->feedback) { ?>
-		<div class="alert alert-error">
-			<button type="button" class="close" data-dismiss="alert">×</button>
-			<?php $this->eprint($this->feedback); ?>
-		</div>
-	<?php } ?>
 	
 	<!-- #### this view/tempalate is used for multiple pages.  the controller sets the 'page' variable to display differnet content ####  -->
 	
@@ -30,8 +23,16 @@
 	
 	<?php if ($this->page == 'login') { ?>
 	
-		<form class="well formlogin" method="post" action="login">
+		<form class="well formlogin" method="post" action="login">	
 			<h1><i class="icon-user"></i> Autenticação necessária</h1>
+			
+			<?php if ($this->feedback) { ?>
+				<div class="alert alert-error">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<?php $this->eprint($this->feedback); ?>
+				</div>
+			<?php } ?>
+			
 			<fieldset>
 			<legend>Entre com suas credenciais</legend>
 				<div>

@@ -163,8 +163,7 @@ var app = {
 	 * @param server response
 	 */
 	getErrorMessage: function(resp) {
-
-		var msg = 'An unknown error occured';
+		var msg = 'Ocorreu um erro desconhecido';
 		try	{
 			var json = $.parseJSON(resp.responseText);
 			msg = json.message;
@@ -178,6 +177,7 @@ var app = {
 			}
 		}
 
+		//return console.log(json);
 		return msg ? msg : 'Erro desconhecido do servidor';
 	},
 

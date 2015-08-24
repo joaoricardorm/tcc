@@ -169,7 +169,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/usuario/(:num)' => array('route' => 'Usuario.Read', 'params' => array('idUsuario' => 2)),
 	'PUT:api/usuario/(:num)' => array('route' => 'Usuario.Update', 'params' => array('idUsuario' => 2)),
 	'DELETE:api/usuario/(:num)' => array('route' => 'Usuario.Delete', 'params' => array('idUsuario' => 2)),
-
+	
 	// catch any broken API urls
 	'GET:api/(:any)' => array('route' => 'Default.ErrorApi404'),
 	'PUT:api/(:any)' => array('route' => 'Default.ErrorApi404'),

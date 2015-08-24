@@ -14,6 +14,7 @@
 require_once 'verysimple/Phreeze/ConnectionSetting.php';
 require_once("verysimple/HTTP/RequestUtil.php");
 
+//Configuracao local
 /** database connection settings */
 GlobalConfig::$CONNECTION_SETTING = new ConnectionSetting();
 GlobalConfig::$CONNECTION_SETTING->ConnectionString = "localhost:3306";
@@ -23,6 +24,33 @@ GlobalConfig::$CONNECTION_SETTING->Password = "";
 GlobalConfig::$CONNECTION_SETTING->Type = "MySQLi";
 GlobalConfig::$CONNECTION_SETTING->Charset = "utf8";
 GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
+
+//GlobalConfig::$CONNECTION_SETTING->BootstrapSQL = "SET SQL_BIG_SELECTS=1";
+
+
+//Configuracao byethost
+/** database connection settings */
+// GlobalConfig::$CONNECTION_SETTING = new ConnectionSetting();
+// GlobalConfig::$CONNECTION_SETTING->ConnectionString = "sql210.byethost7.com";
+// GlobalConfig::$CONNECTION_SETTING->DBName = "b7_16572003_tcc";
+// GlobalConfig::$CONNECTION_SETTING->Username = "b7_16572003";
+// GlobalConfig::$CONNECTION_SETTING->Password = "@Seoq1oRntP@";
+// GlobalConfig::$CONNECTION_SETTING->Type = "MySQLi";
+// GlobalConfig::$CONNECTION_SETTING->Charset = "utf8";
+// GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
+
+
+//Configuracao hostinger
+/** database connection settings */
+// GlobalConfig::$CONNECTION_SETTING = new ConnectionSetting();
+// GlobalConfig::$CONNECTION_SETTING->ConnectionString = "mysql.hostinger.com.br";
+// GlobalConfig::$CONNECTION_SETTING->DBName = "u793179727_tcc";
+// GlobalConfig::$CONNECTION_SETTING->Username = "u793179727_tcc";
+// GlobalConfig::$CONNECTION_SETTING->Password = "dreamweaver123";
+// GlobalConfig::$CONNECTION_SETTING->Type = "MySQLi";
+// GlobalConfig::$CONNECTION_SETTING->Charset = "utf8";
+// GlobalConfig::$CONNECTION_SETTING->Multibyte = true;
+
 // GlobalConfig::$CONNECTION_SETTING->BootstrapSQL = "SET SQL_BIG_SELECTS=1";
 
 /** the root url of the application with trailing slash, for example http://localhost/certificados farol/ */

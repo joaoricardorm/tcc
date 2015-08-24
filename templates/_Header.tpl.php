@@ -27,11 +27,30 @@
 			<script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 
-		<!-- Le fav and touch icons -->
+		<link rel="apple-touch-icon" sizes="57x57" href="images/favicon/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="images/favicon/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="images/favicon/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="images/favicon/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="images/favicon/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="images/favicon/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="images/favicon/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="images/favicon/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+		<link rel="manifest" href="images/favicon/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+
+		
+		<!-- Le fav and touch icons 
 		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/apple-touch-icon-114-precomposed.png" />
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72-precomposed.png" />
-		<link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon-57-precomposed.png" />
+		<link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon-57-precomposed.png" /> -->
 
 		<script type="text/javascript" src="scripts/libs/LAB.min.js"></script>
 		<script type="text/javascript">
@@ -59,7 +78,9 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</a>
-						<a class="brand" href="./">Certificados FAROL</a>
+						<a class="brand" href="./">
+						<img src="images/logo.png" style="max-height:50px; margin-top:-10px; margin-bottom:-10px;">
+						Certificados FAROL</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados">Certificados</a></li>
@@ -91,14 +112,8 @@
 							</ul>
 							<?php } else { ?>
 							<ul class="nav pull-right">
-								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> Login <i class="caret"></i></a>
-								<ul class="dropdown-menu">
-									<li><a href="./loginform">Login</a></li>
-									<li class="divider"></li>
-									<li><a href="./secureuser">Example User Page <i class="icon-lock"></i></a></li>
-									<li><a href="./secureadmin">Example Admin Page <i class="icon-lock"></i></a></li>
-								</ul>
+								<li>
+									<a href="loginform"><i class="icon-lock"></i> &nbsp;Área restrita</a>
 								</li>
 							</ul>
 							<?php } ?>

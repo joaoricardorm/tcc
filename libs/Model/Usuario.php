@@ -145,6 +145,32 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 			if ($this->ConfirmarSenha && (string)$this->Senha != (string)$this->ConfirmarSenha) $this->AddValidationError('ConfirmarSenha','As senhas não correspondem');
 		}
 		
+		//Valida se usuario ja existe pelo E-mail
+		try {
+			$criteria = new UsuarioCriteria();
+			$criteria->Login_NotEquals = $this->Login;
+			$criteria->Email_Equals = $this->Email;
+			
+			$user = $this->_phreezer->GetByCriteria("Usuario", $criteria);
+			//mostra erro somente se o novo email pertencer a outro usuario e nao a si mesmo
+			if($user->IdUsuario != $this->IdUsuario)			
+				$this->AddValidationError('Email','O e-mail inserido já está sendo utilizado');
+		} catch(Exception $ex) {
+		}
+		
+		//Valida se usuario ja existe pelo nome de usuario
+		try {
+			$criteria = new UsuarioCriteria();
+			$criteria->Login_Equals = $this->Login;
+		
+			$user = $this->_phreezer->GetByCriteria("Usuario", $criteria);	
+			
+			//mostra erro somente se o novo usuario pertencer a outro usuario e nao a si mesmo
+			if($user->IdUsuario != $this->IdUsuario)
+				$this->AddValidationError('Login','O usuário inserido já está sendo utilizado');
+		} catch(Exception $ex) {
+		}
+		
 		return !$this->HasValidationErrors();
 	}
 

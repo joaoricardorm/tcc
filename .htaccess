@@ -52,3 +52,9 @@
 	AddType font/truetype ttf
 	AddType application/font-woff woff
 </IfModule>
+
+#Libera permissoes de put e delet no servidor byethost ou outro em que não funcionar
+<LimitExcept GET POST PUT DELETE HEAD OPTIONS>
+    Order deny,allow
+    Deny from all
+</LimitExcept>

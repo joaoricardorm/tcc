@@ -7,12 +7,13 @@
 
 <div class="container">
 
-	<h1>Oh Snap!</h1>
-
 	<!-- this is used by app.js for scraping -->
 	<!-- ERROR The page you requested was not found /ERROR -->
 
-	<p>The page you requested was not found.  Please check that you typed the URL correctly.</p>
+	<div class="hero-unit">
+		<h1>Página não encontrada - Erro 404!</h1>
+		<p>A página solicitada não foi encontrada no servidor. Verifique se você inseriu o link correto na URL do site.</p>
+	</div>
 
 </div> <!-- /container -->
 
