@@ -72,6 +72,9 @@ GlobalConfig::$ROUTE_MAP = array(
 
 	// default controller when no route specified
 	'GET:' => array('route' => 'Default.Home'),
+	
+	// upload de arquivos
+	'POST:Upload' => array('route' => 'Upload.UploadImagem'),
 		
 	// example authentication routes
 	'GET:loginform' => array('route' => 'SecureExample.LoginForm'),
@@ -92,6 +95,8 @@ GlobalConfig::$ROUTE_MAP = array(
 	// Configuracao
 	'GET:configuracoes' => array('route' => 'Configuracao.ListView'),
 	'GET:configuracao/(:num)' => array('route' => 'Configuracao.SingleView', 'params' => array('idConfiguracao' => 1)),
+	//single view da configuracao sem precisar do id
+	'GET:configuracao' => array('route' => 'Configuracao.SingleView', 'params' => array('idConfiguracao' => 1)),
 	'GET:api/configuracoes' => array('route' => 'Configuracao.Query'),
 	'POST:api/configuracao' => array('route' => 'Configuracao.Create'),
 	'GET:api/configuracao/(:num)' => array('route' => 'Configuracao.Read', 'params' => array('idConfiguracao' => 2)),

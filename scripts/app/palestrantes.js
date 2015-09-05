@@ -235,7 +235,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeletePalestranteButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeletePalestranteContainer').hide('fast');
+				$('#confirmDeletePalestranteContainer').hide();
 			});
 
 			$('#confirmDeletePalestranteButton').click(function(e) {

@@ -20,14 +20,19 @@
 
 <div class="container">
 
-<h1>
-	<i class="icon-th-list"></i> Configuracoes
-	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
-	<span class='input-append pull-right searchContainer'>
-		<input id='filter' type="text" placeholder="Buscar..." />
-		<button class='btn add-on'><i class="icon-search"></i></button>
-	</span>
-</h1>
+	<h1>
+		<i class="icon-user"></i> Configurações
+		<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
+	</h1>
+
+	<p id="newButtonContainer" class="buttonContainer">
+			<button id="newConfiguracaoButton" class="btn btn-primary">Editar configurações</button>
+			
+			<span class='input-append pull-right searchContainer'>
+					<input id='filter' type="text" placeholder="Buscar..." />
+					<button class='btn add-on'><i class="icon-search"></i></button>
+			</span>
+	</p>
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="configuracaoCollectionTemplate">
@@ -139,11 +144,6 @@
 	
 	<div id="configuracaoCollectionContainer" class="collectionContainer">
 	</div>
-
-	<p id="newButtonContainer" class="buttonContainer">
-		<button id="newConfiguracaoButton" class="btn btn-primary">Cadastrar Configuracao</button>
-	</p>
-
 </div> <!-- /container -->
 
 <?php

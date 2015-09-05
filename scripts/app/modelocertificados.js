@@ -235,7 +235,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeleteModeloCertificadoButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteModeloCertificadoContainer').hide('fast');
+				$('#confirmDeleteModeloCertificadoContainer').hide();
 			});
 
 			$('#confirmDeleteModeloCertificadoButton').click(function(e) {

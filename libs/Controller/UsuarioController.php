@@ -28,10 +28,11 @@ class UsuarioController extends AppBaseController
 		// TODO: add controller-wide bootstrap code
 		
 		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
-		/* $this->RequirePermission(Usuario::$PERMISSION_EDIT,
-				'SecureExample.LoginForm',
-				'Please login to access this page',
-				'Edit permission is required to manage users'); */
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'Usuario.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
     }
 	
 	/**

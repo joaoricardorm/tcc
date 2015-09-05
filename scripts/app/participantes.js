@@ -235,7 +235,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeleteParticipanteButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteParticipanteContainer').hide('fast');
+				$('#confirmDeleteParticipanteContainer').hide();
 			});
 
 			$('#confirmDeleteParticipanteButton').click(function(e) {

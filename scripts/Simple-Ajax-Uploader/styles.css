@@ -1,0 +1,39 @@
+#UploadAltImagem {
+	border:2px #ccc dashed;
+	padding:10px;
+	display:inline-block;
+}
+button#uploadBtn, button#uploadBtn.disabled { margin-right:-5px; opacity:1; }
+button#uploadBtn.hover { background-color: #00b0ff; }
+button#uploadBtn.btn-danger.hover { background-color: #bd362f; }
+#nomeArquivo { 
+	background:#eee;
+	color:#aaa;
+	opacity:1;
+	padding-left:10px;
+	padding-right:10px;
+	border-radius:0 5px 5px 0; 
+	-webkit-border-radius:0 5px 5px 0; 
+	-moz-border-radius:0 5px 5px 0; 
+}
+#progressOuter {
+	margin: 15px 0 0 0;
+}
+.up-image-preview {
+		background: #f8f8f8;
+        max-width: 300px;
+        max-height: 200px;
+		margin:15px 0 0 0;
+		display:none;
+      }
+	  
+@media only screen and (max-width : 600px) {
+	.up-image-preview {
+		zoom: 0.4!important;
+	}
+ }
+@media only screen and (max-width : 992px) {
+	.up-image-preview {
+		zoom: 0.7;
+	}
+}	

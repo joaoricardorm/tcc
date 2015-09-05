@@ -28,10 +28,22 @@ class ConfiguracaoController extends AppBaseController
 
 		// TODO: add controller-wide bootstrap code
 		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'Usuario.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 	}
 
+	/**
+	 * Displays a list view of Configuracao objects
+	 */
+	public function SingleView()
+	{		
+		$this->Render();
+	}
+	
 	/**
 	 * Displays a list view of Configuracao objects
 	 */
@@ -177,7 +189,7 @@ class ConfiguracaoController extends AppBaseController
 			$this->RenderExceptionJSON($ex);
 		}
 	}
-
+	
 	/**
 	 * API Method updates an existing Configuracao record and render response as JSON
 	 */
@@ -208,6 +220,7 @@ class ConfiguracaoController extends AppBaseController
 
 			$configuracao->Validate();
 			$errors = $configuracao->GetValidationErrors();
+			
 
 			if (count($errors) > 0)
 			{

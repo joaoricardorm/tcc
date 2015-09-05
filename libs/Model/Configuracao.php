@@ -33,7 +33,8 @@ class Configuracao extends ConfiguracaoDAO
 		$errors = $this->GetValidationErrors();
 
 		// THESE ARE CUSTOM VALIDATORS
-		if (!$this->NomeInstituicao) $this->AddValidationError('NomeInstituicao','Nome é obrigatório');
+		if (!$this->NomeInstituicao) $this->AddValidationError('NomeInstituicao','Nome da instituição é obrigatório');
+		if (!$this->Telefone) $this->AddValidationError('Telefone','Telefone é obrigatório');
 		
 		return !$this->HasValidationErrors();
 	}

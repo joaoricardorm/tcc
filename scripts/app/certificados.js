@@ -261,7 +261,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeleteCertificadoButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteCertificadoContainer').hide('fast');
+				$('#confirmDeleteCertificadoContainer').hide();
 			});
 
 			$('#confirmDeleteCertificadoButton').click(function(e) {

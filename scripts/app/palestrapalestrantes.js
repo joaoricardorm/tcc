@@ -313,7 +313,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeletePalestraPalestranteButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeletePalestraPalestranteContainer').hide('fast');
+				$('#confirmDeletePalestraPalestranteContainer').hide();
 			});
 
 			$('#confirmDeletePalestraPalestranteButton').click(function(e) {

@@ -327,6 +327,10 @@ $('.modal .modal-footer .btn:first').focus();
 							$('#'+key+'InputContainer span.help-inline').html(value);
 							$('#'+key+'InputContainer span.help-inline').show();
 						});
+						
+						//limpa senha ao ocorrer algum erro
+						$('#senha').val('');
+						$('#confirmarSenha').val('');
 					}
 				} catch (e2) {
 					if (console) console.log('error parsing server response: '+e2.message);

@@ -22,7 +22,7 @@ body .hero-unit:first-child, body .formlogin:first-child  { margin-top:20px; }
 }
 .modal .control-group:last-child { margin-bottom:0; }
 .modal .modal-body { max-height:none; }
-.modal .close {
+.modal .modal-header .close {
     width: 30px;
     text-align: center;
     padding: 5px 0;
@@ -55,8 +55,10 @@ p.buttonContainer {
     border-bottom: 1px solid #fff;
 }
 
+.navbar .brand { margin-top:0px; margin-bottom:0px; }
 .navbar .brand img {
 	max-height:50px;
+	height:50px;
 	margin-top:-10px; 
 	margin-bottom:-10px;
 	opacity: 0.7;	
@@ -80,6 +82,14 @@ table.collection th:hover {
 	text-decoration:underline;
 	transition: opacity 250ms ease-in-out;
 }
+
+table.collection.no-hover thead th:hover {
+    cursor: default;
+	text-decoration:none;
+}
+
+.img-center { margin-left:auto; margin-right:auto; display:block; box-sizing: border-box; }
+
 .table-bordered, .table-bordered th, .table-bordered td {
 	border-color:#eee;
 	border-color: rgba(0,0,0,0.2);
@@ -90,6 +100,11 @@ table.collection th:hover {
 .table-bordered th:first-child { box-shadow:none; }
 .alert {
 	clear:both;
+}
+
+/* IE8 hack para exibir senha ao digitar */
+input[type="password"] {
+	font-family : Arial, Helvetica, Sans-Serif\9; /* IE8 and below */
 }
 
 .date-picker input
@@ -116,6 +131,8 @@ table.collection th:hover {
 	margin-left: 0px;
 }
 
+input[type=password]
+
 .searchContainer input, .searchContainer button
 {
 	margin-top: 0;
@@ -137,6 +154,8 @@ table.collection th:hover {
 
 
 /* search filter button */
+input#filter { padding:8px; }
+
 .input-append button.add-on {
     height: inherit !important;
     color: #999999;

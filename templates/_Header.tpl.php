@@ -3,6 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-Frame-Options" content="deny">
+		
+		<!--forca IE a se comportar como 8-->
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+		
 		<base href="<?php $this->eprint($this->ROOT_URL); ?>" />
 		<title><?php $this->eprint($this->title); ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -79,32 +83,33 @@
 							<span class="icon-bar"></span>
 						</a>
 						<a class="brand" href="./">
-						<img src="images/logo.png" style="max-height:50px; margin-top:-10px; margin-bottom:-10px;">
-						Certificados FAROL</a>
+							<img src="images/logo.png">
+							Certificados FAROL
+						</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados">Certificados</a></li>
-								<li <?php if ($this->nav=='configuracoes') { echo 'class="active"'; } ?>><a href="./configuracoes">Configuracoes</a></li>
+								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a href="./configuracao"><i class="icon-cog"></i> Configurações</a></li>
+								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a href="./usuarios"><i class="icon-user"></i> Usuários</a></li>
 								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a href="./eventos">Eventos</a></li>
 								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a href="./modelocertificados">ModeloCertificados</a></li>
 							</ul>
 							<ul class="nav">
 								<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-								<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras">Palestras</a></li>
-								<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes">PalestraPalestrantes</a></li>
-								<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes">PalestraParticipantes</a></li>
-								<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes">Palestrantes</a></li>
-								<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes">Participantes</a></li>
-								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a href="./usuarios">Usuários</a></li>
-								</ul>
+									<ul class="dropdown-menu">
+										<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados">Certificados</a></li>
+										<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras">Palestras</a></li>
+										<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes">PalestraPalestrantes</a></li>
+										<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes">PalestraParticipantes</a></li>
+										<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes">Palestrantes</a></li>
+										<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes">Participantes</a></li>
+									</ul>
 								</li>
 							</ul>
 							<?php  if ($this->CURRENT_USER) { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> Olá <?php $this->eprint($this->CURRENT_USER->Nome); ?> <i class="caret"></i></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> <?php $this->eprint($this->CURRENT_USER->Nome); ?> <i class="caret"></i></a>
 								<ul class="dropdown-menu">
 									<li><a href="./logout">Sair</a></li>
 								</ul>

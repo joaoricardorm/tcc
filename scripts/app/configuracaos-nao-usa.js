@@ -235,7 +235,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeleteConfiguracaoButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteConfiguracaoContainer').hide('fast');
+				$('#confirmDeleteConfiguracaoContainer').hide();
 			});
 
 			$('#confirmDeleteConfiguracaoButton').click(function(e) {

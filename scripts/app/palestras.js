@@ -287,7 +287,7 @@ $('.modal .modal-footer .btn:first').focus();
 
 			$('#cancelDeletePalestraButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeletePalestraContainer').hide('fast');
+				$('#confirmDeletePalestraContainer').hide();
 			});
 
 			$('#confirmDeletePalestraButton').click(function(e) {
