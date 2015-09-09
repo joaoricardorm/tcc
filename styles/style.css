@@ -7,12 +7,12 @@
 
 body {
 	padding-top: 70px;
-	padding-bottom: 40px;
-	background-color:#e5e5e5;
+	padding-bottom: 20px;
+	background-color:#ebe9e6;
 	font-family: 'Lato', Arial,Helvetica,sans-serif;
 }
 
-body .hero-unit:first-child, body .formlogin:first-child  { margin-top:20px; }
+body .hero-unit:first-child, body .formlogin:first-child  { margin-top:0px; }
 
 .modal { 
 	width:60%; 
@@ -46,13 +46,21 @@ hr {
 	margin: 10px 0px 10px 0px;
 }
 
-p.buttonContainer {
-	margin-bottom:15px;
+span.buttonContainer {
+	margin-bottom:20px;
 }
 
 .footer hr {
 	border-top: 1px solid #bbb;
     border-bottom: 1px solid #fff;
+}
+
+.footer .muted { margin-bottom:0; }
+
+.navbar a {
+	transition: all 50ms ease-in-out;
+	-webkit-transition: all 50ms ease-in-out;
+	-moz-transition: all 50ms ease-in-out;
 }
 
 .navbar .brand { margin-top:0px; margin-bottom:0px; }
@@ -93,6 +101,7 @@ table.collection.no-hover thead th:hover {
 .table-bordered, .table-bordered th, .table-bordered td {
 	border-color:#eee;
 	border-color: rgba(0,0,0,0.2);
+	border-top:none;
 }
 .table-bordered th {
 	box-shadow: -1px 1px rgba(255,255,255,0.3);
@@ -138,6 +147,10 @@ input[type=password]
 	margin-top: 0;
     padding: 8px;
 }
+.searchContainer {
+	margin-bottom:20px;
+}
+
 
 .formlogin {
 	max-width:500px;
@@ -152,8 +165,15 @@ input[type=password]
 .formlogin h2 { margin-top:0; }
 .control-group:last-child { margin-bottom:0; }
 
-
-/* search filter button */
+h1, h2, h3 {
+	transition:all 100ms ease-in-out; 
+	-webkit-transition:all 100ms ease-in-out;
+	-moz-transition:all 100ms ease-in-out;
+}
+@media screen and (max-width:468px) {	
+	h1 { font-size:2em; margin-top:0; }
+	.searchContainer.pull-right  { float:none; clear:both; display:block; }
+}
 input#filter { padding:8px; }
 
 .input-append button.add-on {

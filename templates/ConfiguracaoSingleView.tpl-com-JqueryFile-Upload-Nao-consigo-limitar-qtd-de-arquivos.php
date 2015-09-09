@@ -239,7 +239,7 @@ $(function () {
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="configuracaoCollectionTemplate">
-		<table class="collection table table-bordered table-hover table-striped no-hover">
+		<table class="collection table table-hover table-striped no-hover">
 		<thead>
 			<tr>
 				<th id="header_NomeInstituicao">Nome da instituição</th>

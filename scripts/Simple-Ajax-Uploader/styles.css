@@ -23,17 +23,12 @@ button#uploadBtn.btn-danger.hover { background-color: #bd362f; }
 		background: #f8f8f8;
         max-width: 300px;
         max-height: 200px;
-		margin:15px 0 0 0;
+		margin:15px auto 0 auto;
 		display:none;
       }
 	  
 @media only screen and (max-width : 600px) {
 	.up-image-preview {
-		zoom: 0.4!important;
+		zoom: 0.7!important;
 	}
- }
-@media only screen and (max-width : 992px) {
-	.up-image-preview {
-		zoom: 0.7;
-	}
-}	
+ }	

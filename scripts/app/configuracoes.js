@@ -52,7 +52,7 @@ function image_uploader() {
                 oFReader.readAsDataURL(image);
 
                 oFReader.onload = function(oFREvent) {
-                    $display.fadeIn();
+                    $display.fadeIn().css('display','block');
                     $display.attr('src', oFREvent.target.result);
                 };
 
@@ -61,7 +61,7 @@ function image_uploader() {
 				uploader.removeCurrent();
 				erroImagem();
                 removePreviewImage();
-                msgBox.innerHTML = 'O arquivo enviado é muito grande';
+                msgBox.innerHTML = 'O arquivo enviado é muito grande. O tamanho máximo permitido é '+Math.floor((uploader._opts.maxSize / 1024),2)+' MB';
             }
 
         } else {
@@ -102,7 +102,7 @@ function image_uploader() {
 			uploader.removeCurrent();
             removePreviewImage();
 			erroImagem();
-            msgBox.innerHTML = 'O arquivo enviado é muito grande'; // empty the message box
+			msgBox.innerHTML = 'O arquivo enviado é muito grande. O tamanho máximo permitido é '+Math.floor((uploader._opts.maxSize / 1024),2)+' MB';
         },
         onExtError: function(filename) {
 			uploader.removeCurrent();
@@ -239,6 +239,13 @@ var page = {
 
         // make the rows clickable ('rendered' is a custom event, not a standard backbone event)
         this.collectionView.on('rendered', function() {
+			
+			// Adiciona o atributo data-title nas tr da tabela para responsividade
+			$( "table.collection tbody td" ).each(function(index){
+				titulo = $( "table.collection thead th").eq(index).text();
+				$(this).attr('data-title',titulo);
+			}); 
+	
             // attach click handler to the table rows for editing
             $('table.collection tbody tr').click(function(e) {
                 e.preventDefault();
@@ -315,9 +322,8 @@ var page = {
 
         page.configuracoes.fetch({
             data: params,
-            success: function() {
-
-                if (page.configuracoes.collectionHasChanged) {
+            success: function() {			
+                if (page.configuracoes.collectionHasChanged) {					
                     // TODO: add any logic necessary if the collection has changed
                     // the sync event will trigger the view to re-render
                 }
@@ -359,9 +365,10 @@ var page = {
                 success: function() {
                     // data returned from the server.  render the model view
                     page.renderModelView(true);
-                    $('.modal .modal-footer .btn:first').focus();
 
                     image_uploader();
+					
+					$('.modal .modal-footer .btn:first').focus();
 
                 },
                 error: function(m, r) {
@@ -408,7 +415,6 @@ var page = {
 			$('#ckbAltImagem').prop('checked', false);
 			$(this).html('<i class="icon-picture"></i> Alterar imagem').addClass('btn-primary');
 		});
-
 		
 		//mascara para telefone e cnpj
 		$("#telefone").mask("(99) 9999-9999",{placeholder:"_"});

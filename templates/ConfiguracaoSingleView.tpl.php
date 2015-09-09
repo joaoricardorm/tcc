@@ -57,7 +57,9 @@
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="configuracaoCollectionTemplate">
-		<table class="collection table table-bordered table-hover table-striped no-hover">
+	
+	 <div id="no-more-tables">
+		<table class="collection table table-hover table-striped no-hover responsive-table">
 		<thead>
 			<tr>
 				<th id="header_NomeInstituicao">Nome da instituição</th>
@@ -69,14 +71,15 @@
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('idConfiguracao')) %>">
-				<td><%= _.escape(item.get('nomeInstituicao') || '') %></td>
-				<td><img class="img-center thumbnail" src="images/uploads/logos/small/<%= _.escape(item.get('imagemLogo') || '') %>" /></td>
+				<td data-title="vai"><%= _.escape(item.get('nomeInstituicao') || '') %></td>
+				<td><img class="thumbnail" src="images/uploads/logos/small/<%= _.escape(item.get('imagemLogo') || '') %>" /></td>
 				<td><%= _.escape(item.get('cnpj') || '') %></td>
 				<td><%= _.escape(item.get('telefone') || '') %></td>
 			</tr>
 		<% }); %>
 		</tbody>
 		</table>
+	</div>
 
 		<%=  view.getPaginationHtml(page) %>
 	</script>

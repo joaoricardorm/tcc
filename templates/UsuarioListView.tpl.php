@@ -25,18 +25,22 @@
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 </h1>
 
-<p id="newButtonContainer" class="buttonContainer">
-		<button id="newUsuarioButton" class="btn btn-primary">Cadastrar Usuário</button>
-		
-		<span class='input-append pull-right searchContainer'>
-				<input id='filter' type="text" placeholder="Buscar..." />
-				<button class='btn add-on'><i class="icon-search"></i></button>
-		</span>
-</p>
+<div class="new-and-search-container clearfix">
+	<span id="newButtonContainer" class="buttonContainer pull-left">
+			<button id="newUsuarioButton" class="btn btn-primary">Cadastrar Usuário</button>
+	</span>
+	<span class='input-append pull-right searchContainer'>
+					<input id='filter' type="text" placeholder="Buscar..." />
+					<button class='btn add-on'><i class="icon-search"></i></button>
+	</span>
+</div>
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="usuarioCollectionTemplate">
-		<table class="collection table table-bordered table-hover table-striped">
+	
+	 <div class="table-responsive">
+	
+		<table class="collection table table-hover table-striped">
 		<thead>
 			<tr>
 				<th id="header_Nome">Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
@@ -59,6 +63,8 @@
 		<% }); %>
 		</tbody>
 		</table>
+		
+	</div>
 
 		<%=  view.getPaginationHtml(page) %>
 	</script>
