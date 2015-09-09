@@ -6,14 +6,13 @@
 @import url(http://fonts.googleapis.com/css?family=Lato);
 
 body {
-	padding-top: 70px;
+	padding-top: 90px;
 	padding-bottom: 20px;
-	background-color:#ebe9e6;
-	background: purple;
+	background-color:#f1f1f1;
 	font-family: 'Lato', Arial,Helvetica,sans-serif;
 }
 
-body .hero-unit:first-child, body .formlogin:first-child  { margin-top:0px; }
+body .hero-unit:first-child, body .formlogin:first-child  { margin-top:20px; }
 
 .modal { 
 	width:60%; 
@@ -35,13 +34,15 @@ body .hero-unit:first-child, body .formlogin:first-child  { margin-top:0px; }
 }
 
 h1,h2,h3,h4,h5,h6{
-	color:#37474f;
+	color:#41416C;
 	text-rendering: optimizelegibility;
 }
 
 h1, .hero-unit h1 {
 	margin-bottom: 15px;
 }
+
+.hero-unit h1:first-child { margin-top:0; }
 
 hr {
 	margin: 10px 0px 10px 0px;
@@ -59,26 +60,25 @@ span.buttonContainer {
 .footer .muted { margin-bottom:0; }
 
 .navbar a {
-	transition: all 50ms ease-in-out;
-	-webkit-transition: all 50ms ease-in-out;
-	-moz-transition: all 50ms ease-in-out;
+	transition: all 70ms ease-in-out;
+	-webkit-transition: all 70ms ease-in-out;
+	-moz-transition: all 70ms ease-in-out;
 }
 
-.navbar .brand { margin-top:0px; margin-bottom:0px; }
+.navbar .brand { margin-top:0px; margin-bottom:0px; text-shadow:none; }
 .navbar .brand img {
 	max-height:50px;
 	height:50px;
 	margin-top:-10px; 
-	margin-bottom:-10px;
-	opacity: 0.7;	
+	margin-bottom:-10px;	
 }
-.navbar .brand:hover img {
+.navbar .brand:hover {
 	opacity: 1;	
 }
 
-table.collection { background:#FFF; }
+table.collection { background:#FFF; margin-bottom:0; }
 table.collection thead {
-	background: #8695a4;
+	background: darkorange;
     color: white;
 }
 table.collection th { 	font-weight:600; }
@@ -171,7 +171,10 @@ h1, h2, h3 {
 	-webkit-transition:all 100ms ease-in-out;
 	-moz-transition:all 100ms ease-in-out;
 }
-@media screen and (max-width:468px) {	
+@media screen and (max-width:768px){
+	.hero-unit { padding:20px; }
+}
+@media screen and (max-width:468px) {
 	h1 { font-size:2em; margin-top:0; }
 	.searchContainer.pull-right  { float:none; clear:both; display:block; }
 }
@@ -179,9 +182,11 @@ input#filter { padding:8px; }
 
 .input-append button.add-on {
     height: inherit !important;
-    color: #999999;
+    color: #FFF;
     padding: 8px 20px;
     margin-top:0;
+	background-color: #6252c9;
+    border-color: #6252c9;
 }
 
 span.loader {

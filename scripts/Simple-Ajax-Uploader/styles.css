@@ -4,7 +4,7 @@
 	display:inline-block;
 }
 button#uploadBtn, button#uploadBtn.disabled { margin-right:-5px; opacity:1; }
-button#uploadBtn.hover { background-color: #00b0ff; }
+button#uploadBtn.hover { background-color: #806ef4; }
 button#uploadBtn.btn-danger.hover { background-color: #bd362f; }
 #nomeArquivo { 
 	background:#eee;

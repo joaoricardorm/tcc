@@ -44,7 +44,7 @@
 
 	
 	
-<div class="container">
+<div class="container hero-unit">
 
 	<h1>
 		<i class="icon-cog"></i> Configurações

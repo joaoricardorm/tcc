@@ -791,7 +791,7 @@ top: -9999px;
 left: -9999px;
 }
  
-#no-more-tables tr { border: 1px solid #ccc; }
+/* #no-more-tables tr { border: 1px solid #ccc; } */
   
 #no-more-tables td {
 /* Behave like a "row" */
@@ -2227,7 +2227,7 @@ table td[class*="span"], table th[class*="span"], .row-fluid table td[class*="sp
 }
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-submenu:hover>a, .dropdown-submenu:focus>a, .navbar-inverse .nav .active>a:hover {
     color: #fff;
-	background-color: #607d8b;
+	background-color: darkslateblue;
 	text-decoration:none;
 }
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
@@ -2511,16 +2511,16 @@ input[type="submit"].btn-block, input[type="reset"].btn-block, input[type="butto
 }
 .btn-primary {
     color: #fff;
-    background-color: #0091ea;
-    *background-color: #0091ea;
+    background-color: #6252c9;
+    *background-color: #6252c9;
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
     color: #fff;
-    background-color: #00b0ff;
-    *background-color: #003bb3;
+    background-color: #806ef4;
+    *background-color: #806ef4;
 }
 .btn-primary:active, .btn-primary.active {
-    background-color: #039 \9;
+    background-color: darkslateblue \9;
 }
 .btn-warning {
     color: #fff;
@@ -3244,7 +3244,6 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     font-size: 20px;
     font-weight: 200;
     color: #fff;
-    text-shadow: 0 1px 0 #080808;
 }
 .navbar .brand:hover, .navbar .brand:focus {
     text-decoration: none;
@@ -3511,20 +3510,21 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     border-radius: 6px 0 6px 6px;
 }
 .navbar-inverse .navbar-inner {
-    background-color: #37474f;
+    background-color: darkslateblue;
 	color:#FFF;
     background-repeat: repeat-x;
 	border:none;
 }
 .navbar-inverse .brand, .navbar-inverse .nav>li>a {
-    color: #aaa;
+    color: #FFF;
     text-shadow: none;
 }
 .navbar-inverse .brand:hover, .navbar-inverse .nav>li>a:hover, .navbar-inverse .brand:focus, .navbar-inverse .nav>li>a:focus {
     color: #fff;
 }
 .navbar-inverse .brand {
-    color: #aaa;
+    color: #FFF;
+	opacity:0.7;
 }
 .navbar-inverse .navbar-text {
     color: #999;
@@ -3536,15 +3536,14 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 }
 .navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {
     color: #fff;
-	background-color:#1c2428;
-    background-color: rgba(0,0,0,0.5);
+	background-color:midnightblue;
 }
 .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {
     color: #fff;
-    background-color: rgba(0,0,0,0.5);
+    background-color: midnightblue;
 }
 .navbar-inverse .nav .active>a:hover {
-	background-color:rgba(96,125,139,0.5);
+	background-color: #333387;
 }
 .navbar-inverse .navbar-link {
     color: #999;
@@ -3558,15 +3557,16 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 }
 .navbar-inverse .nav li.dropdown.open>.dropdown-toggle, .navbar-inverse .nav li.dropdown.active>.dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active>.dropdown-toggle {
     color: #fff;
-    background-color: #111;
+    background-color: midnightblue;
+	background-color: rgba(0,0,0,0.3);
 }
 .navbar-inverse .nav li.dropdown>a:hover .caret, .navbar-inverse .nav li.dropdown>a:focus .caret {
     border-top-color: #fff;
     border-bottom-color: #fff;
 }
 .navbar-inverse .nav li.dropdown>.dropdown-toggle .caret {
-    border-top-color: #999;
-    border-bottom-color: #999;
+    border-top-color: #FFF;
+    border-bottom-color: #FFF;
 }
 .navbar-inverse .nav li.dropdown.open>.dropdown-toggle .caret, .navbar-inverse .nav li.dropdown.active>.dropdown-toggle .caret, .navbar-inverse .nav li.dropdown.open.active>.dropdown-toggle .caret {
     border-top-color: #fff;
@@ -4322,7 +4322,7 @@ to {
     box-shadow: inset 1px 0 0 rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
 }
 .progress-striped .bar {
-    background-color: #149bdf;
+    background-color: #6252c9;
     background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -4668,6 +4668,7 @@ to {
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+	box-sizing: border-box;
 }
 .hero-unit h1 {
     margin-bottom: 0;
