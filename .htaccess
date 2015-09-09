@@ -28,6 +28,9 @@
 	
 	## TODO: some hosts require the app root must be specified
 	# RewriteBase /
+	
+	#Mudar no servidor
+	#RewriteBase /~redhiper/tcc/
 
 	# Optionally disable trace request method for security
 	# RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
