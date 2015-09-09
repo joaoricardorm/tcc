@@ -1,6 +1,5 @@
 {
 	"name": "my/app",
     "require": {
-        "monolog/monolog": ">=1.0.0"
     }
 }
