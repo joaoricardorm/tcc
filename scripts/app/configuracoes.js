@@ -242,7 +242,8 @@ var page = {
 			
 			// Adiciona o atributo data-title nas tr da tabela para responsividade
 			$( "table.collection tbody td" ).each(function(index){
-				titulo = $( "table.collection thead th").eq(index).text();
+				total = $( "table.collection thead th").length;
+				titulo = $( "table.collection thead th").eq(index % total).text();
 				$(this).attr('data-title',titulo);
 			}); 
 	

@@ -741,7 +741,7 @@ dd {
 .table-responsive {
     overflow-x: auto;
     min-height: 0.01%}
-@media screen and (max-width:767px) {	
+@media screen and (max-width:767px) {		
     .table-responsive {
     width: 100%;
     margin-bottom: 15.75px;
@@ -3384,6 +3384,9 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     color: #fff;
     text-decoration: none;
     text-shadow: none;
+}
+@media screen and (max-width:1200px) {	
+	.navbar .nav>li>a { padding: 20px 10px 20px; }
 }
 .navbar .nav .dropdown-toggle .caret {
     margin-top: 8px;

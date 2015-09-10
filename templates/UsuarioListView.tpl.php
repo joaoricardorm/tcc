@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','Certificados FAROL | Usuários');
+	$this->assign('title','Usuários - Certificados FAROL');
 	$this->assign('nav','usuarios');
 
 	$this->display('_Header.tpl.php');
