@@ -13,7 +13,7 @@
 		<meta name="description" content="Certificados FAROL" />
 		<meta name="author" content="phreeze builder | phreeze.com" />
 
-		<!-- Le styles minificados pelo gulp -->
+		<!-- Le styles minificados pelo gulp cssmin -->
 		<link href="bootstrap/css/min/bootstrap-original-unminified.css" rel="stylesheet" />
 		
 		<link href="styles/style.css" rel="stylesheet" />
