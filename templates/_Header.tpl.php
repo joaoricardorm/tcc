@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-Frame-Options" content="deny">
 		
-		<!--forca IE a se comportar como edge-->
-		<meta http-equiv="X-UA-Compatible" content="IE=IE-8" />
+		<!--forca IE a se comportar como 8-->
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 		
 		<base href="<?php $this->eprint($this->ROOT_URL); ?>" />
 		<title><?php $this->eprint($this->title); ?></title>
@@ -13,8 +13,8 @@
 		<meta name="description" content="Certificados FAROL" />
 		<meta name="author" content="phreeze builder | phreeze.com" />
 
-		<!-- Le styles minificados pelo gulp -->
-		<link href="bootstrap/css/min/bootstrap-original-unminified.css" rel="stylesheet" />
+		<!-- Le styles -->
+		<link href="bootstrap/css/bootstrap-original-unminified.css" rel="stylesheet" />
 		
 		<link href="styles/style.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
@@ -49,6 +49,7 @@
 		<meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
 
+		
 		<!-- Le fav and touch icons 
 		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/apple-touch-icon-114-precomposed.png" />
@@ -57,7 +58,7 @@
 
 		<script type="text/javascript" src="scripts/libs/LAB.min.js"></script>
 		<script type="text/javascript">
-			$LAB.script("scripts/jquery-1.8.2.min.js").wait()
+			$LAB.script("scripts/jquery-1.8.2.js").wait()
 				.script("bootstrap/js/bootstrap.min.js")
 				.script("bootstrap/js/bootstrap-datepicker.js")
 				.script("bootstrap/js/bootstrap-timepicker.js")
@@ -82,6 +83,7 @@
 							<span class="icon-bar"></span>
 						</a>
 						<a class="brand" href="./">
+							<img src="images/logo.png">
 							Certificados FAROL
 						</a>
 						<div class="nav-collapse collapse">

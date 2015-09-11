@@ -35,8 +35,6 @@ class Configuracao extends ConfiguracaoDAO
 		// THESE ARE CUSTOM VALIDATORS
 		if (!$this->NomeInstituicao) $this->AddValidationError('NomeInstituicao','Nome da instituição é obrigatório');
 		if (!$this->Telefone) $this->AddValidationError('Telefone','Telefone é obrigatório');
-		if($this->Cnpj && !preg_match('/^[0-9+\/.-]{18}$/i', $this->Cnpj)) $this->AddValidationError('Cnpj','CNPJ inválido');
-		if($this->Telefone && !preg_match('/^(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})$/', $this->Telefone)) $this->AddValidationError('Telefone','Telefone inválido');
 		
 		return !$this->HasValidationErrors();
 	}

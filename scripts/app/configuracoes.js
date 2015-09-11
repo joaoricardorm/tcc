@@ -418,8 +418,8 @@ var page = {
 		});
 		
 		//mascara para telefone e cnpj
-		$("#telefone").mask("(99) 9999-9999",{placeholder:"_", autoclear: false });
-		$("#cnpj").mask("99.999.999/9999-99",{placeholder:"_", autoclear: false });
+		$("#telefone").mask("(99) 9999-9999",{placeholder:"_"});
+		$("#cnpj").mask("99.999.999/9999-99",{placeholder:"_"});
 
         if (showDeleteButton) {
             // attach click handlers to the delete buttons
