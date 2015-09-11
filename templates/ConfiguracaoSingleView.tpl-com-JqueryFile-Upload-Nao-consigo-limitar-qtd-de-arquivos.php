@@ -15,13 +15,6 @@
 	.script("scripts/app/configuracoes.js").wait(function(){
 		$(document).ready(function(){			
 			page.init();	
-	
-			
-			
-			
-			
-			
-			
 		});
 		
 		// hack for IE9 which may respond inconsistently with document.ready

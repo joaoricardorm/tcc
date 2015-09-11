@@ -1,8 +1,8 @@
+node_modules
 image/uploads/
 *.jpg
 *.png
 tcc-05-09-15.zip
 .htaccess
-.htaccess
-.htaccess
-.htaccess
+_machine_config.php
+_machine_config.php

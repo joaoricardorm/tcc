@@ -3239,8 +3239,8 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 .navbar .brand {
     display: block;
     float: left;
-    padding: 15px 20px 15px;
-    margin-left: -20px;
+    padding: 18px 15px 22px 50px;
+    margin-left: 0px;
     font-size: 20px;
     font-weight: 200;
     color: #fff;
