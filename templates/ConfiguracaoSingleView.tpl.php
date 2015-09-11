@@ -7,7 +7,7 @@
 
 <script type="text/javascript">	
 	$LAB
-	.script("scripts/jquery.maskedinput-1.1.4.pack.js").wait()
+	.script("scripts/jquery.maskedinput.min.js").wait()
 	.script("scripts/app/configuracoes.js").wait(function(){
 		$(document).ready(function(){			
 			page.init();	
@@ -15,8 +15,7 @@
 		
 		// hack for IE9 which may respond inconsistently with document.ready
 		setTimeout(function(){
-			if (!page.isInitialized) page.init();
-		},1000);
+			if (!page.isInitialized) page.init();		},1000);
 	});
 </script>
 
@@ -72,7 +71,7 @@
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('idConfiguracao')) %>">
 				<td data-title="vai"><%= _.escape(item.get('nomeInstituicao') || '') %></td>
-				<td><img class="thumbnail" src="images/uploads/logos/small/<%= _.escape(item.get('imagemLogo') || '') %>" /></td>
+				<td><% if (_.escape(item.get('imagemLogo')) != '') { %><img class="thumbnail" src="images/uploads/logos/small/<%= _.escape(item.get('imagemLogo') || '') %>" /><% } %></td>
 				<td><%= _.escape(item.get('cnpj') || '') %></td>
 				<td><%= _.escape(item.get('telefone') || '') %></td>
 			</tr>
@@ -150,7 +149,7 @@
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Editar Configuracão
+				<i class="icon-edit"></i> Editar Configurações
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
