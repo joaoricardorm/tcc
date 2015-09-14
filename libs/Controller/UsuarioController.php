@@ -30,7 +30,7 @@ class UsuarioController extends AppBaseController
 		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
 		// Requer permissão de acesso
 		$this->RequirePermission(Usuario::$P_ADMIN,
-				'Usuario.LoginForm',
+				'SecureExample.LoginForm',
 				'Autentique-se para acessar esta página',
 				'Você não possui permissão para acessar essa página ou sua sessão expirou');
     }

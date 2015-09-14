@@ -8,6 +8,7 @@
 <script type="text/javascript">	
 	$LAB
 	.script("scripts/jquery.maskedinput.min.js").wait()
+	.script("scripts/Simple-Ajax-Uploader/SimpleAjaxUploader.js").wait()
 	.script("scripts/app/configuracoes.js").wait(function(){
 		$(document).ready(function(){			
 			page.init();	
@@ -19,7 +20,7 @@
 	});
 </script>
 
-<link href="scripts/cropit/jquery.cropit.css" type="text/css" rel="stylesheet">
+<link href="scripts/Simple-Ajax-Uploader/styles.css" type="text/css" rel="stylesheet">
 	
 <style>
 .cropit-image-preview, .zoom {
@@ -31,17 +32,6 @@
 </style>
 
 <div class="container">
-
-
-<script src="scripts/Simple-Ajax-Uploader/SimpleAjaxUploader.js"></script>
-<link href="scripts/Simple-Ajax-Uploader/styles.css" type="text/css" rel="stylesheet">
-
-<script>
-
-</script>	
-
-
-	
 	
 <div class="container hero-unit">
 
@@ -51,7 +41,7 @@
 	</h1>
 
 	<p id="newButtonContainer" class="buttonContainer">
-			<button id="newConfiguracaoButton" class="btn btn-primary">Editar configurações</button>
+			<button id="newConfiguracaoButton" class="btn btn-primary"><i id="icone-acao-modal" class="icon-edit"></i> <span id="titulo-modal">Editar</span> configurações</button>
 	</p>
 
 	<!-- underscore template for the collection -->
@@ -149,7 +139,7 @@
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Editar Configurações
+				<i id="icone-acao-modal" class="icon-edit"></i> <span id="titulo-modal">Editar</span> Configurações
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>

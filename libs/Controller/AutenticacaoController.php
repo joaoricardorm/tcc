@@ -32,7 +32,7 @@ class AutenticacaoController extends AppBaseController
 	public function UserPage()
 	{
 		$this->RequirePermission(ExampleUser::$PERMISSION_USER, 
-				'Usuario.LoginForm', 
+				'SecureExample.LoginForm', 
 				'Login is required to access the secure user page',
 				'You do not have permission to access the secure user page');
 		
@@ -48,7 +48,7 @@ class AutenticacaoController extends AppBaseController
 	public function AdminPage()
 	{
 		$this->RequirePermission(ExampleUser::$PERMISSION_ADMIN, 
-				'Usuario.LoginForm', 
+				'SecureExample.LoginForm', 
 				'Login is required to access the admin page',
 				'Admin permission is required to access the admin page');
 		
@@ -86,7 +86,7 @@ class AutenticacaoController extends AppBaseController
 		else
 		{
 			// login failed
-			$this->Redirect('Usuario.LoginForm','Unknown username/password combination');
+			$this->Redirect('SecureExample.LoginForm','Unknown username/password combination');
 		}
 	}
 	

@@ -27,7 +27,7 @@
 
 <div class="new-and-search-container clearfix">
 	<span id="newButtonContainer" class="buttonContainer pull-left">
-			<button id="newUsuarioButton" class="btn btn-primary">Cadastrar Usuário</button>
+			<button id="newUsuarioButton" class="btn btn-primary"><i class="icon-plus"></i> Cadastrar Usuário</button>
 	</span>
 	<span class='input-append pull-right searchContainer'>
 					<input id='filter' type="text" placeholder="Buscar..." />
@@ -46,10 +46,7 @@
 				<th id="header_Nome">Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Email">E-mail<% if (page.orderBy == 'Email') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Login">Usuário<% if (page.orderBy == 'Login') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_TipoUsuario">Tipo de Usuário<% if (page.orderBy == 'TipoUsuario') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-<!-- UNCOMMENT TO SHOW ADDITIONAL COLUMNS
-				<th id="header_TipoUsuario">Tipo Usuario<% if (page.orderBy == 'TipoUsuario') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
--->
+				<th id="header_TipoUsuario">Tipo de usuário<% if (page.orderBy == 'TipoUsuario') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -76,31 +73,43 @@
 				<div id="nomeInputContainer" class="control-group">
 					<label class="control-label" for="nome">Nome</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="nome" placeholder="Nome" value="<%= _.escape(item.get('nome') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-user"></i></span>
+							<input type="text" class="input-xlarge" id="nome" placeholder="Nome" value="<%= _.escape(item.get('nome') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="emailInputContainer" class="control-group">
 					<label class="control-label" for="email">E-mail</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="email" placeholder="Email" value="<%= _.escape(item.get('email') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-envelope"></i></span>
+							<input type="text" class="input-xlarge" id="email" placeholder="Email" value="<%= _.escape(item.get('email') || '') %>">
+						</div>
 						<span class="help-inline"></span>
-					</div>
+					</div>				
 				</div>
 				<div id="loginInputContainer" class="control-group">
 					<label class="control-label" for="login">Usuário</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="login" placeholder="Login" value="<%= _.escape(item.get('login') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-smile"></i></span>
+							<input type="text" class="input-xlarge" id="login" placeholder="Usuário" value="<%= _.escape(item.get('login') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="tipoUsuarioInputContainer" class="control-group">
-					<label class="control-label" for="tipoUsuario">Tipo de Usuário</label>
+					<label class="control-label" for="tipoUsuario">Tipo de usuário</label>
 					<div class="controls inline-inputs">
-						<select id="tipoUsuario" class="t" name="tipoUsuario">
-							<option value="padrao" <%= _.escape(item.get('tipoUsuario')) == '0' ? 'selected' : '' %>>Padrão</option>
-							<option value="admin" <%= _.escape(item.get('tipoUsuario')) == '1' ? 'selected' : '' %>>Administrador</option>
-						</select>
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-lock"></i></span>
+							<select id="tipoUsuario" class="t" name="tipoUsuario">
+								<option value="padrao" <%= _.escape(item.get('tipoUsuario')) == '0' ? 'selected' : '' %>>Padrão</option>
+								<option value="admin" <%= _.escape(item.get('tipoUsuario')) == '1' ? 'selected' : '' %>>Administrador</option>
+							</select>
+						</div>
 						<span class="help-inline">
 						<span class="hide padrao">Só pode gerenciar a presença de participantes de um evento</span>
 						<span class="hide admin">Pode realizar qualquer ação no sistema</span></span>
@@ -115,14 +124,20 @@
 					<div id="senhaInputContainer" class="control-group">
 						<label class="control-label" for="senha">Senha</label>
 						<div class="controls inline-inputs">
-							<input type="password" autocomplete="off" class="input-xlarge" id="senha" placeholder="Senha">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-key"></i></span>
+								<input type="password" autocomplete="off" class="input-xlarge" id="senha" placeholder="Senha">
+							</div>
 							<span class="help-inline"></span>
 						</div>
 					</div>
 					<div id="confirmarSenhaInputContainer" class="control-group">
 						<label class="control-label" for="confirmarSenha">Confirmar Senha</label>
 						<div class="controls inline-inputs">
-							<input type="password" autocomplete="off" class="input-xlarge" id="confirmarSenha" name="confirmarSenha" placeholder="Confirmar senha">
+							<div class="input-prepend">
+								<span class="add-on"><i class="icon-key"></i></span>
+								<input type="password" autocomplete="off" class="input-xlarge" id="confirmarSenha" name="confirmarSenha" placeholder="Confirmar senha">
+							</div>
 							<span class="help-inline"></span>
 						</div>
 					</div>
@@ -152,7 +167,7 @@
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Editar Usuário
+				<i id="icone-acao-modal" class="icon-edit"></i> <span id="titulo-modal">Editar</span> Usuário
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>

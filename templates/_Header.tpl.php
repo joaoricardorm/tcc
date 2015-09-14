@@ -60,6 +60,7 @@
 			$LAB.script("scripts/jquery-1.8.2.min.js").wait()
 				.script("bootstrap/js/bootstrap.min.js")
 				.script("bootstrap/js/bootstrap-datepicker.js")
+				.script("bootstrap/js/bootstrap-datepicker.pt-BR.js").wait()
 				.script("bootstrap/js/bootstrap-timepicker.js")
 				.script("bootstrap/js/bootstrap-combobox.js")
 				.script("scripts/libs/underscore-min.js").wait()
@@ -69,26 +70,57 @@
 				.script("scripts/model.js").wait()
 				.script("scripts/view.js").wait()
 		</script>
-
+	
 	</head>
 
 	<body>
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
-					<div class="container">
-						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
+					<div class="container">	
+						<div class="pull-right">
+						
+						<a tabindex="3" class="pull-left btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
+							<span class="icon-reorder"></span>
+							<span class="hidden-xs">&nbsp;Menu</span>
 						</a>
-						<a class="brand" href="./">
+						
+						<?php  if ($this->CURRENT_USER) { ?>
+							<ul class="nav pull-right">
+								<li class="dropdown">
+								
+								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<?php $this->eprint($this->CURRENT_USER->Nome); ?> <i class="caret"></i></a>
+								
+								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<span class="hidden-xxs"><?php $this->eprint($this->CURRENT_USER->Nome); ?></span><i class="caret"></i></a>
+								
+								<ul class="dropdown-menu">
+									<li class="disabled"><a tabindex="-1" href="#"><?php $this->eprint($this->CURRENT_USER->Nome); ?></a></li>
+									<li><a tabindex="2" href="./logout">Sair</a></li>
+								</ul>
+								</li>
+							</ul>
+						<?php } else { ?>
+							<ul class="nav pull-right hidden-xlg">
+								<li><a tabindex="2" href="loginform"><i class="icon-lock"></i> &nbsp;Área restrita</a></li>
+							</ul>
+							
+							<a tabindex="2" href="./loginform" class="btn btn-navbar pull-right">
+									<span class="icon-lock"></span>
+									<span class="hidden-xs">Área restrita</span>
+							</a>	
+						<?php } ?>
+						
+						</div>
+						
+						
+						<a class="brand" href="./" tabindex="1" autofocus="autofocus">
 							Certificados FAROL
-						</a>
+						</a>					
+						
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a href="./configuracao"><i class="icon-cog"></i> Configurações</a></li>
 								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a href="./usuarios"><i class="icon-user"></i> Usuários</a></li>
-								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a href="./eventos">Eventos</a></li>
+								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a href="./eventos"><i class="icon-calendar"></i> Eventos</a></li>
 								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a href="./modelocertificados">ModeloCertificados</a></li>
 							</ul>
 							<ul class="nav">
@@ -104,22 +136,6 @@
 									</ul>
 								</li>
 							</ul>
-							<?php  if ($this->CURRENT_USER) { ?>
-							<ul class="nav pull-right">
-								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> <?php $this->eprint($this->CURRENT_USER->Nome); ?> <i class="caret"></i></a>
-								<ul class="dropdown-menu">
-									<li><a href="./logout">Sair</a></li>
-								</ul>
-								</li>
-							</ul>
-							<?php } else { ?>
-							<ul class="nav pull-right">
-								<li>
-									<a href="loginform"><i class="icon-lock"></i> &nbsp;Área restrita</a>
-								</li>
-							</ul>
-							<?php } ?>
 						</div><!--/.nav-collapse -->
 					</div>
 				</div>

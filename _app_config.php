@@ -78,7 +78,11 @@ GlobalConfig::$ROUTE_MAP = array(
 		
 	// example authentication routes
 	'GET:loginform' => array('route' => 'SecureExample.LoginForm'),
+	'GET:loginform/(:any)' => array('route' => 'SecureExample.LoginForm', 'params' => array('pagina' => 1)),
 	'POST:login' => array('route' => 'SecureExample.Login'),
+	
+	'POST:login/(:any)' => array('route' => 'SecureExample.Login', 'params' => array('pagina' => 'ABC')),
+	
 	'GET:secureuser' => array('route' => 'SecureExample.UserPage'),
 	'GET:secureadmin' => array('route' => 'SecureExample.AdminPage'),
 	'GET:logout' => array('route' => 'SecureExample.Logout'),

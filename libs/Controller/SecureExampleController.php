@@ -65,6 +65,8 @@ class SecureExampleController extends AppBaseController
 	{
 		$this->Assign("currentUser", $this->GetCurrentUser());
 		
+		$this->Assign('mandaurl', $this);
+		
 		$this->Assign('page','login');
 		$this->Render("SecureExample");
 	}	
@@ -82,7 +84,6 @@ class SecureExampleController extends AppBaseController
 			// login success
 			$this->SetCurrentUser($user);
 			
-			//Redireciona para pagina de usuario autenticado de acordo com a permissao
 			if($this->GetCurrentUser()->TipoUsuario == 1)
 				$pagina = 'SecureExample.AdminPage';
 			else	

@@ -30,11 +30,11 @@ class CertificadoController extends AppBaseController
 
 		// Requer permissão de acesso
 		$this->RequirePermission(Usuario::$P_ADMIN,
-				'Usuario.LoginForm',
+				'SecureExample.LoginForm',
 				'Autentique-se para acessar esta página',
 				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 		
-		//$this->RequerPermissao(Usuario::$PERMISSION_USER,'Usuario.LoginForm');
+		//$this->RequerPermissao(Usuario::$PERMISSION_USER,'SecureExample.LoginForm');
 	}
 
 	/**

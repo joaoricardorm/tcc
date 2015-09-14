@@ -37,7 +37,7 @@ var page = {
 
 		// let the page know when the dialog is open
 		$('#usuarioDetailDialog').on('show',function() {
-			page.dialogIsOpen = true;
+			page.dialogIsOpen = true;			
 		});
 
 		// when the model dialog is closed, let page know and reset the model view
@@ -67,8 +67,7 @@ var page = {
 		});
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
-		this.collectionView.on('rendered',function(){
-			
+		this.collectionView.on('rendered',function(){			
 			// Adiciona o atributo data-title nas tr da tabela para responsividade
 			$( "table.collection tbody td" ).each(function(index){
 				total = $( "table.collection thead th").length;
@@ -133,7 +132,7 @@ var page = {
 	 * @param object params passed through to collection.fetch
 	 * @param bool true to hide the loading animation
 	 */
-	fetchUsuarios: function(params, hideLoader) {
+	fetchUsuarios: function(params, hideLoader) {		
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
 
@@ -173,8 +172,7 @@ var page = {
 	 * show the dialog for editing a model
 	 * @param model
 	 */
-	showDetailDialog: function(m) {
-
+	showDetailDialog: function(m) {	
 		// show the modal dialog
 		$('#usuarioDetailDialog').modal({ backdrop: 'static', show: true });
 
@@ -185,9 +183,17 @@ var page = {
 		page.modelView.model = page.usuario;
 
 		if (page.usuario.id == null || page.usuario.id == '') {
+			
+			$('#titulo-modal').html('Cadastrar');
+			$('#icone-acao-modal').addClass('icon-plus-sign');
+			
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
+			
+			$('#titulo-modal').html('Editar');
+			$('#icone-acao-modal').removeClass('icon-plus-sign');
+			
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
@@ -196,9 +202,6 @@ var page = {
 				success: function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
-$('.modal .modal-footer .btn:first').focus();
-					
-					$('.modal .modal-footer .btn:first').focus();
 				},
 
 				error: function(m, r) {
@@ -208,7 +211,6 @@ $('.modal .modal-footer .btn:first').focus();
 
 			});
 		}
-
 	},
 
 	/**
@@ -217,13 +219,16 @@ $('.modal .modal-footer .btn:first').focus();
 	 */
 	renderModelView: function(showDeleteButton)	{
 		page.modelView.render();
+		setTimeout(function(){
+	$('.modal .modal-body input[type=text]').first().click().focus();
+}, 500);	
 
 		app.hideProgress('modelLoader');
 
 		// initialize any special controls
 		try {
 			$('.date-picker')
-				.datepicker()
+				.datepicker({ language: 'pt-BR' })
 				.on('changeDate', function(ev){
 					$('.date-picker').datepicker('hide');
 				});

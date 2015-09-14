@@ -27,10 +27,10 @@ class DefaultController extends AppBaseController
 		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
 		
 		// Requer permissão de acesso
-		$this->RequirePermission(Usuario::$P_ADMIN,
-				'Usuario.LoginForm',
-				'Autentique-se para acessar esta página',
-				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		//$this->RequirePermission(Usuario::$P_ADMIN,
+			//	'SecureExample.LoginForm',
+			//	'Autentique-se para acessar esta página',
+			//	'Você não possui permissão para acessar essa página ou sua sessão expirou');
 		
 	}
 

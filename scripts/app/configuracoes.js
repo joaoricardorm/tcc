@@ -369,7 +369,7 @@ var page = {
 
                     image_uploader();
 					
-					$('.modal .modal-footer .btn:first').focus();
+					
 
                 },
                 error: function(m, r) {
@@ -386,13 +386,16 @@ var page = {
      */
     renderModelView: function(showDeleteButton) {
         page.modelView.render();
+setTimeout(function(){
+	$('.modal .modal-body input[type=text]').first().click().focus();
+}, 500); 
 
         app.hideProgress('modelLoader');
 
         // initialize any special controls
         try {
             $('.date-picker')
-                    .datepicker()
+                    .datepicker({ language: 'pt-BR' })
                     .on('changeDate', function(ev) {
                         $('.date-picker').datepicker('hide');
                     });
@@ -402,7 +405,7 @@ var page = {
                 console.log('datepicker error: ' + error.message);
         }
 
-        $('.timepicker-default').timepicker({defaultTime: 'value'});
+        $('.timepicker-default').timepicker({defaultTime: 'value', language: 'pt-BR' })
 		
 		
 		//Habilita ou desabilita alteracao da imagem de logotipo

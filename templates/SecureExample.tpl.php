@@ -6,7 +6,8 @@
 ?>
 
 <div class="container">
-	
+
+<?php //echo '<pre>'; var_dump($this->mandaurl); ECHO '<PRE>'; ?>
 	<!-- #### this view/tempalate is used for multiple pages.  the controller sets the 'page' variable to display differnet content ####  -->
 	
 	<!--<div class="hero-unit">
@@ -36,12 +37,12 @@
 			<fieldset>
 			<legend>Entre com suas credenciais</legend>
 				<div>
-					<label>Usuário</label>
-					<input id="username" name="username" type="text" placeholder="Usuário"" />
+					<label>Usuário ou e-mail</label>
+					<input id="username" class="input-block-level" name="username" type="text" placeholder="Usuário"" />
 					</div>
 					<div class="control-group">
 					<label style="float:left;">Senha</label>
-					<input id="password" name="password" type="password" placeholder="Senha" />
+					<input id="password" class="input-block-level" name="password" type="password" placeholder="Senha" />
 				</div>
 				<div class="control-group">
 				<button type="submit" class="btn btn-primary">Entrar</button>

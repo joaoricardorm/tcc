@@ -72,8 +72,12 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 		
 		$result = false;
 		
+		require_once('verysimple/Phreeze/ObserveToBrowser.php');
+		
 		$criteria = new UsuarioCriteria();
-		$criteria->Login_Equals = $username;
+		
+		$filtro = new CriteriaFilter('Login,Email', $username);
+		$criteria->AddFilter($filtro);
 		
 		try {
 			

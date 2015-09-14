@@ -155,7 +155,8 @@ class EventoController extends AppBaseController
 
 			$evento->Nome = $this->SafeGetVal($json, 'nome');
 			$evento->Local = $this->SafeGetVal($json, 'local');
-			$evento->Data = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'data')));
+			//$evento->Data = date('Y-m-d H:i:s',strtotime($this->SafeGetVal($json, 'data')));
+			$evento->Data = $this->SafeGetVal($json, 'data');
 			$evento->Duracao = $this->SafeGetVal($json, 'duracao');
 
 			$evento->Validate();
@@ -163,7 +164,7 @@ class EventoController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{
@@ -211,7 +212,7 @@ class EventoController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{

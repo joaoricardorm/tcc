@@ -180,6 +180,8 @@ var page = {
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
+$('#titulo-modal').html('Editar');
+$('#icone-acao-modal').removeClass('icon-plus-sign');
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
@@ -213,7 +215,7 @@ $('.modal .modal-footer .btn:first').focus();
 		// initialize any special controls
 		try {
 			$('.date-picker')
-				.datepicker()
+				.datepicker({ language: 'pt-BR' })
 				.on('changeDate', function(ev){
 					$('.date-picker').datepicker('hide');
 				});

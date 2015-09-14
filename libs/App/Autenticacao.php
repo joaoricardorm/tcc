@@ -52,9 +52,9 @@ class Autenticacao extends AppBaseController implements IAuthenticatable
 		// TODO: add controller-wide bootstrap code
 		
 		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_ADMIN,'Usuario.LoginForm');
+		// $this->RequirePermission(ExampleUser::$PERMISSION_ADMIN,'SecureExample.LoginForm');
 		
-		//$this->RequerPermissao(Usuario::$PERMISSION_USER,'Usuario.LoginForm');
+		//$this->RequerPermissao(Usuario::$PERMISSION_USER,'SecureExample.LoginForm');
 	}
 	
 	/**
@@ -185,7 +185,7 @@ class Autenticacao extends AppBaseController implements IAuthenticatable
 		//$autenticacao = new Autenticacao($this->Phreezer);
         if (!Autenticacao::Login(RequestUtil::Get('username'), RequestUtil::Get('password'))) {
           //Se o login falhar
-		  $this->Redirect('Usuario.LoginForm', 'Usuário ou senha incorretos.');
+		  $this->Redirect('SecureExample.LoginForm', 'Usuário ou senha incorretos.');
         }
     }
 	

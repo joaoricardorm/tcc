@@ -19,6 +19,12 @@ gulp.task('minify-bootstrap', function(){
     .pipe(stripCssComments({all: true}))
     .pipe(cssmin())
     .pipe(gulp.dest('./bootstrap/css/min/'));
+	console.log('minificou!');
 });
 
-gulp.task('default', ['browser-sync', 'minify-bootstrap']);
+gulp.task('watch', ['minify-bootstrap'], function () { 
+    gulp.watch('./bootstrap/css/bootstrap-original-unminified.css', ['minify-bootstrap']);
+	console.log('modificou bootstrap');
+});
+
+gulp.task('default', ['browser-sync', 'minify-bootstrap', 'watch']);

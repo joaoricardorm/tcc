@@ -180,6 +180,8 @@ var page = {
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
+$('#titulo-modal').html('Editar');
+$('#icone-acao-modal').removeClass('icon-plus-sign');
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
@@ -188,7 +190,7 @@ var page = {
 				success: function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
-$('.modal .modal-footer .btn:first').focus();
+
 				},
 
 				error: function(m, r) {
@@ -207,13 +209,16 @@ $('.modal .modal-footer .btn:first').focus();
 	 */
 	renderModelView: function(showDeleteButton)	{
 		page.modelView.render();
+setTimeout(function(){
+	$('.modal .modal-body input[type=text]').first().click().focus();
+}, 500);
 
 		app.hideProgress('modelLoader');
 
 		// initialize any special controls
 		try {
 			$('.date-picker')
-				.datepicker()
+				.datepicker({ language: 'pt-BR' })
 				.on('changeDate', function(ev){
 					$('.date-picker').datepicker('hide');
 				});

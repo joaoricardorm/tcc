@@ -134,7 +134,7 @@
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>
-				<i class="icon-edit"></i> Editar ModeloCertificado
+				<i id="icone-acao-modal" class="icon-edit"></i> <span id="titulo-modal">Editar</span> ModeloCertificado
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
