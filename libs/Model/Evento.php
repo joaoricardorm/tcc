@@ -39,7 +39,8 @@ class Evento extends EventoDAO
 		//Reformata data para o banco
 		//$this->Data = implode("-",array_reverse(explode("/",$this->Data)));
 		
-		if (!$this->Nome) $this->AddValidationError('Nome','Nome do evento é obrigatório' . $this->Data);
+		if (!$this->Nome) $this->AddValidationError('Nome','Nome do evento é obrigatório');
+		if (!$this->Data) $this->AddValidationError('Data','A data do evento é obrigatória');
 		
 		return !$this->HasValidationErrors();
 

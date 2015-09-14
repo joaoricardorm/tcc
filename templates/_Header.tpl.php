@@ -77,20 +77,21 @@
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">	
-						<div class="pull-right">
-						
-						<a tabindex="3" class="pull-left btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
-							<span class="icon-reorder"></span>
-							<span class="hidden-xs">&nbsp;Menu</span>
+						<div class="pull-left">
+						<a tabindex="3" class="btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
+							<span class="icon-reorder sem-margin-right"></span>
+							<span class="hidden-xxs"> Menu</span>
 						</a>
+						</div>
+						
 						
 						<?php  if ($this->CURRENT_USER) { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
 								
-								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<?php $this->eprint($this->CURRENT_USER->Nome); ?>&nbsp;<i class="caret"></i></a>
+								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i><?php $this->eprint($this->CURRENT_USER->Nome); ?><i class="caret"></i></a>
 								
-								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<span class="hidden-xxs"><?php $this->eprint($this->CURRENT_USER->Nome); ?>&nbsp;</span> <i class="caret"></i></a>
+								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock sem-margin-right-xxs"></i><span class="hidden-xxs"><?php $this->eprint($this->CURRENT_USER->Nome); ?></span><i class="caret"></i></a>
 								
 								<ul class="dropdown-menu">
 									<li class="disabled escondido visible-xxs"><a tabindex="-1"><?php $this->eprint($this->CURRENT_USER->Nome); ?></a></li>
@@ -100,20 +101,17 @@
 							</ul>
 						<?php } else { ?>
 							<ul class="nav pull-right hidden-xlg">
-								<li><a tabindex="2" href="loginform"><i class="icon-lock"></i> &nbsp;Área restrita</a></li>
+								<li><a tabindex="2" href="loginform"><i class="icon-lock sem-margin-right-xxs"></i>Área restrita</a></li>
 							</ul>
 							
 							<a tabindex="2" href="./loginform" class="btn btn-navbar pull-right">
-									<span class="icon-lock"></span>
-									<span class="hidden-xs">Área restrita</span>
+									<span class="icon-lock sem-margin-right-xxs"></span><span class="hidden-xxs">Área restrita</span>
 							</a>	
-						<?php } ?>
-						
-						</div>
+						<?php } ?>	
 						
 						
 						<a class="brand" href="./" tabindex="1" autofocus="autofocus">
-							Certificados FAROL
+							<span>Certificados FAROL</span>
 						</a>					
 						
 						<div class="nav-collapse collapse">

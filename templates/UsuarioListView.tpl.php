@@ -38,9 +38,9 @@
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="usuarioCollectionTemplate">
 	
-	 <div class="table-responsive">
+	<div id="no-more-tables">
 	
-		<table class="collection table table-hover table-striped">
+		<table class="collection table table-hover table-striped responsive-table">
 		<thead>
 			<tr>
 				<th id="header_Nome">Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>

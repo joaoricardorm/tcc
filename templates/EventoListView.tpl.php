@@ -47,9 +47,9 @@
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="eventoCollectionTemplate">
 		
-		<div class="table-responsive">
+		<div id="no-more-tables">
 		
-		<table class="collection table table-hover table-striped">
+		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
 			<tr>
 				<th id="header_Nome">Nome do evento<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
@@ -129,8 +129,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deleteEventoButton" class="btn btn-primary"><i class="icon-tag icon-white"></i> Atividades</button>
-						&nbsp;&nbsp;&nbsp;
+						<button id="atividadesButton" class="btn btn-primary margin-right-bigger-sm"><i class="icon-tag icon-white"></i> Atividades</button>
 						<label class="checkbox inline"><input type="checkbox"> Este evento não possui outras atividades</label>
 					</div>
 				</div>
@@ -138,8 +137,9 @@
 					<label class="control-label"></label>
 					<div class="controls">
 				
-						<button id="deleteEventoButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-group icon-white"></i> Palestrantes</button>
-						<button id="deleteEventoButton" class="btn btn-primary block-xxs"><i class="icon-group icon-white"></i> Participantes</button>
+						<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
+						
+						<button id="participantesButton" class="btn btn-primary block-xxs"><i class="icon-group icon-white"></i> Participantes</button>
 					
 					</div>
 				</div>

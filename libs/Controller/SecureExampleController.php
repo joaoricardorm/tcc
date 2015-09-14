@@ -81,7 +81,7 @@ class SecureExampleController extends AppBaseController
 		
 		if ($user->Login(RequestUtil::Get('username'), RequestUtil::Get('password')))
 		{
-			// login success
+			// login success			
 			$this->SetCurrentUser($user);
 			
 			if($this->GetCurrentUser()->TipoUsuario == 1)

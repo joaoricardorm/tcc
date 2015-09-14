@@ -68,6 +68,13 @@ var page = {
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
 		this.collectionView.on('rendered',function(){
 
+			// Adiciona o atributo data-title nas tr da tabela para responsividade
+			$( "table.collection tbody td" ).each(function(index){
+				total = $( "table.collection thead th").length;
+				titulo = $( "table.collection thead th").eq(index % total).text();
+				$(this).attr('data-title',titulo);
+			}); 
+		
 			// attach click handler to the table rows for editing
 			$('table.collection tbody tr').click(function(e) {
 				e.preventDefault();

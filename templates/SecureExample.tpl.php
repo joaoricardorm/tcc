@@ -5,7 +5,7 @@
 	$this->display('_Header.tpl.php');
 ?>
 
-<div class="container">
+<div class="container frm-login">
 
 <?php //echo '<pre>'; var_dump($this->mandaurl); ECHO '<PRE>'; ?>
 	<!-- #### this view/tempalate is used for multiple pages.  the controller sets the 'page' variable to display differnet content ####  -->
@@ -25,7 +25,7 @@
 	<?php if ($this->page == 'login') { ?>
 	
 		<form class="well formlogin" method="post" action="login">	
-			<h1><i class="icon-user"></i> Autenticação necessária</h1>
+			<h1><i class="icon-user"></i> Área restrita</h1>
 			
 			<?php if ($this->feedback) { ?>
 				<div class="alert alert-error">
@@ -59,8 +59,8 @@
 		</div>
 	<?php } ?>
 
-</div> <!-- /container -->
-
-<?php
+	<?php
 	$this->display('_Footer.tpl.php');
-?>
+	?>
+	
+</div> <!-- /container -->

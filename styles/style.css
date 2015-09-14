@@ -18,7 +18,7 @@ a:hover { color:lightslateblue; }
 
 .container.hero-unit { padding-bottom:10px; }
 
-.hero-unit.small { padding:10px; margin-bottom:20px; }
+.hero-unit.small { padding:10px; }
 
 .nav-breadcrumb { margin-top:-10px; }
 
@@ -85,11 +85,15 @@ span.buttonContainer {
 
 .footer .muted { margin-bottom:0; }
 
-.navbar a {
+.navbar a, .navbar a.btn-navbar {
 	transition: all 70ms ease-in-out;
 	-webkit-transition: all 70ms ease-in-out;
 	-moz-transition: all 70ms ease-in-out;
 }
+
+[class^=icon-] { margin-right:5px; }
+.navbar-inverse .nav .caret { margin-left:5px; }
+.sem-margin-right { margin-right:0; }
 
 .navbar .brand { background:url(../images/logo.png) no-repeat 0 center;
 background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
@@ -202,7 +206,7 @@ input[type=password]
 }
 
 
-.formlogin {
+.frm-login {
 	max-width:500px;
 	margin-left:auto;
 	margin-right:auto;
@@ -222,7 +226,11 @@ h1, h2, h3 {
 	-webkit-transition:all 100ms ease-in-out;
 	-moz-transition:all 100ms ease-in-out;
 }
+@media screen and (max-width:980px){
+	.hero-unit.small { margin-bottom:20px; }
+}
 @media screen and (max-width:768px){
+	.navbar .brand { font-size:1.2em; }
 	.nav-breadcrumb { margin-top:0px; }
 	.hero-unit { padding:20px; }
 	table.collection tbody tr:first-child { border-top:1px solid #ddd; }
@@ -230,6 +238,18 @@ h1, h2, h3 {
 @media screen and (max-width:468px) {
 	.hero-unit.small, h1 { font-size:1em; padding:5px; }
 	.navbar .brand, .hero-unit { font-size:1em; }
+	.sem-margin-right-xxs { margin-right:0; }
+	.navbar .brand {
+		display: block;
+		box-sizing: border-box;
+		float: none;
+		background-position: center;
+		max-width: 100px;
+		height: 40px;
+		margin: 5px auto!important;
+		background-size: contain;
+	}
+	.navbar .brand span { visibility:hidden; }	
 	h1 { font-size:1.8em; margin-top:0; }
 	.searchContainer.pull-right  { float:none; clear:both; display:block; }
 }

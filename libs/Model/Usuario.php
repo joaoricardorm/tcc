@@ -72,7 +72,8 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 		
 		$result = false;
 		
-		require_once('verysimple/Phreeze/ObserveToBrowser.php');
+		//limpa o cache ao logar
+		$this->ClearCache();
 		
 		$criteria = new UsuarioCriteria();
 		

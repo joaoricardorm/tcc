@@ -777,6 +777,10 @@ dd {
 	width:100%;
 	overflow:auto;
 	overflow-y:hidden;
+	border-bottom: 2px solid darkorange;
+}
+#no-more-tables tr:first-child {
+	border-top: 2px solid darkorange;
 }	
 /* Force table to not be like tables anymore */
 #no-more-tables table,
@@ -806,6 +810,8 @@ padding-left: 50%;
 white-space: normal;
 text-align:left;
 }
+#no-more-tables tr { border-top:none; }
+#no-more-tables tr td:last-child { border-bottom:none; }
  
 #no-more-tables td:before {
 /* Now like a table header */
