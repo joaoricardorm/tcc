@@ -326,6 +326,10 @@ a:hover, a:focus {
 .container, .navbar-static-top .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
     width: 940px;
 }
+
+/* Grid do bootstrap 3 */
+
+
 .span12 {
     width: 940px;
 }
@@ -1494,7 +1498,7 @@ input.search-query {
     margin-bottom: 10px;
 }
 legend+.control-group {
-    margin-top: 20px;
+    margin-top: 15px;
     -webkit-margin-top-collapse: separate;
 }
 .form-horizontal .control-group {
@@ -4864,7 +4868,7 @@ input[type=range]:focus::-ms-fill-upper {
 @-ms-viewport {
     width: device-width;
 }
-.visible-xs, .visible-sm, .visible-md, .visible-lg {
+.visible-xs, .visible-sm, .visible-md, .visible-lg, .visible-xxs {
     display: none !important;
 }
 .visible-xs-block, .visible-xs-inline, .visible-xs-inline-block, .visible-sm-block, .visible-sm-inline, .visible-sm-inline-block, .visible-md-block, .visible-md-inline, .visible-md-inline-block, .visible-lg-block, .visible-lg-inline, .visible-lg-inline-block {

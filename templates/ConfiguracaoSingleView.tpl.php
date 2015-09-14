@@ -36,7 +36,7 @@
 <div class="container hero-unit">
 
 	<h1>
-		<i class="icon-cog"></i> Configurações
+		<i class="icon-cogs"></i> Configurações
 		<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 	</h1>
 
@@ -80,7 +80,11 @@
 				<div id="nomeInstituicaoInputContainer" class="control-group">
 					<label class="control-label" for="nomeInstituicao">Nome da instituição</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="nomeInstituicao" placeholder="Nome da instituição" value="<%= _.escape(item.get('nomeInstituicao') || '') %>">
+					
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-briefcase"></i></span>					
+							<input type="text" class="input-xlarge" id="nomeInstituicao" placeholder="Nome da instituição" value="<%= _.escape(item.get('nomeInstituicao') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>
@@ -88,7 +92,7 @@
 					<label class="control-label">Imagem de logotipo</label>
 					<div class="controls inline-inputs">
 					
-						<label id="lblAltImagem" for="ckbAltImagem">
+						<label id="lblAltImagem" for="ckbAltImagem" style="margin-bottom:0;">
 							<input type="checkbox" id="ckbAltImagem"> 
 							<button id="btnAltImagem" class="btn btn-primary"><i class="icon-picture"></i> Alterar imagem</button>
 						</label>
@@ -119,14 +123,20 @@
 				<div id="cnpjInputContainer" class="control-group">
 					<label class="control-label" for="cnpj">CNPJ</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="cnpj" placeholder="CNPJ" value="<%= _.escape(item.get('cnpj') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-briefcase"></i></span>
+							<input type="text" class="input-xlarge" id="cnpj" placeholder="CNPJ" value="<%= _.escape(item.get('cnpj') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="telefoneInputContainer" class="control-group">
 					<label class="control-label" for="telefone">Telefone</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="telefone" placeholder="Telefone" value="<%= _.escape(item.get('telefone') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-phone"></i></span>
+							<input type="text" class="input-xlarge" id="telefone" placeholder="Telefone" value="<%= _.escape(item.get('telefone') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>

@@ -88,12 +88,12 @@
 							<ul class="nav pull-right">
 								<li class="dropdown">
 								
-								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<?php $this->eprint($this->CURRENT_USER->Nome); ?> <i class="caret"></i></a>
+								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<?php $this->eprint($this->CURRENT_USER->Nome); ?>&nbsp;<i class="caret"></i></a>
 								
-								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<span class="hidden-xxs"><?php $this->eprint($this->CURRENT_USER->Nome); ?></span><i class="caret"></i></a>
+								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock"></i> &nbsp;<span class="hidden-xxs"><?php $this->eprint($this->CURRENT_USER->Nome); ?>&nbsp;</span> <i class="caret"></i></a>
 								
 								<ul class="dropdown-menu">
-									<li class="disabled"><a tabindex="-1" href="#"><?php $this->eprint($this->CURRENT_USER->Nome); ?></a></li>
+									<li class="disabled escondido visible-xxs"><a tabindex="-1"><?php $this->eprint($this->CURRENT_USER->Nome); ?></a></li>
 									<li><a tabindex="2" href="./logout">Sair</a></li>
 								</ul>
 								</li>

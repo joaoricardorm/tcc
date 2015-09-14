@@ -38,9 +38,16 @@ h1.titulo { margin-top:0; float:left; }
 	}	
 }
 
+/**INPUT LADO A LADO EM FORM**/
+.margin-right-bigger-sm { margin-right:15px; }
+@media screen and (max-width:767px){
+	.margin-right-bigger-sm { margin-right:0; }
+	.block-sm { display:block; margin:0 0 15px 0; }
+}
+
 .modal.fade.in { top:5%;}
 .modal .control-group:last-child { margin-bottom:0; }
-.modal .modal-body { max-height:none; }
+.modal .modal-body { max-height:none; padding-bottom:0; }
 .modal .modal-header .close {
     width: 30px;
     text-align: center;
@@ -222,6 +229,7 @@ h1, h2, h3 {
 }
 @media screen and (max-width:468px) {
 	.hero-unit.small, h1 { font-size:1em; padding:5px; }
+	.navbar .brand, .hero-unit { font-size:1em; }
 	h1 { font-size:1.8em; margin-top:0; }
 	.searchContainer.pull-right  { float:none; clear:both; display:block; }
 }

@@ -89,23 +89,29 @@
 				<div id="nomeInputContainer" class="control-group">
 					<label class="control-label" for="nome">Nome do evento</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="nome" placeholder="Nome do evento" value="<%= _.escape(item.get('nome') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-tag"></i></span>
+							<input type="text" class="input-xlarge" id="nome" placeholder="Nome do evento" value="<%= _.escape(item.get('nome') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="localInputContainer" class="control-group">
 					<label class="control-label" for="local">Local</label>
 					<div class="controls inline-inputs">			
-						<input type="text" class="input-xlarge" id="local" placeholder="Local" value="<%= _.escape(item.get('local') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-home"></i></span>
+							<input type="text" class="input-xlarge" id="local" placeholder="Local" value="<%= _.escape(item.get('local') || '') %>">
+						</div>
 						<span class="help-inline"></span>
 					</div>
 				</div>
 				<div id="dataInputContainer" class="control-group">
 					<label class="control-label" for="data">Data</label>
 					<div class="controls inline-inputs">
-						<div class="input-append" data-date-format="dd-mm-yyyy">
-							<input id="data" type="date" class="input-large" value="<%= _date(app.parseDate(item.get('data'))).format('YYYY-MM-DD') %>" />
+						<div class="input-prepend" data-date-format="dd-mm-yyyy">
 							<span class="add-on"><i class="icon-calendar"></i></span>
+							<input id="data" type="date" class="input-large" value="<%= _date(app.parseDate(item.get('data'))).format('YYYY-MM-DD') %>" />
 						</div>
 						<span class="help-inline"></span>
 					</div>
@@ -113,8 +119,28 @@
 				<div id="duracaoInputContainer" class="control-group">
 					<label class="control-label" for="duracao">Duração</label>
 					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="duracao" placeholder="Ex: 5 horas e 30 minutos" value="<%= _.escape(item.get('duracao') || '') %>">
+						<div class="input-prepend">
+							<span class="add-on"><i class="icon-time"></i></span>
+							<input type="text" class="input-xlarge" id="duracao" placeholder="Ex: 5 horas e 30 minutos" value="<%= _.escape(item.get('duracao') || '') %>">
+						</div>
 						<span class="help-inline"></span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"></label>
+					<div class="controls">
+						<button id="deleteEventoButton" class="btn btn-primary"><i class="icon-tag icon-white"></i> Atividades</button>
+						&nbsp;&nbsp;&nbsp;
+						<label class="checkbox inline"><input type="checkbox"> Este evento não possui outras atividades</label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"></label>
+					<div class="controls">
+				
+						<button id="deleteEventoButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-group icon-white"></i> Palestrantes</button>
+						<button id="deleteEventoButton" class="btn btn-primary block-xxs"><i class="icon-group icon-white"></i> Participantes</button>
+					
 					</div>
 				</div>
 			</fieldset>
