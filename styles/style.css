@@ -93,7 +93,7 @@ span.buttonContainer {
 
 [class^=icon-] { margin-right:5px; }
 .navbar-inverse .nav .caret { margin-left:5px; }
-.sem-margin-right { margin-right:0; }
+.sem-margin-right, .add-on [class^=icon-]  { margin-right:0; }
 
 .navbar .brand { background:url(../images/logo.png) no-repeat 0 center;
 background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }

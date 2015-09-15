@@ -15,7 +15,8 @@ require_once("Model/Usuario.php");
  */
 class SecureExampleController extends AppBaseController
 {
-
+	public $paginaLoginRedirect;
+	
 	/**
 	 * Override here for any controller-specific functionality
 	 */
@@ -23,6 +24,8 @@ class SecureExampleController extends AppBaseController
 	{
 		parent::Init();
 
+		$this->paginaLoginRedirect = $this->Context->Get('paginaLoginRedirect');
+		
 		// TODO: add controller-wide bootstrap code
 	}
 	
@@ -65,8 +68,6 @@ class SecureExampleController extends AppBaseController
 	{
 		$this->Assign("currentUser", $this->GetCurrentUser());
 		
-		$this->Assign('mandaurl', $this);
-		
 		$this->Assign('page','login');
 		$this->Render("SecureExample");
 	}	
@@ -84,10 +85,15 @@ class SecureExampleController extends AppBaseController
 			// login success			
 			$this->SetCurrentUser($user);
 			
-			if($this->GetCurrentUser()->TipoUsuario == 1)
+			//se existir uma pagina na url, senão manda para pagina padrao
+			if($this->paginaLoginRedirect)
+				$pagina = $this->paginaLoginRedirect;
+			elseif($this->GetCurrentUser()->TipoUsuario == 1)
 				$pagina = 'SecureExample.AdminPage';
 			else	
 				$pagina = 'SecureExample.UserPage';
+			
+			//$pagina = ;
 			
 			$this->Redirect($pagina);
 		}

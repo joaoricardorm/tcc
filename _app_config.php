@@ -100,7 +100,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:configuracoes' => array('route' => 'Configuracao.ListView'),
 	'GET:configuracao/(:num)' => array('route' => 'Configuracao.SingleView', 'params' => array('idConfiguracao' => 1)),
 	//single view da configuracao sem precisar do id
-	'GET:configuracao' => array('route' => 'Configuracao.SingleView', 'params' => array('idConfiguracao' => 1)),
+	'GET:configuracao' => array('route' => 'Configuracao.SingleView'),
 	'GET:api/configuracoes' => array('route' => 'Configuracao.Query'),
 	'POST:api/configuracao' => array('route' => 'Configuracao.Create'),
 	'GET:api/configuracao/(:num)' => array('route' => 'Configuracao.Read', 'params' => array('idConfiguracao' => 2)),
