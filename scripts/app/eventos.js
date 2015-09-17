@@ -44,10 +44,11 @@ var page = {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
 		});
-
+		
 		// save the model when the save button is clicked
-		$("#saveEventoButton").click(function(e) {
-			e.preventDefault();
+		$("#saveEventoButton").bind('click', function(e) {			
+			e.preventDefault();	
+			
 			page.updateModel();
 		});
 
@@ -106,7 +107,7 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchEventos({ page: 1 });
+		this.fetchEventos({ page: 1, orderBy: 'IdEvento', orderDesc: 'up' });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
@@ -172,8 +173,11 @@ var page = {
 	 * show the dialog for editing a model
 	 * @param model
 	 */
-	showDetailDialog: function(m) {
-
+	showDetailDialog: function(m) {		
+		//restaura funcao do botao salvar e cancelar
+		$('#saveEventoButton').confirmation('hide').confirmation('destroy');
+		$('#saveEventoButton, #cancelSaveEventoButton').removeClass('disabled');
+	
 		// show the modal dialog
 		$('#eventoDetailDialog').modal({ backdrop: 'static', show: true });
 
@@ -284,12 +288,40 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 		}, {
 			wait: true,
 			success: function(){
-				$('#eventoDetailDialog').modal('hide');
+				//$('#eventoDetailDialog').modal('hide');
 				setTimeout("app.appendAlert('Evento foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				// if the collection was initally new then we need to add it to the collection now
-				if (isNew) { page.eventos.add(page.evento) }
+				if (isNew) { 
+				
+					page.eventos.add(page.evento);
+
+
+					//Apresenta opção se é apenas uma palestra ou possui outras dentro do evento
+					$('#saveEventoButton').confirmation({
+						placement: 'top', // How to position the confirmation - top | bottom | left | right
+						trigger: 'manual', // How confirmation is triggered - click | hover | focus | manual
+						target : '_self', // Default target value if `data-target` attribute isn't present.
+						href   : '#', // Default href value if `data-href` attribute isn't present.
+						title: 'Esse evento possui outras atividades (palestras)? Não é possível alterar essa configuração depois', // Default title value if `data-title` attribute isn't present
+						btnOkLabel: 'Sim', // Default btnOkLabel value if `data-btnOkLabel` attribute isn't present.
+						btnCancelLabel: 'Não', // Default btnCancelLabel value if `data-btnCancelLabel` attribute isn't present.
+						btnCancelClass:  'btn-primary',
+						singleton: false, // Set true to allow only one confirmation to show at a time.
+						popout: false, // Set true to hide the confirmation when user clicks outside of it.
+						onConfirm: function(){ alert('sim!'); }, // Set event when click at confirm button
+						onCancel: function(){ alert('não!'); }	
+					}); // Set event when click at cancel button
+					
+					$('#saveEventoButton').confirmation('show');
+					
+					$('#saveEventoButton, #cancelSaveEventoButton').unbind('click').addClass('disabled');
+					
+				} else {
+					//Se não for novo evento ele esconde para somente atualizar
+					$('#eventoDetailDialog').modal('hide');
+				}
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated

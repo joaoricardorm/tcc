@@ -78,9 +78,9 @@
 				<div class="navbar-inner">
 					<div class="container">	
 						<div class="pull-left">
-						<a tabindex="3" class="btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
+						<a tabindex="1" class="btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
 							<span class="icon-reorder sem-margin-right"></span>
-							<span class="hidden-xxs"> Menu</span>
+							<span class="hidde-sxs"> Menu</span>
 						</a>
 						</div>
 						
@@ -116,14 +116,14 @@
 						
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a href="./configuracao"><i class="icon-cog"></i> Configurações</a></li>
-								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a href="./usuarios"><i class="icon-user"></i> Usuários</a></li>
-								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a href="./eventos"><i class="icon-calendar"></i> Eventos</a></li>
-								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a href="./modelocertificados">ModeloCertificados</a></li>
+								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a tabindex="1" href="./configuracao"><i class="icon-cog"></i> Configurações</a></li>
+								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a tabindex="1" href="./usuarios"><i class="icon-user"></i> Usuários</a></li>
+								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a tabindex="1" href="./eventos"><i class="icon-calendar"></i> Eventos</a></li>
+								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a tabindex="1" href="./modelocertificados">ModeloCertificados</a></li>
 							</ul>
 							<ul class="nav">
 								<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
+								<a tabindex="1" href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados">Certificados</a></li>
 										<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras">Palestras</a></li>

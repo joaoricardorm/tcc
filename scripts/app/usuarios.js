@@ -106,7 +106,7 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchUsuarios({ page: 1 });
+		this.fetchUsuarios({ page: 1, orderBy: 'IdUsuario', orderDesc: 'down' });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({

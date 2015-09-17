@@ -407,11 +407,19 @@ var page = {
 
         $('.timepicker-default').timepicker({defaultTime: 'value', language: 'pt-BR' })
 		
+		//acessibilidade para botao de upload
+		$('#uploadBtn').keypress(function(event){
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if(keycode == '13' || keycode == '32'){
+				$('input[name="uploadfile"]').click();
+			}
+		});
 		
 		//Habilita ou desabilita alteracao da imagem de logotipo
 		$('#UploadAltImagem, #ckbAltImagem').hide();
 		$('#btnAltImagem').toggle(function(e){
 			$('#UploadAltImagem').slideDown('fast');
+			
 			$('#ckbAltImagem').prop('checked', true);
 			$(this).html('<i class="icon-remove"></i> Cancelar alteração da imagem').removeClass('btn-primary');
 		},function(){

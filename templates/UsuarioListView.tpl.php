@@ -176,7 +176,7 @@
 			<div id="usuarioModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveUsuarioButton" class="btn btn-primary">Salvar</button>
+			<button id="saveUsuarioButton" class="btn btn-primary">Salvar e continuar</button>
 			<button class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>

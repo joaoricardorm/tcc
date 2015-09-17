@@ -1545,6 +1545,7 @@ ss.XhrUpload = {
             this._input = document.createElement( 'input' );
             this._input.type = 'file';
             this._input.name = this._opts.name;
+			this._input.id = this._opts.name;
 
             // Don't allow multiple file selection in Safari -- it has a nasty bug
             // http://stackoverflow.com/q/7231054/1091949

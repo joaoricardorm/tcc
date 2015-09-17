@@ -15,6 +15,7 @@ body {
 
 a { color:slateblue; }
 a:hover { color:lightslateblue; }
+a:active, a:visited { color:darkslateblue; }
 
 .container.hero-unit { padding-bottom:10px; }
 
@@ -58,6 +59,7 @@ h1.titulo { margin-top:0; float:left; }
     -moz-border-radius: 50%;
     border-radius: 50%;
 }
+.modal-footer .btn:last-child { margin-left:12px; }
 
 h1,h2,h3,h4,h5,h6{
 	color:#41416C;
@@ -92,6 +94,8 @@ span.buttonContainer {
 }
 
 [class^=icon-] { margin-right:5px; }
+[class^=icon-].icon-margin-left { margin-right:0; margin-left:5px; }
+
 .navbar-inverse .nav .caret { margin-left:5px; }
 .sem-margin-right, .add-on [class^=icon-]  { margin-right:0; }
 
@@ -162,7 +166,7 @@ table.collection.no-hover thead th:hover {
 .table-bordered th:first-child { box-shadow:none; }
 .alert {
 	clear:both;
-	font-size:1rem;
+	font-size:14px;
 }
 
 /* IE8 hack para exibir senha ao digitar */

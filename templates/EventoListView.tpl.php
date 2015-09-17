@@ -6,7 +6,10 @@
 ?>
 
 <script type="text/javascript">
-	$LAB.script("scripts/app/eventos.js").wait(function(){
+	$LAB
+	.script("bootstrap/js/bootstrap-confirmation.js")
+	.script("bootstrap/js/bootstrap-tooltip.js")
+	.script("scripts/app/eventos.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -55,7 +58,7 @@
 				<th id="header_Nome">Nome do evento<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Local">Local<% if (page.orderBy == 'Local') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Data">Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Duracao">Duracao<% if (page.orderBy == 'Duracao') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Duracao">Duração<% if (page.orderBy == 'Duracao') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -79,13 +82,6 @@
 	<script type="text/template" id="eventoModelTemplate">
 		<form class="form-horizontal" onsubmit="return false;">
 			<fieldset>
-				<div id="idEventoInputContainer" class="control-group">
-					<label class="control-label" for="idEvento">Id Evento</label>
-					<div class="controls inline-inputs">
-						<span class="input-xlarge uneditable-input" id="idEvento"><%= _.escape(item.get('idEvento') || '') %></span>
-						<span class="help-inline"></span>
-					</div>
-				</div>
 				<div id="nomeInputContainer" class="control-group">
 					<label class="control-label" for="nome">Nome do evento</label>
 					<div class="controls inline-inputs">
@@ -111,7 +107,7 @@
 					<div class="controls inline-inputs">
 						<div class="input-prepend" data-date-format="dd-mm-yyyy">
 							<span class="add-on"><i class="icon-calendar"></i></span>
-							<input id="data" type="date" class="input-large" value="<%= _date(app.parseDate(item.get('data'))).format('YYYY-MM-DD') %>" />
+							<input id="data" type="date" class="input-large" value="<% if(item.get('idEvento')){ %><%= _date(app.parseDate(item.get('data'))).format('YYYY-MM-DD') %><% } %>" />
 						</div>
 						<span class="help-inline"></span>
 					</div>
@@ -126,23 +122,19 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				<% if(item.get('idEvento')){ %>
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="atividadesButton" class="btn btn-primary margin-right-bigger-sm"><i class="icon-tag icon-white"></i> Atividades</button>
-						<label class="checkbox inline"><input type="checkbox"> Este evento não possui outras atividades</label>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label"></label>
-					<div class="controls">
+						<button id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tag icon-white"></i> Atividades</button>
 				
 						<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
 						
-						<button id="participantesButton" class="btn btn-primary block-xxs"><i class="icon-group icon-white"></i> Participantes</button>
+						<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
 					
 					</div>
 				</div>
+				<% } %>
 			</fieldset>
 		</form>
 
@@ -177,10 +169,28 @@
 			<div id="eventoModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveEventoButton" class="btn btn-primary">Salvar</button>
-			<button class="btn" data-dismiss="modal" >Cancelar</button>
+			<button id="saveEventoButton" class="btn btn-primary">Salvar e continuar<i class="icon-arrow-right icon-margin-left"></i></button><button id="cancelSaveEventoButton" class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>
+	
+	<!-- modal confirm -->
+	<div class="modal fade" id="eventoConfirmSaveDialog">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Modal title</h4>
+		  </div>
+		  <div class="modal-body">
+			<p>One fine body&hellip;</p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button>
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
 	<div id="collectionAlert"></div>
 	

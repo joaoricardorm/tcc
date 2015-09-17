@@ -1,0 +1,17 @@
+<script src="../scripts/jquery-1.8.2.min.js"></script>
+<script src="../bootstrap/js/bootstrap-tooltip.js"></script>
+<script src="../bootstrap/js/bootstrap-confirm.js"></script>
+
+<script>
+		$(document).ready(function(){
+		// save the model when the save button is clicked
+		$("#s").click(function(e) {
+			e.preventDefault();
+			
+			$('#s').confirmModal();
+			alert('t');
+		});
+		});
+</script>
+
+<input type="button" id="s">

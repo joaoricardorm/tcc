@@ -100,8 +100,7 @@
 						<!--upload-->
 						<div id="UploadAltImagem">
 							<div>
-							  <button id="uploadBtn" class="btn btn-primary">
-							  <i class="icon-picture"></i> Escolher arquivo</button><input id="nomeArquivo" value="Nenhum arquivo selecionado" type="button" disabled="disabled" class="btn text-small">
+							  <button id="uploadBtn" class="btn btn-primary"><i class="icon-picture"></i> Escolher arquivo</button><input id="nomeArquivo" value="Nenhum arquivo selecionado" type="button" disabled="disabled" class="btn text-small">
 							</div>
 							<div>
 							  <div id="progressOuter" class="progress progress-striped active" style="display:none;">

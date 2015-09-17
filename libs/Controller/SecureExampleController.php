@@ -20,7 +20,7 @@ class SecureExampleController extends AppBaseController
 	/**
 	 * Override here for any controller-specific functionality
 	 */
-	protected function Init()
+	protected function Init() 
 	{
 		parent::Init();
 
