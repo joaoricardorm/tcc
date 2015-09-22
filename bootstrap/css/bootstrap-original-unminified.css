@@ -809,6 +809,7 @@ position: relative;
 padding-left: 50%;
 white-space: normal;
 text-align:left;
+min-height:18px;
 }
 #no-more-tables tr { border-top:none; }
 #no-more-tables tr td:last-child { border-bottom:none; }

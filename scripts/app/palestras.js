@@ -5,18 +5,21 @@
 /**
  * application logic specific to the Palestra listing page
  */
+ 
 var page = {
-
+	
 	palestras: new model.PalestraCollection(),
 	collectionView: null,
 	palestra: null,
 	modelView: null,
 	isInitialized: false,
 	isInitializing: false,
-
+	
 	fetchParams: { filter: '', orderBy: '', orderDesc: '', page: 1 },
 	fetchInProgress: false,
 	dialogIsOpen: false,
+	
+	proprioEvento: 0,
 
 	/**
 	 *
@@ -67,6 +70,14 @@ var page = {
 		
 		// make the rows clickable ('rendered' is a custom event, not a standard backbone event)
 		this.collectionView.on('rendered',function(){
+			
+			// Adiciona o atributo data-title nas tr da tabela para responsividade
+			$( "table.collection tbody td" ).each(function(index){
+				total = $( "table.collection thead th").length;
+				titulo = $( "table.collection thead th").eq(index % total).text();
+				
+				$(this).attr('data-title',titulo); 
+			}); 
 
 			// attach click handler to the table rows for editing
 			$('table.collection tbody tr').click(function(e) {
@@ -99,7 +110,7 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchPalestras({ page: 1 });
+		this.fetchPalestras({ page: 1, orderBy: 'IdPalestra', orderDesc: 'up' });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
@@ -128,6 +139,12 @@ var page = {
 	fetchPalestras: function(params, hideLoader) {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
+		
+		//Filtra palestras pelo evento
+		idEvento = window.location.pathname.match(/evento\/([0-9]+)/);
+		if(idEvento){
+			page.fetchParams.evento = idEvento[1];
+		}
 
 		if (page.fetchInProgress) {
 			if (console) console.log('supressing fetch because it is already in progress');
@@ -142,10 +159,23 @@ var page = {
 			data: params,
 
 			success: function() {
-
 				if (page.palestras.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render
+					
+					//pega o atributo proprioEvento da atividade (se for próprio só terá um elemento)
+					if(page.palestras.length > 0){
+						page.proprioEvento = page.palestras.models[0].attributes.proprioEvento;
+						idProprioEvento = page.palestras.models[0].id;
+						
+						//ser for proprio evento faz a mágica de apagar elementos e já mostrar tela de edição
+						if(page.proprioEvento == 1){
+							$('.new-and-search-container, .remove-on-single').remove();
+							
+							var m = page.palestras.get(idProprioEvento);
+							page.showDetailDialog(m);
+						}
+					}
 				}
 
 				app.hideProgress('loader');
@@ -248,7 +278,11 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					dd.combobox();
 					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
 				}
-
+				
+				//Corrige posicao do dropdown
+				$('.dropdown-toggle').click(function (ele){
+					app.dropDownFixPosition($(this).parent(),$(this).parent().find('.dropdown-menu'));
+				});
 			},
 			error: function(collection,response,scope) {
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
@@ -274,6 +308,12 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					dd.combobox();
 					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
 				}
+				
+				//Corrige posicao do dropdown
+				$('.dropdown-toggle').click(function (ele){
+					app.dropDownFixPosition($(this).parent(),$(this).parent().find('.dropdown-menu'));
+				});
+				
 
 			},
 			error: function(collection,response,scope) {

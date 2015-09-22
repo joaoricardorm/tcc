@@ -126,8 +126,13 @@ GlobalConfig::$ROUTE_MAP = array(
 	'DELETE:api/modelocertificado/(:num)' => array('route' => 'ModeloCertificado.Delete', 'params' => array('idModeloCertificado' => 2)),
 		
 	// Palestra
+	// buscar atividades de um evento
+	'GET:evento/(:num)/atividades' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1)),
+	'GET:palestras/(:num)' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1)),
 	'GET:palestras' => array('route' => 'Palestra.ListView'),
 	'GET:palestra/(:num)' => array('route' => 'Palestra.SingleView', 'params' => array('idPalestra' => 1)),
+	//api para buscar atividades de um evento
+	'GET:api/evento/(:num)/atividades' => array('route' => 'Palestra.Query', 'params' => array('idEvento' => 2)),
 	'GET:api/palestras' => array('route' => 'Palestra.Query'),
 	'POST:api/palestra' => array('route' => 'Palestra.Create'),
 	'GET:api/palestra/(:num)' => array('route' => 'Palestra.Read', 'params' => array('idPalestra' => 2)),

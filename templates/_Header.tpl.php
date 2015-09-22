@@ -55,20 +55,23 @@
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72-precomposed.png" />
 		<link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon-57-precomposed.png" /> -->
 
+		
+		
 		<script type="text/javascript" src="scripts/libs/LAB.min.js"></script>
 		<script type="text/javascript">
-			$LAB.script("scripts/jquery-1.8.2.min.js").wait()
-				.script("bootstrap/js/bootstrap.min.js")
-				.script("bootstrap/js/bootstrap-datepicker.js")
-				.script("bootstrap/js/bootstrap-datepicker.pt-BR.js").wait()
-				.script("bootstrap/js/bootstrap-timepicker.js")
-				.script("bootstrap/js/bootstrap-combobox.js")
-				.script("scripts/libs/underscore-min.js").wait()
-				.script("scripts/libs/underscore.date.min.js")
-				.script("scripts/libs/backbone-min.js")
-				.script("scripts/app.js")
-				.script("scripts/model.js").wait()
-				.script("scripts/view.js").wait()
+			var base = '<?php $this->eprint($this->ROOT_URL); ?>';
+			$LAB.script(base+"scripts/jquery-1.8.2.min.js").wait()
+				.script(base+"bootstrap/js/bootstrap.min.js")
+				.script(base+"bootstrap/js/bootstrap-datepicker.js")
+				.script(base+"bootstrap/js/bootstrap-datepicker.pt-BR.js").wait()
+				.script(base+"bootstrap/js/bootstrap-timepicker.js")
+				.script(base+"bootstrap/js/bootstrap-combobox.js")
+				.script(base+"scripts/libs/underscore-min.js").wait()
+				.script(base+"scripts/libs/underscore.date.min.js")
+				.script(base+"scripts/libs/backbone-min.js")
+				.script(base+"scripts/app.js")
+				.script(base+"scripts/model.js").wait()
+				.script(base+"scripts/view.js").wait()
 		</script>
 	
 	</head>

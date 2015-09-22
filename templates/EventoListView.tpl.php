@@ -23,8 +23,8 @@
 
 <nav class="container hero-unit small">
 		<ol class="cd-multi-steps text-top">
-			<li class="current"><span>Evento</span></li> <!-- Classe "visited" -->
-			<li><span class="muted">Atividades</span></li>
+			<li class="current"><span>Eventos</span></li> <!-- Classe "visited" -->
+			<li class="remove-on-single"><span class="muted">Atividades</span></li>
 			<li><span class="muted">Palestrantes</span></li>
 			<li><span class="muted">Participantes</span></li>
 		</ol>
@@ -126,7 +126,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tag icon-white"></i> Atividades</button>
+						<a href="evento/<%= _.escape(item.get('idEvento')) %>/atividades" id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tags icon-white"></i> Atividades</a>
 				
 						<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
 						
@@ -169,28 +169,9 @@
 			<div id="eventoModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveEventoButton" class="btn btn-primary">Salvar e continuar<i class="icon-arrow-right icon-margin-left"></i></button><button id="cancelSaveEventoButton" class="btn" data-dismiss="modal" >Cancelar</button>
+			<button id="saveEventoButton" class="btn btn-primary margin-right-bigger-sm block-sm">Salvar e continuar<i class="icon-arrow-right icon-margin-left"></i></button><button id="cancelSaveEventoButton" class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>
-	
-	<!-- modal confirm -->
-	<div class="modal fade" id="eventoConfirmSaveDialog">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title">Modal title</h4>
-		  </div>
-		  <div class="modal-body">
-			<p>One fine body&hellip;</p>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Save changes</button>
-		  </div>
-		</div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
 
 	<div id="collectionAlert"></div>
 	

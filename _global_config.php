@@ -26,7 +26,7 @@
 class GlobalConfig
 {
 	/** @var versao do sistema */
-	public static $VERSAO = '0.1.0';
+	public static $VERSAO = '0.1.1';
 	
 	/** @var set to true to send debug info to the browser */
 	public static $DEBUG_MODE = false;

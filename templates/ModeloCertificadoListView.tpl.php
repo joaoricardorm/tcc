@@ -143,7 +143,7 @@
 			<div id="modeloCertificadoModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveCertificadoButton" class="btn btn-primary">Salvar</button>
+			<button id="saveModeloCertificadoButton" class="btn btn-primary">Salvar</button>
 			<button class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>

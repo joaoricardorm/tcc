@@ -16,7 +16,7 @@
 		
 		// hack for IE9 which may respond inconsistently with document.ready
 		setTimeout(function(){
-			if (!page.isInitialized) page.init();		},1000);
+			if (!page.isInitialized) page.init();	},1000);
 	});
 </script>
 

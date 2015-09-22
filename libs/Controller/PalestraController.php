@@ -15,7 +15,7 @@ require_once("Model/Palestra.php");
  * @version 1.0
  */
 class PalestraController extends AppBaseController
-{
+{	
 
 	/**
 	 * Override here for any controller-specific functionality
@@ -25,7 +25,7 @@ class PalestraController extends AppBaseController
 	protected function Init()
 	{
 		parent::Init();
-
+		
 		// TODO: add controller-wide bootstrap code
 		
 		// TODO: if authentiation is required for this entire controller, for example:
@@ -35,11 +35,29 @@ class PalestraController extends AppBaseController
 	/**
 	 * Displays a list view of Palestra objects
 	 */
-	public function ListView()
-	{
-		$this->Render();
-	}
 
+	public function ListView()
+	{			
+		//Dados do evento
+		$this->Assign('Evento',null);
+		
+		$pk = $this->GetRouter()->GetUrlParam('idEvento');
+		
+		if($pk){
+		
+			try {
+				
+				$evento = $this->Phreezer->Get('Evento',$pk);
+				$this->Assign('Evento',$evento);
+			} catch(Exception $ex){
+				throw new Exception("O evento #$pk n√£o existe");
+			}
+		
+		}
+	
+		$this->Render();
+	}	
+	
 	/**
 	 * API Method queries for Palestra records and render as JSON
 	 */
@@ -47,7 +65,15 @@ class PalestraController extends AppBaseController
 	{
 		try
 		{
+		
 			$criteria = new PalestraCriteria();
+			
+			//Filtra pelo evento caso ele exista na URL (e no arquivo js correspondente a esse controller)
+			$evento = RequestUtil::Get('evento');
+			if($evento) $criteria->AddFilter(
+				new CriteriaFilter('IdEvento', $evento)
+			);
+			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
@@ -81,14 +107,14 @@ class PalestraController extends AppBaseController
  			if ($output->orderBy) $criteria->SetOrder($output->orderBy, $output->orderDesc);
 
 			$page = RequestUtil::Get('page');
-
+			
 			if ($page != '')
 			{
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
-
-				$palestras = $this->Phreezer->Query('Palestra',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $palestras->ToObjectArray(true,$this->SimpleObjectParams());
+				
+				$palestras = $this->Phreezer->Query('PalestraReporter',$criteria)->GetDataPage($page, $pagesize);				
+				$output->rows = $palestras->ToObjectArray(true,$this->SimpleObjectParams());				
 				$output->totalResults = $palestras->TotalResults;
 				$output->totalPages = $palestras->TotalPages;
 				$output->pageSize = $palestras->PageSize;
@@ -97,14 +123,13 @@ class PalestraController extends AppBaseController
 			else
 			{
 				// return all results
-				$palestras = $this->Phreezer->Query('Palestra',$criteria);
+				$palestras = $this->Phreezer->Query('PalestraReporter',$criteria);
 				$output->rows = $palestras->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
 				$output->currentPage = 1;
 			}
-
 
 			$this->RenderJSON($output, $this->JSONPCallback());
 		}
@@ -165,7 +190,7 @@ class PalestraController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{
@@ -215,7 +240,7 @@ class PalestraController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{

@@ -1,0 +1,120 @@
+// Retorna palestra!!!!
+			
+		page.palestras.fetch({
+			data: {
+				evento: 86,
+				orderDesc: '',
+				orderBy: 'Nome',
+			},
+
+			success: function(eventos) {
+				console.log(eventos);
+			},
+
+			error: function(m, r) {
+				console.log('erro')
+			}
+
+		});
+		
+		
+		
+		
+		page.palestra = new model.PalestraModel();
+		
+		page.palestra.save({
+			'nome': 'NAO DEIXE A ZOEIRA ACABAR!',
+			'data': new Date('2012-05-12'),
+			'cargaHoraria': $('#meubotao').val(),
+			'proprioEvento': 1,
+			'idEvento': 69,
+			'idModeloCertificado': 1		
+		}, {
+			wait: true,
+			success: function(palestra){					
+				console.log('**************');
+				console.log(palestra);
+				console.log('**************');				
+		},
+			error: function(model,response,scope){
+				console.log('Deu pau');
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		///Para destroir todos as palestras de um tipo - CUIDADO APAGA TUDO!!!
+		
+		page.palestras.fetch({
+			data: {
+				orderDesc: '',
+				orderBy: 'Nome',
+			},
+
+			success: function(palestras) {
+				
+				palestras.each(function(pal){
+					
+					page.palestra = new model.PalestraModel();
+					page.palestra.id = pal.id;
+					
+					console.log('vai mata a '+pal.id);
+					
+					page.palestra.destroy();
+					
+					console.log('matou a =('+pal.id);
+				});
+				
+				//console.log(eventos.models);
+			},
+
+			error: function(m, r) {
+				console.log('erro');
+			},
+			
+			done: function(){
+				
+			}
+
+		});
+		
+		
+		
+		/// igual o anterior mas destroy todos os eventos
+			
+		page.eventos.fetch({
+			data: {
+				orderDesc: '',
+				orderBy: 'Nome',
+			},
+
+			success: function(eventos) {
+				
+				eventos.each(function(ev){
+					
+					page.evento = new model.EventoModel();
+					page.evento.id = ev.id;
+					
+					console.log('vai mata a '+ev.id);
+					
+					page.evento.destroy();
+					
+					console.log('matou a =('+ev.id);
+				});
+				
+			},
+
+			error: function(m, r) {
+				console.log('erro');
+			},
+			
+			done: function(){
+				
+			}
+
+		});

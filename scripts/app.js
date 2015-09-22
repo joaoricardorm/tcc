@@ -52,6 +52,17 @@ var app = {
 			$("#"+id).remove();
 		});
 	},
+	
+	/**
+	 * Reposiciona dropdown para ficar fora de modal e não dentro
+	 * @param object button
+	 * @param object dropdown
+	 */
+	dropDownFixPosition: function(button,dropdown){
+	  var dropDownTop = button.offset().top + button.outerHeight();
+		dropdown.css('top', dropDownTop + "px");
+		dropdown.css('left', button.offset().left + "px");
+	},
 
 	/**
 	 * show the progress bar

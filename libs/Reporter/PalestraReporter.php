@@ -20,7 +20,8 @@ class PalestraReporter extends Reporter
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
 	// 'CustomFieldExample' is an example that is not part of the `palestra` table
-	public $CustomFieldExample;
+	public $NomeEvento;
+	public $NomeModeloCertificado;
 
 	public $IdPalestra;
 	public $Nome;
@@ -41,7 +42,8 @@ class PalestraReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
+			`evento`.`nome` as NomeEvento
+			,`modelo_certificado`.`nome` as NomeModeloCertificado
 			,`palestra`.`id_palestra` as IdPalestra
 			,`palestra`.`nome` as Nome
 			,`palestra`.`data` as Data
@@ -49,7 +51,10 @@ class PalestraReporter extends Reporter
 			,`palestra`.`proprio_evento` as ProprioEvento
 			,`palestra`.`id_evento` as IdEvento
 			,`palestra`.`id_modelo_certificado` as IdModeloCertificado
-		from `palestra`";
+		from `palestra`
+		inner join evento on `evento`.`id_evento` = `palestra`.`id_evento`
+		inner join modelo_certificado on `modelo_certificado`.`id_modelo_certificado` = `palestra`.`id_modelo_certificado`
+		";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()

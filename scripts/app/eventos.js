@@ -8,8 +8,10 @@
 var page = {
 
 	eventos: new model.EventoCollection(),
+	palestras: new model.PalestraCollection(),
 	collectionView: null,
 	evento: null,
+	palestra: null,
 	modelView: null,
 	isInitialized: false,
 	isInitializing: false,
@@ -27,7 +29,7 @@ var page = {
 		page.isInitializing = true;
 
 		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
-
+		
 		// make the new button clickable
 		$("#newEventoButton").click(function(e) {
 			e.preventDefault();
@@ -73,7 +75,8 @@ var page = {
 			$( "table.collection tbody td" ).each(function(index){
 				total = $( "table.collection thead th").length;
 				titulo = $( "table.collection thead th").eq(index % total).text();
-				$(this).attr('data-title',titulo);
+				
+				$(this).attr('data-title',titulo); 
 			}); 
 		
 			// attach click handler to the table rows for editing
@@ -297,21 +300,44 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 				
 					page.eventos.add(page.evento);
 
-
 					//Apresenta opção se é apenas uma palestra ou possui outras dentro do evento
 					$('#saveEventoButton').confirmation({
 						placement: 'top', // How to position the confirmation - top | bottom | left | right
 						trigger: 'manual', // How confirmation is triggered - click | hover | focus | manual
 						target : '_self', // Default target value if `data-target` attribute isn't present.
-						href   : '#', // Default href value if `data-href` attribute isn't present.
+						href   : 'evento/'+page.evento.id+'/atividades/', // Default href value if `data-href` attribute isn't present.
 						title: 'Esse evento possui outras atividades (palestras)? Não é possível alterar essa configuração depois', // Default title value if `data-title` attribute isn't present
 						btnOkLabel: 'Sim', // Default btnOkLabel value if `data-btnOkLabel` attribute isn't present.
 						btnCancelLabel: 'Não', // Default btnCancelLabel value if `data-btnCancelLabel` attribute isn't present.
 						btnCancelClass:  'btn-primary',
 						singleton: false, // Set true to allow only one confirmation to show at a time.
 						popout: false, // Set true to hide the confirmation when user clicks outside of it.
-						onConfirm: function(){ alert('sim!'); }, // Set event when click at confirm button
-						onCancel: function(){ alert('não!'); }	
+						//onConfirm: function(){ alert('sim!'); }, // Set event when click at confirm button
+						onCancel: function(){
+							
+								//SALVA PALESTRA COM NOME DO EVENTO E JÁ MANDA PARA EDIÇÃO DELA
+							
+								page.palestra = new model.PalestraModel();
+		
+								page.palestra.save({
+									'nome': $('input#nome').val(),
+									'data':  $('input#data').val(),
+									'cargaHoraria': $('input#duracao').val(),
+									'proprioEvento': 1,
+									'idEvento': page.evento.id,
+									'idModeloCertificado': 1		
+								}, {
+									wait: true,
+									success: function(palestra){							
+										document.location.href = './evento/'+page.evento.id+'/atividades/';
+								},
+									error: function(model,response,scope){
+										console.log('Deu pau');
+								}
+							});
+							
+							
+						}	
 					}); // Set event when click at cancel button
 					
 					$('#saveEventoButton').confirmation('show');
@@ -364,7 +390,7 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 			wait: true,
 			success: function(){
 				$('#eventoDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Evento record was deleted','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('O evento foi excluido','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				if (model.reloadCollectionOnModelUpdate) {

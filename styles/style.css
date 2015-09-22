@@ -13,9 +13,13 @@ body {
 	font-family: "Lato",Arial,Helvetica, sans-serif;
 }
 
-a { color:slateblue; }
-a:hover { color:lightslateblue; }
-a:active, a:visited { color:darkslateblue; }
+a { color:lightslateblue; text-decoration:none; }
+a:active, a:visited { color:slateblue; }
+a:hover { color:crimson; }
+
+/* darkviolet  deeppink*/
+
+.btn { text-decoration:none; }
 
 .container.hero-unit { padding-bottom:10px; }
 
@@ -43,7 +47,8 @@ h1.titulo { margin-top:0; float:left; }
 .margin-right-bigger-sm { margin-right:15px; }
 @media screen and (max-width:767px){
 	.margin-right-bigger-sm { margin-right:0; }
-	.block-sm { display:block; margin:0 0 15px 0; }
+	.block-sm { display:block; margin:0 auto 15px auto; width:100%; box-sizing:border-box;}
+	.block-sm:last-child {margin-bottom:0;}
 }
 
 .modal.fade.in { top:5%;}
@@ -99,7 +104,7 @@ span.buttonContainer {
 .navbar-inverse .nav .caret { margin-left:5px; }
 .sem-margin-right, .add-on [class^=icon-]  { margin-right:0; }
 
-.navbar .brand { background:url(../images/logo.png) no-repeat 0 center;
+.navbar .brand { text-decoration:none; background:url(../images/logo.png) no-repeat 0 center;
 background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
 
 @media 
@@ -139,6 +144,9 @@ table.collection th:hover {
     cursor: pointer;
 	text-decoration:underline;
 	transition: opacity 250ms ease-in-out;
+}
+table.collection tr th [class^="icon"] {
+    font-size: 12px;
 }
 
 table.collection.no-hover thead th:hover {
@@ -269,7 +277,7 @@ input#filter { padding:8px; }
 }
 
 span.loader {
-	margin: 0px;
+	margin: 0 0 0 10px;
 	display: inline-block;
 	width: 150px;
 }
@@ -291,6 +299,11 @@ span.help-inline {
 /* fixes spacing glitch with combo-box followed by an empty inline help */
 span.help-inline:empty {
 	display: none;
+}
+
+/* fix da posição do menu no bootstrap */
+.dropdown-menu{
+    position:fixed;
 }
 
 

@@ -260,7 +260,9 @@ model.PalestraModel = Backbone.Model.extend({
 	cargaHoraria: '',
 	proprioEvento: '',
 	idEvento: '',
+	nomeEvento: '',
 	idModeloCertificado: '',
+	NomeModeloCertificado: '',
 	defaults: {
 		'idPalestra': null,
 		'nome': '',
