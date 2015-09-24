@@ -30,8 +30,14 @@
 
 <div class="container hero-unit">
 
+<?php if($this->Evento){ ?>
+	<p><a href="evento/<?php $this->eprint($this->Evento->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome)); ?>/">
+		<button class="btn btn-default block-sm"><i class="icon-arrow-left"></i>Outras informações do evento</button>
+	</a></p>
+<?php } ?>
+
 <h1>
-	<i class="icone-acao-modal icon-tags"></i> <span class="titulo-modal">Atividade<span class="remove-on-single">s</span> <?php if($this->Evento) $this->eprint(' do evento '.$this->Evento->Nome); ?></span>
+	<i class="icone-acao icon-tags"></i> <span class="titulo">Atividade<span class="remove-on-single">s</span> <?php if($this->Evento) $this->eprint(' do evento '.$this->Evento->Nome); ?></span>
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 </h1>
 
@@ -45,33 +51,41 @@
 	</span>
 </div>
 
-
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="palestraCollectionTemplate">
 		
+		<!-- verifica se é o proprio evento aqui -->
+		<% 
+		var proprioEvento = 0;
+			if(items.length > 0)
+				proprioEvento = items.models[0].attributes.proprioEvento;
+		%>
+		
+		<% if(proprioEvento == 1){ %>
+			<p>
+				<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
+				
+				<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
+			</p>
+		<% } %>
+		
 		<div id="no-more-tables">
-	
+		
 		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
 			<tr>
-				<th id="header_IdPalestra">id<% if (page.orderBy == 'IdPalestra') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Nome">Nome da atividade<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<% if(proprioEvento == 0){ %><th id="header_Nome">Nome da atividade<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th><% } %>
 				<th id="header_Data">Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_CargaHoraria">Carga Horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_ProprioEvento">Próprio Evento<% if (page.orderBy == 'ProprioEvento') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_NomeEvento">Evento<% if (page.orderBy == 'NomeEvento') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_IdModeloCertificado">Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('idPalestra')) %>">
-				<td><%= _.escape(item.get('idPalestra') || '') %></td>
-				<td><%= _.escape(item.get('nome') || '') %></td>
+				<% if(proprioEvento == 0){ %><td><%= _.escape(item.get('nome') || '') %></td><% } %>
 				<td><%if (item.get('data')) { %><%= _date(app.parseDate(item.get('data'))).format('DD/MM/YYYY') %><% } else { %>Sem data<% } %></td>
 				<td><%if (item.get('cargaHoraria')) { %><%= _date(app.parseDate(item.get('cargaHoraria'))).format('HH:mm') %> horas<% } else { %>Sem carga horária<% } %></td>
-				<td><%= _.escape(item.get('proprioEvento') || '') %></td>
-				<td><%= _.escape(item.get('nomeEvento') || '') %></td>
 				<td><%= _.escape(item.get('nomeModeloCertificado') || '') %></td>
 			</tr>
 		<% }); %>
@@ -137,7 +151,6 @@
 					<label class="control-label" for="idModeloCertificado">Modelo do certificado</label>
 					<div class="controls inline-inputs">
 						<select id="idModeloCertificado" name="idModeloCertificado">
-							<option value="1" selected="selected">Padrão</option>s
 						</select>
 						<span class="help-inline"></span>
 					</div>

@@ -234,7 +234,6 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 								
 								//se for proprio evento faz a magica
 								$('.show-on-single').hide();
-								console.log(page.proprioEvento);
 								if(page.proprioEvento == 1){
 									$('.remove-on-single').remove();
 									$('.show-on-single').show();
@@ -363,6 +362,7 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 							
 								page.palestra = new model.PalestraModel();
 		
+								//o modelo de certificado com id 1 não deve ser excluido do banco de dados!
 								page.palestra.save({
 									'nome': $('input#nome').val(),
 									'data':  $('input#data').val(),
@@ -373,8 +373,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 								}, {
 									wait: true,
 									success: function(palestra){							
-										console.log(palestra);
 										$('#saveEventoButton span').html('Redirecionando...');
+										window.event.returnValue = false;
 										document.location.href = './evento/'+page.evento.id+'/atividades/';
 								},
 									error: function(model,response,scope){

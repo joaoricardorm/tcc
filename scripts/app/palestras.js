@@ -211,11 +211,16 @@ var page = {
 		page.modelView.model = page.palestra;
 
 		if (page.palestra.id == null || page.palestra.id == '') {
+			
+			$('.titulo-modal').html('Cadastrar Atividade');
+			$('.icone-acao-modal').addClass('icon-plus-sign');
+			
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
-$('.titulo-modal').html('Editar');
-$('.icone-acao-modal').removeClass('icon-plus-sign');
+
+			$('.titulo-modal').html('Editar Atividade');
+			$('.icone-acao-modal').removeClass('icon-plus-sign');
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
@@ -300,10 +305,19 @@ $('.icone-acao-modal').removeClass('icon-plus-sign');
 				var dd = $('#idModeloCertificado');
 				dd.append('<option value=""></option>');
 				c.forEach(function(item,index) {
+					
+					
+					//HACK PARA SELECIONAR O PRIMEIRO ITEM DA LISTA CASO SEJA UM NOVO CADASTRO
+					if(page.palestra.get('idModeloCertificado')){
+						sel = page.palestra.get('idModeloCertificado') == item.get('idModeloCertificado');
+					} else {
+						sel = index == 0;
+					}					
+					
 					dd.append(app.getOptionHtml(
 						item.get('idModeloCertificado'),
 						item.get('nome'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.palestra.get('idModeloCertificado') == item.get('idModeloCertificado')
+						sel // HACK TAMBEM
 					));
 				});
 				
@@ -324,8 +338,8 @@ $('.icone-acao-modal').removeClass('icon-plus-sign');
 		if(page.proprioEvento == 1){
 			$('.hide-on-single').hide();
 			
-			$('.titulo-modal').html('Detalhes do evento ' + page.palestras.models[0].attributes.nomeEvento );
-			$('.icone-acao-modal').addClass('icon-plus-sign');
+			$('.titulo-modal, .titulo').html('Detalhes do evento ' + page.palestras.models[0].attributes.nomeEvento );
+			$('.icone-acao-modal, .icone-acao').addClass('icon-plus-sign');
 		}
 
 
