@@ -7,9 +7,9 @@
 
 <script type="text/javascript">
 	$LAB
-	.script("bootstrap/js/bootstrap-confirmation.js")
-	.script("bootstrap/js/bootstrap-tooltip.js")
-	.script("scripts/app/eventos.js").wait(function(){
+	.script(base+"bootstrap/js/bootstrap-confirmation.js")
+	.script(base+"bootstrap/js/bootstrap-tooltip.js")
+	.script(base+"scripts/app/eventos.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -80,6 +80,16 @@
 
 	<!-- underscore template for the model -->
 	<script type="text/template" id="eventoModelTemplate">
+	
+		<nav class="passos-evento">
+		<ol class="cd-multi-steps text-top">
+			<li class="current"><span>Evento</span></li> <!-- Classe "visited" -->
+			<li><% if(item.get('idEvento')){ %><a href="./evento/<%=item.get('idEvento')%>/atividades/"><span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a><% } else { %><span class="muted">Atividades/Detalhes</span><% } %></li>
+			<li><span class="muted">Palestrantes</span></li>
+			<li><span class="muted">Participantes</span></li>
+		</ol>
+		</nav>
+	
 		<form class="form-horizontal" onsubmit="return false;">
 			<fieldset>
 				<div id="nomeInputContainer" class="control-group">
@@ -126,12 +136,13 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<a href="evento/<%= _.escape(item.get('idEvento')) %>/atividades" id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tags icon-white"></i> Atividades</a>
-				
-						<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
+						<a href="evento/<%= _.escape(item.get('idEvento')) %>/atividades" id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tags icon-white"></i> <span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a>
 						
-						<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
-					
+						<span class="show-on-single">
+							<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
+							<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
+						</span>
+						
 					</div>
 				</div>
 				<% } %>
@@ -169,7 +180,7 @@
 			<div id="eventoModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveEventoButton" class="btn btn-primary margin-right-bigger-sm block-sm">Salvar e continuar<i class="icon-arrow-right icon-margin-left"></i></button><button id="cancelSaveEventoButton" class="btn" data-dismiss="modal" >Cancelar</button>
+			<button id="saveEventoButton" class="btn btn-primary block-sm"><span>Salvar e continuar</span><i class="icon-arrow-right icon-margin-left"></i></button><button id="cancelSaveEventoButton" class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>
 

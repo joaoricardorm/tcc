@@ -29,8 +29,8 @@ var page = {
 		if (page.isInitialized || page.isInitializing) return;
 		page.isInitializing = true;
 
-		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
-
+		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');		
+				
 		// make the new button clickable
 		$("#newPalestraButton").click(function(e) {
 			e.preventDefault();
@@ -163,17 +163,22 @@ var page = {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render
 					
-					//pega o atributo proprioEvento da atividade (se for próprio só terá um elemento)
-					if(page.palestras.length > 0){
+					//pega o atributo proprioEvento da atividade (se for proprio evento um elemento)
+					if(page.palestras.length > 0 && idEvento){
 						page.proprioEvento = page.palestras.models[0].attributes.proprioEvento;
 						idProprioEvento = page.palestras.models[0].id;
+												
+						//ser for proprio evento faz a magica de apagar elementos e ja mostrar tela de edicao
 						
-						//ser for proprio evento faz a mágica de apagar elementos e já mostrar tela de edição
+						$('.show-on-single').hide();
 						if(page.proprioEvento == 1){
 							$('.new-and-search-container, .remove-on-single').remove();
+							$('.show-on-single').show();
 							
-							var m = page.palestras.get(idProprioEvento);
-							page.showDetailDialog(m);
+							if(page.isInitializing){
+								var m = page.palestras.get(idProprioEvento);
+								page.showDetailDialog(m);
+							}
 						}
 					}
 				}
@@ -196,7 +201,6 @@ var page = {
 	 * @param model
 	 */
 	showDetailDialog: function(m) {
-
 		// show the modal dialog
 		$('#palestraDetailDialog').modal({ backdrop: 'static', show: true });
 
@@ -210,8 +214,8 @@ var page = {
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
-$('#titulo-modal').html('Editar');
-$('#icone-acao-modal').removeClass('icon-plus-sign');
+$('.titulo-modal').html('Editar');
+$('.icone-acao-modal').removeClass('icon-plus-sign');
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
@@ -220,7 +224,12 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 				success: function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
-
+					
+					$('.show-on-single').hide();		
+					if(page.proprioEvento == 1){
+						$('.remove-on-single').remove();
+						$('.show-on-single').show();
+					}
 				},
 
 				error: function(m, r) {
@@ -230,7 +239,6 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 			});
 		}
-
 	},
 
 	/**
@@ -261,33 +269,28 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 		// populate the dropdown options for idEvento
 		// TODO: load only the selected value, then fetch all options when the drop-down is clicked
-		var idEventoValues = new model.EventoCollection();
-		idEventoValues.fetch({
-			success: function(c){
-				var dd = $('#idEvento');
-				dd.append('<option value=""></option>');
-				c.forEach(function(item,index) {
-					dd.append(app.getOptionHtml(
-						item.get('idEvento'),
-						item.get('nome'), // TODO: change fieldname if the dropdown doesn't show the desired column
-						page.palestra.get('idEvento') == item.get('idEvento')
-					));
-				});
+		// var idEventoValues = new model.EventoCollection();
+		// idEventoValues.fetch({
+			// success: function(c){
+				// var dd = $('#idEvento');
+				// dd.append('<option value=""></option>');
+				// c.forEach(function(item,index) {
+					// dd.append(app.getOptionHtml(
+						// item.get('idEvento'),
+						// item.get('nome'), // TODO: change fieldname if the dropdown doesn't show the desired column
+						// page.palestra.get('idEvento') == item.get('idEvento')
+					// ));
+				// });
 				
-				if (!app.browserSucks()) {
-					dd.combobox();
-					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
-				}
-				
-				//Corrige posicao do dropdown
-				$('.dropdown-toggle').click(function (ele){
-					app.dropDownFixPosition($(this).parent(),$(this).parent().find('.dropdown-menu'));
-				});
-			},
-			error: function(collection,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-			}
-		});
+				// if (!app.browserSucks()) {
+					// dd.combobox();
+					// $('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
+				// }
+			// },
+			// error: function(collection,response,scope) {
+				// app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+			// }
+		// });
 
 		// populate the dropdown options for idModeloCertificado
 		// TODO: load only the selected value, then fetch all options when the drop-down is clicked
@@ -309,17 +312,21 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
 				}
 				
-				//Corrige posicao do dropdown
-				$('.dropdown-toggle').click(function (ele){
-					app.dropDownFixPosition($(this).parent(),$(this).parent().find('.dropdown-menu'));
-				});
-				
 
 			},
 			error: function(collection,response,scope) {
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 			}
 		});
+		
+
+		//ser for proprio evento faz a magica de apagar elementos e ja mostrar tela de edicao
+		if(page.proprioEvento == 1){
+			$('.hide-on-single').hide();
+			
+			$('.titulo-modal').html('Detalhes do evento ' + page.palestras.models[0].attributes.nomeEvento );
+			$('.icone-acao-modal').addClass('icon-plus-sign');
+		}
 
 
 		if (showDeleteButton) {
@@ -357,16 +364,21 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 		// if this is new then on success we need to add it to the collection
 		var isNew = page.palestra.isNew();
+		
+		//hack para nao cadastrar com cargar horaria igual a 00:00
+		var cargaHorariaVal = $('input#cargaHoraria').val();
+		if ($('input#cargaHoraria').val() == '00:00' || $('input#cargaHoraria').val() == '') {
+			cargaHorariaVal = '10:11:12';
+		}
 
 		app.showProgress('modelLoader');
 
 		page.palestra.save({
-
 			'nome': $('input#nome').val(),
 			'data': $('input#data').val(),
-			'cargaHoraria': $('input#cargaHoraria').val(),
+			'cargaHoraria': cargaHorariaVal,
 			'proprioEvento': $('input#proprioEvento').val(),
-			'idEvento': $('select#idEvento').val(),
+			'idEvento': $('#idEvento').val(),
 			'idModeloCertificado': $('select#idModeloCertificado').val()
 		}, {
 			wait: true,
@@ -374,14 +386,16 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 				$('#palestraDetailDialog').modal('hide');
 				setTimeout("app.appendAlert('Palestra foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
-
+				
 				// if the collection was initally new then we need to add it to the collection now
 				if (isNew) { page.palestras.add(page.palestra) }
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated
-					page.fetchPalestras(page.fetchParams,true);
-				}
+					page.fetchPalestras(page.fetchParams,true);	
+				}		
+			
+				$('table.collection tr#'+page.palestra.id).addClass('modificou-item');	
 		},
 			error: function(model,response,scope){
 

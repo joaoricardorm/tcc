@@ -49,8 +49,8 @@ class PalestraController extends AppBaseController
 				
 				$evento = $this->Phreezer->Get('Evento',$pk);
 				$this->Assign('Evento',$evento);
-			} catch(Exception $ex){
-				throw new Exception("O evento #$pk não existe");
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("O evento #$pk não existe");
 			}
 		
 		}

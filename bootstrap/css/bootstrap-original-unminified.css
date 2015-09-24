@@ -3911,8 +3911,8 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     clear: both;
 }
 .modal-footer .btn+.btn {
-    margin-bottom: 0;
     margin-left: 5px;
+	box-sizing: border-box;
 }
 .modal-footer .btn-group .btn+.btn {
     margin-left: -1px;

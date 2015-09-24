@@ -28,6 +28,14 @@ class Palestra extends PalestraDAO
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
 
+		if (!$this->Nome) $this->AddValidationError('Nome','Nome da atividade é obrigatório'.$this->CargaHoraria);
+		if (!$this->Data) $this->AddValidationError('Data','Data da atividade é obrigatória');
+		if (!$this->IdModeloCertificado) $this->AddValidationError('IdModeloCertificado','Modelo do certificado é obrigatório');
+		//caso nao tenha definido carga horária ao editar palestra. Só vale se houver IdPalestra, pois no caso o proprio evento ele deixa zerado
+		if ($this->CargaHoraria && preg_match('/10:11:12/',$this->CargaHoraria)) $this->AddValidationError('CargaHoraria','A carga horária é obrigatória');
+		
+		return !$this->HasValidationErrors();
+
 		return parent::Validate();
 	}
 

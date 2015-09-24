@@ -107,15 +107,6 @@ GlobalConfig::$ROUTE_MAP = array(
 	'PUT:api/configuracao/(:num)' => array('route' => 'Configuracao.Update', 'params' => array('idConfiguracao' => 2)),
 	'DELETE:api/configuracao/(:num)' => array('route' => 'Configuracao.Delete', 'params' => array('idConfiguracao' => 2)),
 		
-	// Evento
-	'GET:eventos' => array('route' => 'Evento.ListView'),
-	'GET:evento/(:num)' => array('route' => 'Evento.SingleView', 'params' => array('idEvento' => 1)),
-	'GET:api/eventos' => array('route' => 'Evento.Query'),
-	'POST:api/evento' => array('route' => 'Evento.Create'),
-	'GET:api/evento/(:num)' => array('route' => 'Evento.Read', 'params' => array('idEvento' => 2)),
-	'PUT:api/evento/(:num)' => array('route' => 'Evento.Update', 'params' => array('idEvento' => 2)),
-	'DELETE:api/evento/(:num)' => array('route' => 'Evento.Delete', 'params' => array('idEvento' => 2)),
-		
 	// ModeloCertificado
 	'GET:modelocertificados' => array('route' => 'ModeloCertificado.ListView'),
 	'GET:modelocertificado/(:num)' => array('route' => 'ModeloCertificado.SingleView', 'params' => array('idModeloCertificado' => 1)),
@@ -138,6 +129,16 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/palestra/(:num)' => array('route' => 'Palestra.Read', 'params' => array('idPalestra' => 2)),
 	'PUT:api/palestra/(:num)' => array('route' => 'Palestra.Update', 'params' => array('idPalestra' => 2)),
 	'DELETE:api/palestra/(:num)' => array('route' => 'Palestra.Delete', 'params' => array('idPalestra' => 2)),
+	
+	// Evento
+	'GET:evento/(:num)/(:any)' => array('route' => 'Evento.ListView', 'params' => array('idEvento' => 1)),
+	'GET:eventos' => array('route' => 'Evento.ListView'),
+	'GET:evento/(:num)' => array('route' => 'Evento.SingleView', 'params' => array('idEvento' => 1)),
+	'GET:api/eventos' => array('route' => 'Evento.Query'),
+	'POST:api/evento' => array('route' => 'Evento.Create'),
+	'GET:api/evento/(:num)' => array('route' => 'Evento.Read', 'params' => array('idEvento' => 2)),
+	'PUT:api/evento/(:num)' => array('route' => 'Evento.Update', 'params' => array('idEvento' => 2)),
+	'DELETE:api/evento/(:num)' => array('route' => 'Evento.Delete', 'params' => array('idEvento' => 2)),
 		
 	// PalestraPalestrante
 	'GET:palestrapalestrantes' => array('route' => 'PalestraPalestrante.ListView'),

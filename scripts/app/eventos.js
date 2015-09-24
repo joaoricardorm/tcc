@@ -19,6 +19,8 @@ var page = {
 	fetchParams: { filter: '', orderBy: '', orderDesc: '', page: 1 },
 	fetchInProgress: false,
 	dialogIsOpen: false,
+	
+	proprioEvento: 0,
 
 	/**
 	 *
@@ -50,6 +52,9 @@ var page = {
 		// save the model when the save button is clicked
 		$("#saveEventoButton").bind('click', function(e) {			
 			e.preventDefault();	
+			
+			$('#saveEventoButton span').html('Salvando...');
+			$('#cancelSaveEventoButton').removeData('dismiss');
 			
 			page.updateModel();
 		});
@@ -157,6 +162,14 @@ var page = {
 				if (page.eventos.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render
+					
+					//Abre evento atual se tive na url
+					idEvento = window.location.pathname.match(/evento\/([0-9]+)/);
+					if(idEvento){
+						var m = page.eventos.get(idEvento[1]);
+						page.showDetailDialog(m);
+					}
+					
 				}
 
 				app.hideProgress('loader');
@@ -201,9 +214,40 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 			// fetch the model from the server so we are not updating stale data
 			page.evento.fetch({
 
-				success: function() {
+				success: function(evento) {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
+					
+					
+					
+					// busca palestra do evento para ver se e ele proprio ou nao
+					page.palestras.fetch({
+						data: {
+							evento: evento.id
+						},
+
+						success: function(palestras) {	
+							if(palestras.length > 0){
+								page.proprioEvento = palestras.first().attributes.proprioEvento;								
+							}
+							
+								
+								//se for proprio evento faz a magica
+								$('.show-on-single').hide();
+								console.log(page.proprioEvento);
+								if(page.proprioEvento == 1){
+									$('.remove-on-single').remove();
+									$('.show-on-single').show();
+								}
+							
+							
+						},
+
+						error: function(m, r) {
+							console.log('Erro ao obter palestras');
+						}
+					});
+					
 
 				},
 
@@ -322,17 +366,19 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 								page.palestra.save({
 									'nome': $('input#nome').val(),
 									'data':  $('input#data').val(),
-									'cargaHoraria': $('input#duracao').val(),
+									'cargaHoraria': '00:00:00',
 									'proprioEvento': 1,
 									'idEvento': page.evento.id,
-									'idModeloCertificado': 1		
+									'idModeloCertificado': 1
 								}, {
 									wait: true,
 									success: function(palestra){							
+										console.log(palestra);
+										$('#saveEventoButton span').html('Redirecionando...');
 										document.location.href = './evento/'+page.evento.id+'/atividades/';
 								},
 									error: function(model,response,scope){
-										console.log('Deu pau');
+										console.log('Erro ao salvar palestra.');
 								}
 							});
 							
@@ -351,14 +397,21 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated
+					
+					$('#saveEventoButton span').html('Salvar e continuar');
+					
 					page.fetchEventos(page.fetchParams,true);
 				}
+				
+				$('table.collection tr#'+page.evento.id).addClass('modificou-item');	
 		},
 			error: function(model,response,scope){
 
 				app.hideProgress('modelLoader');
 
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+				
+				$('#saveEventoButton span').html('Salvar e continuar');
 
 				try {
 					var json = $.parseJSON(response.responseText);

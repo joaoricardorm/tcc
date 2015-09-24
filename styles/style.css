@@ -19,6 +19,11 @@ a:hover { color:crimson; }
 
 /* darkviolet  deeppink*/
 
+.modificou-item {
+	background:greenyellow!important;
+}
+
+a.btn.btn-default { color:#333; }
 .btn { text-decoration:none; }
 
 .container.hero-unit { padding-bottom:10px; }
@@ -28,6 +33,8 @@ a:hover { color:crimson; }
 .nav-breadcrumb { margin-top:-10px; }
 
 h1.titulo { margin-top:0; float:left; }
+
+.show-on-single { display:none; }
 
 .modal { 
 	width:90%; 
@@ -41,14 +48,6 @@ h1.titulo { margin-top:0; float:left; }
 		width:60%; 
 		margin-left:-30%;
 	}	
-}
-
-/**INPUT LADO A LADO EM FORM**/
-.margin-right-bigger-sm { margin-right:15px; }
-@media screen and (max-width:767px){
-	.margin-right-bigger-sm { margin-right:0; }
-	.block-sm { display:block; margin:0 auto 15px auto; width:100%; box-sizing:border-box;}
-	.block-sm:last-child {margin-bottom:0;}
 }
 
 .modal.fade.in { top:5%;}
@@ -65,6 +64,27 @@ h1.titulo { margin-top:0; float:left; }
     border-radius: 50%;
 }
 .modal-footer .btn:last-child { margin-left:12px; }
+
+/**INPUT LADO A LADO EM FORM**/
+.margin-right-bigger-sm { margin-right:15px; }
+@media screen and (max-width:767px){
+	.margin-right-bigger-sm { margin-right:0; }
+	.block-sm { display:block; margin:0 0 15px 0; width:100%; box-sizing:border-box;}
+	.modal-footer .btn.block-sm { margin-left:0; } 
+	.block-sm:last-child {margin-bottom:0; margin-left:0; }
+}
+
+nav.passos-evento {
+    margin-bottom: 20px;
+}
+
+/* fix da posição do menu no bootstrap */
+.modal .modal-body .dropdown-menu.dropdown-fixed {
+    position:fixed;
+	top:auto!important;
+	left:auto!important;
+	margin-top:31px;
+}
 
 h1,h2,h3,h4,h5,h6{
 	color:#41416C;
@@ -301,11 +321,6 @@ span.help-inline:empty {
 	display: none;
 }
 
-/* fix da posição do menu no bootstrap */
-.dropdown-menu{
-    position:fixed;
-}
-
 
 /* -------------------------------- 
 
@@ -321,6 +336,11 @@ Basic Style
   margin: 0em auto;
   /* background-color: #edeff0; */
   border-radius: .25em;
+}
+@media screen and (max-width:768px) {
+	.cd-breadcrumb, .cd-multi-steps {
+		width: 100%;
+    }
 }
 .cd-breadcrumb::after, .cd-multi-steps::after {
   clear: both;
@@ -349,6 +369,7 @@ Basic Style
 }
 .cd-breadcrumb li > *, .cd-multi-steps li > * {/* single step */
   display: inline-block;
+  line-height:normal;
   /* font-size: 1.4rem; */
   /* color: #2c3f4c; */
 }
@@ -601,7 +622,7 @@ Multi steps indicator
   }
 
   .cd-multi-steps.text-top li, .cd-multi-steps.text-bottom li {
-    width: 90px;
+    width: 140px;
     text-align: center;
   }
   .cd-multi-steps.text-top li::after, .cd-multi-steps.text-bottom li::after {
@@ -609,7 +630,7 @@ Multi steps indicator
     position: absolute;
     left: 50%;
     /* 40px is the <li> right margin value */
-    width: calc(100% + 40px);
+    width: calc(100% + 50px);
   }
   .cd-multi-steps.text-top li > *::before, .cd-multi-steps.text-bottom li > *::before {
     /* this is the spot indicator */

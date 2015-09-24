@@ -53,7 +53,7 @@ class EventoMap implements IDaoMap, IDaoMap2
 			self::$FM = Array();
 			self::$FM["IdEvento"] = new FieldMap("IdEvento","evento","id_evento",true,FM_TYPE_INT,11,null,true);
 			self::$FM["Nome"] = new FieldMap("Nome","evento","nome",false,FM_TYPE_VARCHAR,70,null,false);
-			self::$FM["Local"] = new FieldMap("Local","evento","local",false,FM_TYPE_VARCHAR,35,null,false);
+			self::$FM["Local"] = new FieldMap("Local","evento","local",false,FM_TYPE_VARCHAR,60,null,false);
 			self::$FM["Data"] = new FieldMap("Data","evento","data",false,FM_TYPE_DATE,null,null,false);
 			self::$FM["Duracao"] = new FieldMap("Duracao","evento","duracao",false,FM_TYPE_VARCHAR,20,null,false);
 		}

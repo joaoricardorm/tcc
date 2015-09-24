@@ -312,6 +312,8 @@ $('.modal .modal-footer .btn:first').focus();
 					// re-fetch and render the collection after the model has been updated
 					page.fetchCertificados(page.fetchParams,true);
 				}
+				
+				$('table.collection tr#'+page.certificado.id).addClass('modificou-item');	
 		},
 			error: function(model,response,scope){
 

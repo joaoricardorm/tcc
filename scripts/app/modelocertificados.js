@@ -289,6 +289,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					// re-fetch and render the collection after the model has been updated
 					page.fetchModeloCertificados(page.fetchParams,true);
 				}
+				
+				$('table.collection tr#'+page.modeloCertificado.id).addClass('modificou-item');	
 		},
 			error: function(model,response,scope){
 

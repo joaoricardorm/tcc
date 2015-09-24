@@ -52,17 +52,6 @@ var app = {
 			$("#"+id).remove();
 		});
 	},
-	
-	/**
-	 * Reposiciona dropdown para ficar fora de modal e n�o dentro
-	 * @param object button
-	 * @param object dropdown
-	 */
-	dropDownFixPosition: function(button,dropdown){
-	  var dropDownTop = button.offset().top + button.outerHeight();
-		dropdown.css('top', dropDownTop + "px");
-		dropdown.css('left', button.offset().left + "px");
-	},
 
 	/**
 	 * show the progress bar
@@ -91,6 +80,29 @@ var app = {
 	 */
 	escapeHtml: function(unsafe) {
 		return _.escape(unsafe);
+	},
+	
+	/**
+	 * remove _, espaço e deixa em minisculo a string para passar na url
+	 * @param string texto a ser convertido
+	 * @returns string tratada
+	 */
+	parseURL: function(str) {
+		str = str.replace(/^\s+|\s+$/g, ''); // trim
+		str = str.toLowerCase();
+
+		// remove accents, swap ñ for n, etc
+		var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+		var to   = "aaaaeeeeiiiioooouuuunc------";
+		for (var i=0, l=from.length ; i<l ; i++) {
+		str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+		}
+
+		str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+		.replace(/\s+/g, '-') // collapse whitespace and replace by -
+		.replace(/-+/g, '-'); // collapse dashes
+
+		return str;
 	},
 	
 	/**
@@ -142,6 +154,7 @@ var app = {
 			var timeParts = dateTime.length > 1 ? dateTime[1].split(':') : ['00','00','00'];
 			// pad the time with zeros if it wasn't provided
 			while (timeParts.length < 3) timeParts[timeParts.length] = '00';
+			
 			d = new Date(dateParts[0], dateParts[1]-1, dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
 		}
 		catch (error) {
@@ -156,7 +169,7 @@ var app = {
 		}
 				
 		return d;
-	},
+	},	
 
 	/**
 	 * Convenience method for creating an option

@@ -323,6 +323,9 @@ var page = {
 					// re-fetch and render the collection after the model has been updated
 					page.fetchUsuarios(page.fetchParams,true);
 				}
+				
+				$('table.collection tr#'+page.usuario.id).addClass('modificou-item');	
+				
 		},
 			error: function(model,response,scope){
 

@@ -366,6 +366,9 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					// re-fetch and render the collection after the model has been updated
 					page.fetchPalestraParticipantes(page.fetchParams,true);
 				}
+				
+				$('table.collection tr#'+page.palestraParticipante.id).addClass('modificou-item');	
+				
 		},
 			error: function(model,response,scope){
 
