@@ -14,8 +14,8 @@ body {
 }
 
 a { color:lightslateblue; text-decoration:none; }
-a:active, a:visited { color:slateblue; }
-a:hover { color:crimson; }
+a:active, a:visited { color:slateblue; text-decoration:none; }
+a:hover { color:crimson; text-decoration:none; }
 
 /* darkviolet  deeppink*/
 

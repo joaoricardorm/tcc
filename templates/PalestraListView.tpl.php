@@ -23,7 +23,13 @@
 		<ol class="cd-multi-steps text-top">
 			<li class="visited"><a href="eventos">Eventos</a></span></li> <!-- Classe "visited" -->
 			<li class="current"><span><span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes do evento</span></span></li>
-			<li><span class="muted">Palestrantes</span></li>
+			<li>
+			<span class="show-on-single">
+				<a class="btn btn-primary margin-right-bigger-sm block-sm"  href="atividade/<%=firstItem.idPalestra%>/<%=app.parseURL(firstItem.nome)%>/palestrantes/">
+					<i class="icon-microphone"></i>Palestrantes
+				</a>
+			</span>
+			<span class="muted">Palestrantes</span></li>
 			<li><span class="muted">Participantes</span></li>
 		</ol>
 </nav>		
@@ -56,14 +62,23 @@
 		
 		<!-- verifica se é o proprio evento aqui -->
 		<% 
-		var proprioEvento = 0;
-			if(items.length > 0)
-				proprioEvento = items.models[0].attributes.proprioEvento;
+			if(items.length > 0){
+				var firstItem = items.models[0].attributes;
+				
+				proprioEvento = firstItem.proprioEvento;
+			}
 		%>
 		
 		<% if(proprioEvento == 1){ %>
 			<p>
-				<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
+			
+				<?php if($this->Evento){ ?>
+				
+					<a class="btn btn-primary margin-right-bigger-sm block-sm"  href="atividade/<%=firstItem.idPalestra%>/<%=app.parseURL(firstItem.nome)%>/palestrantes/">
+						<i class="icon-microphone"></i>Palestrantes
+					</a>
+				
+				<?php } ?>
 				
 				<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
 			</p>
@@ -74,8 +89,10 @@
 		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
 			<tr>
-				<% if(proprioEvento == 0){ %><th id="header_Nome">Nome da atividade<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th><% } %>
-				<th id="header_Data">Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<% if(proprioEvento == 0){ %>
+					<th id="header_Nome">Nome da atividade<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+					<th id="header_Data">Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<% } %>
 				<th id="header_CargaHoraria">Carga Horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_IdModeloCertificado">Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
@@ -83,8 +100,10 @@
 		<tbody>
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('idPalestra')) %>">
-				<% if(proprioEvento == 0){ %><td><%= _.escape(item.get('nome') || '') %></td><% } %>
-				<td><%if (item.get('data')) { %><%= _date(app.parseDate(item.get('data'))).format('DD/MM/YYYY') %><% } else { %>Sem data<% } %></td>
+				<% if(proprioEvento == 0){ %>
+					<td><%= _.escape(item.get('nome') || '') %></td>
+					<td><%if (item.get('data')) { %><%= _date(app.parseDate(item.get('data'))).format('DD/MM/YYYY') %><% } else { %>Sem data<% } %></td>
+				<% } %>
 				<td><%if (item.get('cargaHoraria')) { %><%= _date(app.parseDate(item.get('cargaHoraria'))).format('HH:mm') %> horas<% } else { %>Sem carga horária<% } %></td>
 				<td><%= _.escape(item.get('nomeModeloCertificado') || '') %></td>
 			</tr>
@@ -104,12 +123,20 @@
 		<ol class="cd-multi-steps text-top">
 			<li class="visited">
 				<?php if($this->Evento){ ?>
-					<a href="evento/<?php $this->eprint($this->Evento->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome)); ?>/"><?php $this->eprint($this->Evento->Nome); ?></a></span>
+					<a href="evento/<?php $this->eprint($this->Evento->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome)); ?>/">
+						<i class="icon-tag"></i><?php $this->eprint($this->Evento->Nome); ?>
+					</a>
 				<?php } ?>
 			</li> <!-- Classe "visited" -->
-			<li class="current"><span><% if(item.get('proprioEvento') == 1){ %>Detalhes do evento<% } else { %>Atividade<% } %></span></li>
-			<li><span class="muted">Palestrantes</span></li>
-			<li><span class="muted">Participantes</span></li>
+			<li class="current"><span><i class="icon-tags"></i><% if(item.get('proprioEvento') == 1){ %>Detalhes do evento<% } else { %>Atividade<% } %></span></li>
+			<li>
+				<span>
+					<a href="atividade/<%=item.get('idPalestra')%>/<%=app.parseURL(item.get('nome'))%>/palestrantes/">
+						<i class="icon-microphone"></i>Palestrantes
+					</a>
+				</span>
+			</li>
+			<li><span class="muted"><i class="icon-group"></i>Participantes</span></li>
 		</ol>
 		</nav>
 	
@@ -160,7 +187,9 @@
 					<label class="control-label"></label>
 					<div class="controls">
 			
-						<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
+						<a class="btn btn-primary margin-right-bigger-sm block-sm" id="palestrantesButton" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/">
+							<i class="icon-microphone"></i>Palestrantes
+						</a>
 						
 						<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
 					

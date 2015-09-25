@@ -20,7 +20,6 @@ class PalestranteReporter extends Reporter
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
 	// 'CustomFieldExample' is an example that is not part of the `palestrante` table
-	public $CustomFieldExample;
 
 	public $IdPalestrante;
 	public $Nome;
@@ -39,19 +38,23 @@ class PalestranteReporter extends Reporter
 	*/
 	static function GetCustomQuery($criteria)
 	{
+		
 		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`palestrante`.`id_palestrante` as IdPalestrante
+			`palestrante`.`id_palestrante` as IdPalestrante
 			,`palestrante`.`nome` as Nome
 			,`palestrante`.`email` as Email
 			,`palestrante`.`cpf` as Cpf
 			,`palestrante`.`cargo` as Cargo
 			,`palestrante`.`imagem_assinatura` as ImagemAssinatura
-		from `palestrante`";
+		from `palestrante`
+		
+		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
+		
+		where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
-		$sql .= $criteria->GetWhere();
+		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();
 
 		return $sql;
@@ -72,7 +75,7 @@ class PalestranteReporter extends Reporter
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
-		$sql .= $criteria->GetWhere();
+		//$sql .= $criteria->GetWhere();
 
 		return $sql;
 	}

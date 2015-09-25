@@ -204,6 +204,10 @@ var page = {
 		page.modelView.model = page.evento;
 
 		if (page.evento.id == null || page.evento.id == '') {
+			
+			$('#titulo-modal').html('Cadastrar');
+			$('#icone-acao-modal').addClass('icon-plus-sign');
+			
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {

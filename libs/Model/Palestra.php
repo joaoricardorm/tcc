@@ -16,6 +16,22 @@ require_once("PalestraCriteria.php");
 class Palestra extends PalestraDAO
 {
 
+
+	/**
+	 * PARA OBTER OS PALESTRANTES COM INNER JOIN
+	 */
+	public function GetPalestrantesUsingReporter()
+	{
+		require_once 'Model/PalestraPalestranteCriteriaTeste.php';
+		
+		$criteria = new PalestraPalestranteCriteria();
+		$criteria->IdPalestra_Equals = $this->IdPalestra;
+		
+		// using ToObjectArray will tell phreeze that you want all of the records so no need to do a count query
+		return $this->_phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray();
+	}
+	
+	
 	/**
 	 * Override default validation
 	 * @see Phreezable::Validate()

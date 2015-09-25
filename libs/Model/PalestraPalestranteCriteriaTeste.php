@@ -2,10 +2,10 @@
 /** @package    Tcc::Model */
 
 /** import supporting libraries */
-require_once("DAO/PalestranteCriteriaDAO.php");
+require_once("DAO/PalestraPalestranteCriteriaDAO.php");
 
 /**
- * The PalestranteCriteria class extends PalestranteDAOCriteria and is used
+ * The PalestraPalestranteCriteria class extends PalestraPalestranteDAOCriteria and is used
  * to query the database for objects and collections
  * 
  * @inheritdocs
@@ -13,7 +13,7 @@ require_once("DAO/PalestranteCriteriaDAO.php");
  * @author ClassBuilder
  * @version 1.0
  */
-class PalestranteCriteria extends PalestranteCriteriaDAO
+class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 {
 	
 	public $IdPalestra_Equals;
@@ -30,7 +30,6 @@ class PalestranteCriteria extends PalestranteCriteriaDAO
 		throw new Exception("Unknown Property '$propname' specified.");
 	
 	}
-	
 	
 	/**
 	 * GetFieldFromProp returns the DB column for a given class property

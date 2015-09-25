@@ -26,6 +26,8 @@ class PalestraPalestranteReporter extends Reporter
 	public $IdPalestrante;
 	public $IdPalestra;
 	public $IdCertificado;
+	
+	public $NomePalestrante;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -37,17 +39,33 @@ class PalestraPalestranteReporter extends Reporter
 	*/
 	static function GetCustomQuery($criteria)
 	{
-		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`palestra_palestrante`.`id` as Id
-			,`palestra_palestrante`.`id_palestrante` as IdPalestrante
-			,`palestra_palestrante`.`id_palestra` as IdPalestra
-			,`palestra_palestrante`.`id_certificado` as IdCertificado
-		from `palestra_palestrante`";
+		/* SQL ANTIGA DO SELECT */
+		// $sql = "select
+			// 'custom value here...' as CustomFieldExample
+			// ,`palestra_palestrante`.`id` as Id
+			// ,`palestra_palestrante`.`id_palestrante` as IdPalestrante
+			// ,`palestra_palestrante`.`id_palestra` as IdPalestra
+			// ,`palestra_palestrante`.`id_certificado` as IdCertificado
+		// from `palestra_palestrante`";
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
-		$sql .= $criteria->GetWhere();
+		
+		
+		
+		
+		if (!$criteria->IdPalestra_Equals) throw new Exception('BookId_Equals is required');
+		
+		$sql = "select
+			`palestrante`.`id_palestrante` as IdPalestrante
+			,`palestrante`.`nome` as NomePalestrante
+		from `palestrante`
+		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
+		where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
+		
+		
+		
+		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();
 
 		return $sql;

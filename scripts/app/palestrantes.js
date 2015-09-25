@@ -128,6 +128,14 @@ var page = {
 	fetchPalestrantes: function(params, hideLoader) {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
+		
+		
+		//Filtra palestras pelo evento
+		idPalestra = window.location.pathname.match(/atividade\/([0-9]+)/);
+		if(idPalestra){
+			page.fetchParams.palestra = idPalestra[1];
+		}
+		
 
 		if (page.fetchInProgress) {
 			if (console) console.log('supressing fetch because it is already in progress');

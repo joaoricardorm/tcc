@@ -159,6 +159,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'DELETE:api/palestraparticipante/(:num)' => array('route' => 'PalestraParticipante.Delete', 'params' => array('id' => 2)),
 		
 	// Palestrante
+	'GET:atividade/(:num)/(:any)/palestrantes' => array('route' => 'Palestrante.ListView', 'params' => array('idPalestra' => 1)),
 	'GET:palestrantes' => array('route' => 'Palestrante.ListView'),
 	'GET:palestrante/(:num)' => array('route' => 'Palestrante.SingleView', 'params' => array('idPalestrante' => 1)),
 	'GET:api/palestrantes' => array('route' => 'Palestrante.Query'),

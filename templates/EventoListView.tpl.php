@@ -23,10 +23,10 @@
 
 <nav class="container hero-unit small">
 		<ol class="cd-multi-steps text-top">
-			<li class="current"><span>Eventos</span></li> <!-- Classe "visited" -->
-			<li class="remove-on-single"><span class="muted">Atividades</span></li>
-			<li><span class="muted">Palestrantes</span></li>
-			<li><span class="muted">Participantes</span></li>
+			<li class="current"><span><i class="icon-tag"></i>Eventos</span></li> <!-- Classe "visited" -->
+			<li class="remove-on-single"><span class="muted"><i class="icon-tags"></i>Atividades</span></li>
+			<li><span class="muted"><i class="icon-microphone"></i>Palestrantes</span></li>
+			<li><span class="muted"><i class="icon-group"></i>Participantes</span></li>
 		</ol>
 </nav>
 
@@ -49,8 +49,7 @@
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="eventoCollectionTemplate">
-		
-		<div id="no-more-tables">
+		<div ++="no-more-tables">
 		
 		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
@@ -83,10 +82,10 @@
 	
 		<nav class="passos-evento">
 		<ol class="cd-multi-steps text-top">
-			<li class="current"><span>Evento</span></li> <!-- Classe "visited" -->
-			<li><% if(item.get('idEvento')){ %><a href="./evento/<%=item.get('idEvento')%>/atividades/"><span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a><% } else { %><span class="muted">Atividades/Detalhes</span><% } %></li>
-			<li><span class="muted">Palestrantes</span></li>
-			<li><span class="muted">Participantes</span></li>
+			<li class="current"><span><i class="icon-tag"></i>Evento</span></li> <!-- Classe "visited" -->
+			<li><% if(item.get('idEvento')){ %><a href="./evento/<%=item.get('idEvento')%>/atividades/"><i class="icon-tags"></i><span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a><% } else { %><span class="muted">Atividades/Detalhes</span><% } %></li>
+			<li><span class="muted"><i class="icon-microphone"></i>Palestrantes</span></li>
+			<li><span class="muted"><i class="icon-group"></i>Participantes</span></li>
 		</ol>
 		</nav>
 	

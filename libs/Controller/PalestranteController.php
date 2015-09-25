@@ -36,7 +36,7 @@ class PalestranteController extends AppBaseController
 	 * Displays a list view of Palestrante objects
 	 */
 	public function ListView()
-	{
+	{				 
 		$this->Render();
 	}
 
@@ -49,6 +49,11 @@ class PalestranteController extends AppBaseController
 		{
 			$criteria = new PalestranteCriteria();
 			
+			
+			// FILTRA OS PALESTRANTES PELA PALESTRA
+			$criteria->IdPalestra_Equals = RequestUtil::Get('palestra');
+			
+		
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
@@ -86,8 +91,14 @@ class PalestranteController extends AppBaseController
 			{
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
-
-				$palestrantes = $this->Phreezer->Query('Palestrante',$criteria)->GetDataPage($page, $pagesize);
+				
+						// book with id of 3 has 3 authors assigned, this will run one query
+				 //$palestra = $this->Phreezer->Get('Palestra',85);
+				
+				// LOOK AT THE SOURCE OF Book->GetAuthorsUsingReporter TO SEE HOW A CUSTOM REPORTER IS USED
+				// $palestrantes = $palestra->GetPalestrantesUsingReporter();
+				
+				$palestrantes = $this->Phreezer->Query('PalestranteReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $palestrantes->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $palestrantes->TotalResults;
 				$output->totalPages = $palestrantes->TotalPages;
@@ -97,7 +108,7 @@ class PalestranteController extends AppBaseController
 			else
 			{
 				// return all results
-				$palestrantes = $this->Phreezer->Query('Palestrante',$criteria);
+				$palestrantes = $this->Phreezer->Query('PalestranteReporter',$criteria);
 				$output->rows = $palestrantes->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
@@ -164,7 +175,7 @@ class PalestranteController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{
@@ -213,7 +224,7 @@ class PalestranteController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{

@@ -6,7 +6,7 @@
 ?>
 
 <script type="text/javascript">
-	$LAB.script("scripts/app/palestrantes.js").wait(function(){
+	$LAB.script(base+"scripts/app/palestrantes.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -143,7 +143,7 @@
 			<div id="palestranteModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveCertificadoButton" class="btn btn-primary">Salvar</button>
+			<button id="savePalestranteButton" class="btn btn-primary">Salvar</button>
 			<button class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>
