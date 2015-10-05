@@ -332,8 +332,7 @@ var page = {
 				
 				
 				//JÁ INSERE A PALESTRA TEMPORÁRIA PARA QUE A SELEÇÃO DO PALESTRANTE FUNCIONE
-				
-				if(page.palestra.isNew){
+				if(page.palestra.isNew()){
 					page.palestra.save({
 						'nome': '.',
 						'data': '',
@@ -347,7 +346,7 @@ var page = {
 							console.log('Inseriu a palestra temporária');
 							
 							// if the collection was initally new then we need to add it to the collection now
-							if (page.palestra.isNew) { page.palestras.add(page.palestra) }
+							if (page.palestra.isNew()) { page.palestras.add(page.palestra) }
 							
 							//REMOVE A PALESTRA TEMPORÁRIA AO CLICAR EM CANCELAR
 							$("#cancelarSavePalestraButton").click(function(e) {
