@@ -352,14 +352,17 @@ var page = {
 							//REMOVE A PALESTRA TEMPORÁRIA AO CLICAR EM CANCELAR
 							$("#cancelarSavePalestraButton").click(function(e) {
 								e.preventDefault();
-								page.deleteModel();
-								console.log('Removeu a palestra temporária');
 								
-								if (model.reloadCollectionOnModelUpdate) {
-									// re-fetch and render the collection after the model has been updated
-									page.fetchPalestras(page.fetchParams,true);	
-								}	
-								
+								//se o nome for .
+								if(page.palestra.get('nome') == '.'){
+									page.deleteModel();
+									console.log('Removeu a palestra temporária');
+									
+									if (model.reloadCollectionOnModelUpdate) {
+										// re-fetch and render the collection after the model has been updated
+										page.fetchPalestras(page.fetchParams,true);	
+									}	
+								}
 							});
 							
 						},
