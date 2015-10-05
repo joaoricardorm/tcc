@@ -327,7 +327,42 @@ var page = {
 					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
 				}
 				
-
+				
+				
+				
+				
+				//JÁ INSERE A PALESTRA TEMPORÁRIA PARA QUE A SELEÇÃO DO PALESTRANTE FUNCIONE
+				
+				if(page.palestra.isNew){
+					page.palestra.save({
+						'nome': '.',
+						'data': '',
+						'cargaHoraria': '00:00',
+						'proprioEvento': $('input#proprioEvento').val(),
+						'idEvento': $('#idEvento').val(),
+						'idModeloCertificado': $('select#idModeloCertificado').val()
+					}, {
+						wait: true,
+						success: function(){
+							console.log('Inseriu a palestra temporária');
+							
+							// if the collection was initally new then we need to add it to the collection now
+							if (page.palestra.isNew) { page.palestras.add(page.palestra) }
+						},
+						error: function(model,response,scope){
+							console.log('Erro ao inserir palestra temporária');
+							console.log(response);
+						}
+					});
+				}
+		
+				
+				
+				
+				
+				
+				
+				
 			},
 			error: function(collection,response,scope) {
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
@@ -352,10 +387,11 @@ var page = {
 				//dd.append('<option value=""></option>');
 							
 				
-				//REMOVE O PALESTRANTE QUANDO DESMARCA NA LISTA (CUSTOM REPORTER, para selecionar os palestrantes pela palestra [ver em PalestraPalestranteReporter.php])	
-					var palestranteCollection = new model.PalestraPalestranteCollection();	
+				//SELECIONA PALESTRANTE QUE JÁ ESTÃO CADASTRADOS NA PALESTRA	
+					
+				var palestranteCollection = new model.PalestraPalestranteCollection();	
 				
-				p.forEach(function(item,indexPalestrante) {
+				p.forEach(function(item,indexPalestrante){
 					
 					//HACK PARA SELECIONAR O PRIMEIRO ITEM DA LISTA CASO SEJA UM NOVO CADASTRO
 					// if(page.palestra.get('idModeloCertificado')){
@@ -364,7 +400,6 @@ var page = {
 						// sel = index == 0;
 					// }				
 					
-					
 					palestranteCollection.fetch({
 						data : {
 							'idPalestra': page.palestra.get('idPalestra'),
@@ -372,6 +407,9 @@ var page = {
 						},
 						success: function(c, response) {
 							
+							//Se for palestra nova ele nao seleciona
+							if(!page.palestra.isNew){
+								
 								c.forEach(function(pal,index) {
 								
 										$('.multiselect-loading').show();
@@ -394,13 +432,18 @@ var page = {
 								//REMOVE ICONE DE CARREGANDO
 								if(indexPalestrante == (p.length-1))
 									$('.multiselect-loading').remove();
+						
+							} else {
+								//remove se for nova
+								$('.multiselect-loading').remove();
+							}
 							
 						},
 						error: function(model, response) {
 							console.log('Erro ao buscar palestrantre para marcar no checkbox');
 							console.log(response);
 						}
-					});					
+					});	
 					
 					dd.append(app.getOptionHtml(
 						item.get('idPalestrante'),
