@@ -118,3 +118,41 @@
 			}
 
 		});
+		
+		
+		
+		
+		
+		///// DO EXCEL 
+		
+		
+				var data = [
+		
+		  {id: 1, name: 'Ted Right', address: 'Casa louca'},
+		  {id: 2, name: 'Frank Honest', address: ''},
+		  {id: 3, name: 'Joan Well', address: 'Doido!'},
+		  {id: 4, name: 'Gail Polite', address: ''},
+		  {id: 5, name: 'Michael Fair', address: ''},
+		
+		];
+var container = document.getElementById("ta");
+var hot = new Handsontable(container, {
+	data: data,
+    dataSchema: {id: null, name: null, address: null},
+    startRows: 5,
+    startCols: 3,
+    colHeaders: ['ID', 'Nome', 'Address'],
+    columns: [
+      {data: 'id'},
+      {data: 'name'},
+      {data: 'address'},
+    ],
+    minSpareRows: 1
+});
+
+
+		
+	$('#texto').click(function(){
+		console.log(hot.getData());
+	});	
+		

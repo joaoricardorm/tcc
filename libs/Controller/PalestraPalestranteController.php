@@ -49,6 +49,19 @@ class PalestraPalestranteController extends AppBaseController
 		{
 			$criteria = new PalestraPalestranteCriteria();
 			
+			
+			//Filtra pelo evento caso ele exista na URL (e no arquivo js correspondente a esse controller)
+			$palestrante_not_in = RequestUtil::Get('idPalestrante');
+			
+			if($palestrante_not_in) $criteria->AddFilter(
+				new CriteriaFilter('IdPalestrante', $palestrante_not_in)
+			);
+			
+			if(RequestUtil::Get('idPalestrante')){
+				$criteria->IdPalestrante_Equals = RequestUtil::Get('idPalestrante');
+			}
+			
+			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
@@ -87,7 +100,7 @@ class PalestraPalestranteController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$palestrapalestrantes = $this->Phreezer->Query('PalestraPalestrante',$criteria)->GetDataPage($page, $pagesize);
+				$palestrapalestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $palestrapalestrantes->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $palestrapalestrantes->TotalResults;
 				$output->totalPages = $palestrapalestrantes->TotalPages;
@@ -97,7 +110,7 @@ class PalestraPalestranteController extends AppBaseController
 			else
 			{
 				// return all results
-				$palestrapalestrantes = $this->Phreezer->Query('PalestraPalestrante',$criteria);
+				$palestrapalestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria);
 				$output->rows = $palestrapalestrantes->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;

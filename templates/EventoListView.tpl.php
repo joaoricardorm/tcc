@@ -7,8 +7,6 @@
 
 <script type="text/javascript">
 	$LAB
-	.script(base+"bootstrap/js/bootstrap-confirmation.js")
-	.script(base+"bootstrap/js/bootstrap-tooltip.js")
 	.script(base+"scripts/app/eventos.js").wait(function(){
 		$(document).ready(function(){
 			page.init();

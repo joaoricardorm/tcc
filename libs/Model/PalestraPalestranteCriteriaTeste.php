@@ -17,6 +17,8 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 {
 	
 	public $IdPalestra_Equals;
+	public $IdPalestrante_Equals;
+	public $OuterJoinPalestras;
 	
 	/**
 	 * This is overridden so that we can instruct Phreezer what database field
@@ -26,6 +28,8 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 	public function GetFieldFromProp($propname)
 	{
 		if ($propname == 'IdPalestra') return 'id_palestra';
+		if ($propname == 'IdPalestrante') return 'id_palestrante';
+		if ($propname == 'OuterJoinPalestras') return 'id_palestra';
 		
 		throw new Exception("Unknown Property '$propname' specified.");
 	
@@ -46,9 +50,9 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 		switch($propname)
 		{
 			 case 'CustomProp1':
-			 	return 'my_db_column_1';
+				return 'my_db_column_1';
 			 case 'CustomProp2':
-			 	return 'my_db_column_2';
+				return 'my_db_column_2';
 			default:
 				return parent::GetFieldFromProp($propname);
 		}

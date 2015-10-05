@@ -2239,12 +2239,12 @@ table td[class*="span"], table th[class*="span"], .row-fluid table td[class*="sp
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-submenu:hover>a, .dropdown-submenu:focus>a, .navbar-inverse .nav .active>a:hover {
     color: #fff;
 	background-color: darkslateblue;
-	text-decoration:none;
+	text-decoration: none;
 }
 .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus {
     color: #fff;
     text-decoration: none;
-    background-color: #0081c2;
+    background-color: #6252c9;
     outline: 0;
 }
 .dropdown-menu>.disabled>a, .dropdown-menu>.disabled>a:hover, .dropdown-menu>.disabled>a:focus {
@@ -2790,7 +2790,7 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     background-color: #e6e6e6;
 }
 .btn-group.open .btn-primary.dropdown-toggle {
-    background-color: #04c;
+    background-color: darkslateblue;
 }
 .btn-group.open .btn-warning.dropdown-toggle {
     background-color: #f89406;

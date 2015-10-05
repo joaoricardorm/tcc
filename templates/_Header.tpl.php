@@ -25,6 +25,7 @@
 		<link href="bootstrap/css/datepicker.css" rel="stylesheet" />
 		<link href="bootstrap/css/timepicker.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-combobox.css" rel="stylesheet" />
+		<link href="bootstrap/css/bootstrap-multiselect.css" rel="stylesheet" />
 		
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
@@ -47,7 +48,7 @@
 		<link rel="manifest" href="images/favicon/manifest.json">
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
-		<meta name="theme-color" content="#ffffff">
+		<meta name="theme-color" content="#483d8b">
 
 		<!-- Le fav and touch icons 
 		<link rel="shortcut icon" href="images/favicon.ico" />
@@ -60,12 +61,16 @@
 		<script type="text/javascript" src="scripts/libs/LAB.min.js"></script>
 		<script type="text/javascript">
 			var base = '<?php $this->eprint($this->ROOT_URL); ?>';
-			$LAB.script(base+"scripts/jquery-1.8.2.min.js").wait()
+			$LAB.script(base+"scripts/jquery-1.8.2.min.js").wait()				
 				.script(base+"bootstrap/js/bootstrap.min.js")
 				.script(base+"bootstrap/js/bootstrap-datepicker.js")
 				.script(base+"bootstrap/js/bootstrap-datepicker.pt-BR.js").wait()
 				.script(base+"bootstrap/js/bootstrap-timepicker.js")
 				.script(base+"bootstrap/js/bootstrap-combobox.js")
+				.script(base+"bootstrap/js/bootstrap-multiselect.js")	
+				.script(base+"bootstrap/js/bootstrap-confirmation.js")
+				.script(base+"bootstrap/js/bootstrap-bootbox.min.js")
+				.script(base+"bootstrap/js/bootstrap-tooltip.js")
 				.script(base+"scripts/libs/underscore-min.js").wait()
 				.script(base+"scripts/libs/underscore.date.min.js")
 				.script(base+"scripts/libs/backbone-min.js")

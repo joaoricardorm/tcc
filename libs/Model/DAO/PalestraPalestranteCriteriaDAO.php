@@ -81,7 +81,6 @@ class PalestraPalestranteCriteriaDAO extends Criteria
 	public $IdCertificado_IsEmpty;
 	public $IdCertificado_BitwiseOr;
 	public $IdCertificado_BitwiseAnd;
-
 }
 
 ?>

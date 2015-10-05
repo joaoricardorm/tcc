@@ -65,7 +65,7 @@
 			if(items.length > 0){
 				var firstItem = items.models[0].attributes;
 				
-				proprioEvento = firstItem.proprioEvento;
+				var proprioEvento = firstItem.proprioEvento;
 			}
 		%>
 		
@@ -163,7 +163,7 @@
 						</div>
 						<span class="help-inline"></span>
 					</div>
-				</div>
+				</div>				
 				<div id="cargaHorariaInputContainer" class="control-group">
 					<label class="control-label" for="cargaHoraria">Carga horária</label>
 					<div class="controls inline-inputs">
@@ -182,13 +182,31 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
+				
+				
+				<div class="control-group">
+				
+				<div id="PalestranteInputContainer" class="PalestranteInputContainer" class="control-group">
+					<label class="control-label" for="palestrantes">Palestrantes</label>
+					<div class="controls inline-inputs">
+						<select id="palestrantes" name="palestrantes" size="1" multiple class="margin-right-bigger-sm block-sm"">
+						</select> 
+						<span class="help-inline"></span>
+						
+						<a title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-user"></i>Cadastrar novo palestrante</a>
+					</div>
+				</div>
+				
+				</div>
+
+				
 				<% if(item.get('idPalestra')){ %>
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
 			
 						<a class="btn btn-primary margin-right-bigger-sm block-sm" id="palestrantesButton" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/">
-							<i class="icon-microphone"></i>Palestrantes
+							<i class="icon-microphone"></i>Detalhes dos Palestrantes
 						</a>
 						
 						<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
@@ -231,11 +249,11 @@
 		</div>
 		<div class="modal-footer">
 			<?php if($this->Evento){ ?>
-				<a class="btn btn-default block-sm show-on-single" href="evento/<?php $this->eprint($this->Evento->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome)); ?>/">
+				<a class="btn btn-default show-on-single margin-right-bigger-sm block-sm" href="evento/<?php $this->eprint($this->Evento->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome)); ?>/">
 					<i class="icon-arrow-left"></i>Voltar
 				</a>
 			<?php } ?>		
-			<button id="savePalestraButton" class="btn btn-primary block-sm"><span>Salvar e continuar</span><i class="icon-arrow-right icon-margin-left"></i></button>
+			<button id="savePalestraButton" class="btn btn-primary block-sm"><span>Salvar</span><i class="icon-arrow-right icon-margin-left"></i></button>
 			<button class="btn block-sm" data-dismiss="modal">Cancelar</button>
 		</div>
 	</div>

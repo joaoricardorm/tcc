@@ -11,7 +11,6 @@ var page = {
 	palestras: new model.PalestraCollection(),
 	collectionView: null,
 	palestra: null,
-	palestrante: null,
 	modelView: null,
 	isInitialized: false,
 	isInitializing: false,
@@ -323,7 +322,7 @@ var page = {
 				});
 				
 				if (!app.browserSucks()) {
-					dd.combobox('refresh');
+					dd.combobox();
 					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
 				}
 				
@@ -340,170 +339,123 @@ var page = {
 		
 		
 		
-		// POPULA O DROPDOWN COM O SELECT DE PALESTRANTES, além de gerenciar a inseração ou exclusão deles no banco
 		
-		$('#palestrantes').append('<option value="">Carregando palestrantes...</option>');
 		
-		var PalestranteValues = new model.PalestranteCollection();	
-		PalestranteValues.fetch({
-			success: function(p){
-				var dd = $('#palestrantes');
-				dd.empty();
-				//dd.append('<option value=""></option>');
-							
+		
+		// populate the dropdown options for palestrantre
+		// TODO: load only the selected value, then fetch all options when the drop-down is clicked
+		var palestranteValues = new model.PalestranteCollection();
+		
+		var i=0;
+		function fillOptionsPalestrante(clone,repor){
+			
+		clone = typeof clone !== 'undefined' ? clone : false;
+		repor = typeof repor !== 'undefined' ? repor : false;
+			
+		palestranteValues.fetch({
+			success: function(c){
+			
 				
-				//REMOVE O PALESTRANTE QUANDO DESMARCA NA LISTA (CUSTOM REPORTER, para selecionar os palestrantes pela palestra [ver em PalestraPalestranteReporter.php])	
-					var palestranteCollection = new model.PalestraPalestranteCollection();	
+				//para carregar as op��es somente no �ltimo elemento do tipo palestra input
+				//if(clone)
+					//$('.PalestranteInputContainer:last').find('.combobox-container').remove(); 
 				
-				p.forEach(function(item,indexPalestrante) {
+				sel = $('.PalestranteInputContainer:last').find('select.palestrante');
+				sel.attr('id','p_'+i);
+
+				var dd = $('#p_'+i);
+				
+				
+				dd.append('<option value=""></option>');
+				
+				//console.log(c);
+				
+				c.forEach(function(item,index) {
+					
+					//c.pop();
 					
 					//HACK PARA SELECIONAR O PRIMEIRO ITEM DA LISTA CASO SEJA UM NOVO CADASTRO
 					// if(page.palestra.get('idModeloCertificado')){
 						// sel = page.palestra.get('idModeloCertificado') == item.get('idModeloCertificado');
 					// } else {
 						// sel = index == 0;
-					// }				
+					// }					
 					
-					
-					palestranteCollection.fetch({
-						data : {
-							'idPalestra': page.palestra.get('idPalestra'),
-							'idPalestrante': item.get('idPalestrante')
-						},
-						success: function(c, response) {
-							
-								c.forEach(function(pal,index) {
+					//console.log(dd.val());
 								
-										$('.multiselect-loading').show();
-										
-									dd.multiselect('select', pal.get('idPalestrante'));
-									
-									//DESABILITA A EXCLUSÃO DO PALESTRANTE NA PALESTRA SE ELE JÁ POSSUIR CERTIFICADO PARA ELE (>0)
-									if(pal.get('idPalestrante') === item.get('idPalestrante')){
-										if(parseInt(pal.get('idCertificado')) > 0){
-											  var input = $('input[value="' + pal.get('idPalestrante') + '"]');
-											  input.prop('disabled', true);
-											  input.parent().parent().addClass('disabled');
-											    
-											  input.parent('label').parent('a').parent('li').attr('title','Não é possível retirar esse palestrante, pois ele já recebeu um certificado por esta atividade');
-										}
-									}
+					if(!clone && !repor){
+						dd.append(app.getOptionHtml(
+							item.get('idPalestrante'),
+							item.get('nome')+' ('+item.get('cpf')+')' // TODO: change fieldname if the dropdown doesn't show the desired column
+						));
+					} else {
+						//Remove a op��o caso palestrante j� tenha sido incluido na palestra
+						 $('select.palestrante').each(function(){
+							if($(this).val() == item.get('idPalestrante')){
+								$('select.palestrante option[value="'+item.get('idPalestrante')+'"]').remove();
+							}
+						});
+						// if($('select.palestrante').eq(-2).val() == item.get('idPalestrante')){
+							// $('select.palestrante option[value="'+item.get('idPalestrante')+'"]').remove();
+						// }
+					}
+				});
+				
+				$('.palestrante').change(function(e){
 			
-								});
-
-								//REMOVE ICONE DE CARREGANDO
-								if(indexPalestrante == (p.length-1))
-									$('.multiselect-loading').remove();
-							
-						},
-						error: function(model, response) {
-							console.log('Erro ao buscar palestrantre para marcar no checkbox');
-							console.log(response);
-						}
-					});					
+					//if($(this).attr('id') !== 'p_1'){
+						//parametros: clone, repor
+						fillOptionsPalestrante(false,true);
+					//}
 					
-					dd.append(app.getOptionHtml(
-						item.get('idPalestrante'),
-						item.get('nome') // TODO: change fieldname if the dropdown doesn't show the desired column
-					));
-					
+					// if($(e).not().last()){
+						// parametros: clone, repor
+						// fillOptionsPalestrante(true,true);
+					// }
 				});
 				
 				if (!app.browserSucks()) {
-						
-						//Gera o multiselect com as opções e suas ações quando checkadas ou não
-						dd.multiselect({
-							buttonClass: 'btn btn-primary margin-right-bigger-sm block-sm',
-							enableFiltering: true,
-							enableCaseInsensitiveFiltering: true,
-							includeSelectAllOption: false,
-							disableIfEmpty: true,
-							maxHeight: 200,
-							numberDisplayed: 5,
-							// Re-validate the multiselect field when it is changed
-							onChange: function(element, checked) {
-							
-								page.palestrante = new model.PalestraPalestranteModel();	
-
-
-								var dados = { 
-											'idPalestrante': element.val(),
-											'idPalestra': page.palestra.get('idPalestra')
-											};									
-								
-								if(checked === true) {
-										//SALVA O PALESTRANTE AO MARCa-LO NA LISTA
-										page.palestrante.save(dados, {
-											wait: true,
-											success: function(palestrante){					
-												console.log('O palestrante foi associado a essa palestra')				
-											},
-											error: function(model,response,scope){
-												console.log('Erro ao salvar o palestrante na palestra.')
-												console.log(response);
-											}
-										});
-									
-								}
-								else if(checked === false) {
-
-									if(confirm('Tem certeza que deseja retirar o palestrantre '+element.text()+' da atividade?')) {	
-																
-										//REMOVE O PALESTRANTE QUANDO DESMARCA NA LISTA (CUSTOM REPORTER, para selecionar os palestrantes pela palestra [ver em PalestraPalestranteReporter.php])	
-										var palestranteCollection = new model.PalestraPalestranteCollection();												
-										
-										palestranteCollection.fetch({
-											data: {
-												idPalestra: dados.idPalestra
-											},
-											success: function(c, response) {
-								
-												c.forEach(function(item,index) {
-													
-													if(item.get('idPalestrante') == dados.idPalestrante){
-														page.palestrante.id = item.id;																
-														page.palestrante.destroy();		
-														console.log('O palestrante '+item.get('idPalestrante')+'foi removido da palestra');
-														console.log(page.palestrante);
-													}															
-													
-												});
-											},
-											error: function(model, response) {
-												console.log('Erro ao remover palestrante da palestra');
-												console.log(response);
-											},
-											reset: true
-										});
-															
-										
-									}
-									else {
-										dd.multiselect('select', element.val());
-									}
-								}
-								
-							},
-							onDropdownShown: function(e) {
-							},
-							onDropdownHidden: function(e) {
-							}
-						});
-						
+					dd.combobox();
 					$('div.combobox-container + span.help-inline').hide(); // TODO: hack because combobox is making the inline help div have a height
-				}
-				
-
+				}			
 			},
 			error: function(collection,response,scope) {
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 			}
-	});	
+		});
+		
+		
+		i++;
+		}
 		
 		
 		
 		
+		
+		
+		fillOptionsPalestrante();
 	
+		//Acrescenta campos de palestrante no formulario
+		$('#acrescentarCampoPalestrante').click(function(e){
+			e.preventDefault();
+			
+			$('.PalestranteInputContainer:last').clone().appendTo('#PalestrantesInputContainer');
+			fillOptionsPalestrante(true);
+			$('.PalestranteInputContainer:last').find('.combobox-container').remove();
+			
+			//parametros: clone
+			//fillOptionsPalestrante(true);
+		});
+		
+		
+		
+		//Remove o combobox no X
+		// $('div.combobox-container .icon-remove').click(function(e){
+			//parametros: clone, repor
+			// fillOptionsPalestrante(true,true);
+			// $('div.combobox-container').remove();
+			// alert('clicou');
+		// });
 		
 		
 		

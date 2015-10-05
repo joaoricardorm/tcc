@@ -75,7 +75,6 @@
 		});
 	}
 
-
 	/* NOTE: CONFIRMATION EXTENDS BOOTSTRAP-TOOLTIP.js
 		 ========================================== */
 

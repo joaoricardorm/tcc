@@ -233,6 +233,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 						success: function(palestras) {	
 							if(palestras.length > 0){
 								page.proprioEvento = palestras.first().attributes.proprioEvento;								
+							} else {
+								page.proprioEvento = 0;
 							}
 							
 								

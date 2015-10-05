@@ -20,14 +20,15 @@ class PalestraPalestranteReporter extends Reporter
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
 	// 'CustomFieldExample' is an example that is not part of the `palestra_palestrante` table
-	public $CustomFieldExample;
+	//public $CustomFieldExample;
 
 	public $Id;
-	public $IdPalestrante;
+	public $IdPalestrante;	
 	public $IdPalestra;
 	public $IdCertificado;
 	
 	public $NomePalestrante;
+	public $CpfPalestrante;	
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -54,14 +55,53 @@ class PalestraPalestranteReporter extends Reporter
 		
 		
 		
-		if (!$criteria->IdPalestra_Equals) throw new Exception('BookId_Equals is required');
+		//if (!$criteria->IdPalestra_Equals && !$criteria->IdPalestrante_Equals) throw new Exception('IdPalestra_Equals ou IdPalestrante_Equals é obrigatório!');
+		
+		if ($criteria->IdPalestra_Equals){
 		
 		$sql = "select
-			`palestrante`.`id_palestrante` as IdPalestrante
+			`palestra_palestrante`.`id` as Id
+			,`palestrante`.`id_palestrante` as IdPalestrante
 			,`palestrante`.`nome` as NomePalestrante
+			, `palestra_palestrante`.`id_palestra` as IdPalestra
+			,`palestra_palestrante`.`id_certificado` as IdCertificado
 		from `palestrante`
 		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
 		where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
+		
+		if($criteria->IdPalestrante_Equals)
+			$sql .= " AND `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";
+		
+		} else {	
+			$sql = "select
+			`palestra_palestrante`.`id` as Id
+			,`palestrante`.`id_palestrante` as IdPalestrante
+			,`palestrante`.`nome` as NomePalestrante
+			,`palestrante`.`cpf` as CpfPalestrante
+			, `palestra_palestrante`.`id_palestra` as IdPalestra
+			,`palestra_palestrante`.`id_certificado` as IdCertificado
+		from `palestrante`
+		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`";
+		
+		if($criteria->IdPalestrante_Equals){
+			//NESSE CASO FILTRA POR PALESTRANTES QUE NÃO SEJAM COM ID IGUAL AOS ENVIADOS PELA URL, se houver
+			
+			//TRANSFORMA O ARRAY SEPARADOS POR | NA URL, POR ARRAY CORRETO
+			$escapa = explode('|',$criteria->Escape($criteria->IdPalestrante_Equals));
+			
+			$idsArray="'";
+			$idsArray.=implode("','", $escapa);
+			$idsArray.="'";
+			
+			$sql .= "
+			where `palestra_palestrante`.`id_palestrante` NOT IN (" . $idsArray . ")
+			";
+		}
+		
+		//Agrupa os palestrantes para não duplicar
+		$sql .= "group by `palestrante`.`id_palestrante`";
+		
+		}
 		
 		
 		

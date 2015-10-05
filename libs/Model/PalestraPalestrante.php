@@ -28,6 +28,12 @@ class PalestraPalestrante extends PalestraPalestranteDAO
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
 
+		
+		//Se não houver certificado, pois usa chave estrangeira
+		if (!$this->IdCertificado) $this->IdCertificado = 0;
+	
+		return !$this->HasValidationErrors();
+
 		return parent::Validate();
 	}
 

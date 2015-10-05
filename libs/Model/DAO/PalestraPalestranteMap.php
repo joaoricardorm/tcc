@@ -54,7 +54,7 @@ class PalestraPalestranteMap implements IDaoMap, IDaoMap2
 			self::$FM["Id"] = new FieldMap("Id","palestra_palestrante","id",true,FM_TYPE_INT,11,null,true);
 			self::$FM["IdPalestrante"] = new FieldMap("IdPalestrante","palestra_palestrante","id_palestrante",false,FM_TYPE_INT,11,null,false);
 			self::$FM["IdPalestra"] = new FieldMap("IdPalestra","palestra_palestrante","id_palestra",false,FM_TYPE_INT,11,null,false);
-			self::$FM["IdCertificado"] = new FieldMap("IdCertificado","palestra_palestrante","id_certificado",false,FM_TYPE_INT,11,null,false);
+			self::$FM["IdCertificado"] = new FieldMap("IdCertificado","palestra_palestrante","id_certificado",false,FM_TYPE_INT,11,0,false);
 		}
 		return self::$FM;
 	}

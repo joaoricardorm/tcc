@@ -13,9 +13,9 @@ body {
 	font-family: "Lato",Arial,Helvetica, sans-serif;
 }
 
-a { color:lightslateblue; text-decoration:none; }
-a:active, a:visited { color:slateblue; text-decoration:none; }
-a:hover { color:crimson; text-decoration:none; }
+a, .a { color:lightslateblue; text-decoration:none; cursor:pointer; }
+a:active .a:active, a:visited, .a:visited { color:slateblue; text-decoration:none; }
+a:hover, .a:hover { color:crimson; text-decoration:none; }
 
 /* darkviolet  deeppink*/
 
@@ -52,7 +52,7 @@ h1.titulo { margin-top:0; float:left; }
 
 .modal.fade.in { top:5%;}
 .modal .control-group:last-child { margin-bottom:0; }
-.modal .modal-body { max-height:none; padding-bottom:0; }
+.modal .modal-body { max-height:none; padding-bottom:0; overflow-y: visible; }
 .modal .modal-header .close {
     width: 30px;
     text-align: center;
@@ -64,6 +64,7 @@ h1.titulo { margin-top:0; float:left; }
     border-radius: 50%;
 }
 .modal-footer .btn:last-child { margin-left:12px; }
+.popover .btn:last-child { margin-left:10px; }
 
 /**INPUT LADO A LADO EM FORM**/
 .margin-right-bigger-sm { margin-right:15px; }
@@ -85,6 +86,14 @@ nav.passos-evento {
 	left:auto!important;
 	margin-top:31px;
 }
+
+/*para combobox do bootstrap aceitar coisas do lado*/
+.combobox-container {
+	display: inline-table;
+    vertical-align: middle;
+	margin-right:5px;
+}
+
 
 h1,h2,h3,h4,h5,h6{
 	color:#41416C;
@@ -622,7 +631,7 @@ Multi steps indicator
   }
 
   .cd-multi-steps.text-top li, .cd-multi-steps.text-bottom li {
-    width: 140px;
+    width: 155px;
     text-align: center;
   }
   .cd-multi-steps.text-top li::after, .cd-multi-steps.text-bottom li::after {
@@ -630,7 +639,7 @@ Multi steps indicator
     position: absolute;
     left: 50%;
     /* 40px is the <li> right margin value */
-    width: calc(100% + 50px);
+    width: calc(100% + 45px);
   }
   .cd-multi-steps.text-top li > *::before, .cd-multi-steps.text-bottom li > *::before {
     /* this is the spot indicator */
