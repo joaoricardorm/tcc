@@ -254,7 +254,7 @@
 				</a>
 			<?php } ?>		
 			<button id="savePalestraButton" class="btn btn-primary block-sm"><span>Salvar</span><i class="icon-arrow-right icon-margin-left"></i></button>
-			<button class="btn block-sm" data-dismiss="modal">Cancelar</button>
+			<button id="cancelarSavePalestraButton" class="btn block-sm" data-dismiss="modal">Cancelar</button>
 		</div>
 	</div>
 

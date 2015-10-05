@@ -348,6 +348,20 @@ var page = {
 							
 							// if the collection was initally new then we need to add it to the collection now
 							if (page.palestra.isNew) { page.palestras.add(page.palestra) }
+							
+							//REMOVE A PALESTRA TEMPORÁRIA AO CLICAR EM CANCELAR
+							$("#cancelarSavePalestraButton").click(function(e) {
+								e.preventDefault();
+								page.deleteModel();
+								console.log('Removeu a palestra temporária');
+								
+								if (model.reloadCollectionOnModelUpdate) {
+									// re-fetch and render the collection after the model has been updated
+									page.fetchPalestras(page.fetchParams,true);	
+								}	
+								
+							});
+							
 						},
 						error: function(model,response,scope){
 							console.log('Erro ao inserir palestra temporária');
@@ -569,9 +583,9 @@ var page = {
 				e.preventDefault();
 				$('#confirmDeletePalestraContainer').show('fast');
 			});
-
+			
 			$('#cancelDeletePalestraButton').click(function(e) {
-				e.preventDefault();
+				e.preventDefault();				
 				$('#confirmDeletePalestraContainer').hide();
 			});
 
