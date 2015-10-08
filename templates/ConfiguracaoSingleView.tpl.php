@@ -7,9 +7,9 @@
 
 <script type="text/javascript">	
 	$LAB
-	.script("scripts/jquery.maskedinput.min.js").wait()
-	.script("scripts/Simple-Ajax-Uploader/SimpleAjaxUploader.js").wait()
-	.script("scripts/app/configuracoes.js").wait(function(){
+	.script(base+"scripts/jquery.maskedinput.min.js").wait()
+	.script(base+"scripts/Simple-Ajax-Uploader/SimpleAjaxUploader.js").wait()
+	.script(base+"scripts/app/configuracoes.js").wait(function(){
 		$(document).ready(function(){			
 			page.init();	
 		});

@@ -2,16 +2,25 @@
  * application style overrides and customizations
  */
 
-/* note that this gets overridden by bootstrap-responsive.min.css when screen size changes */
+/* note that this gets overridden by bootstrap-responsive.min.css when screen size changes 
 
 @import url(http://fonts.googleapis.com/css?family=Lato);
+*/
+
 
 body {
 	padding-top: 90px;
 	padding-bottom: 20px;
 	background-color:#f1f1f1;
-	font-family: "Lato",Arial,Helvetica, sans-serif;
 }
+
+body,
+input, button, select, textarea,
+.navbar-search .search-query {
+	font-family: "Lato",Arial,Helvetica, sans-serif;
+	text-rendering: optimizeSpeed;
+}
+
 
 a, .a { color:lightslateblue; text-decoration:none; cursor:pointer; }
 a:active .a:active, a:visited, .a:visited { color:slateblue; text-decoration:none; }
@@ -52,7 +61,7 @@ h1.titulo { margin-top:0; float:left; }
 
 .modal.fade.in { top:5%;}
 .modal .control-group:last-child { margin-bottom:0; }
-.modal .modal-body { max-height:none; padding-bottom:0; overflow-y: visible; }
+.modal .modal-body { max-height:none; padding-bottom:0; }
 .modal .modal-header .close {
     width: 30px;
     text-align: center;
@@ -360,10 +369,10 @@ Basic Style
 .cd-breadcrumb li, .cd-multi-steps li {
   display: inline-block;
   float: left;
-  margin: 0.5em 0;
+  margin: 0;
 }
 @media screen and (max-width:468px){
-	.cd-breadcrumb li, .cd-multi-steps li { margin:0.2em 0; }
+	.cd-breadcrumb li, .cd-multi-steps li { margin:0 0; }
 }
 .cd-breadcrumb li::after, .cd-multi-steps li::after {
   /* this is the separator between items */
@@ -575,7 +584,7 @@ Multi steps indicator
   .cd-multi-steps li {
     position: relative;
     float: none;
-    margin: 0.4em 40px 0.4em 0;
+    margin: 0em 40px 0em 0;
   }
   .cd-multi-steps li:last-of-type {
     margin-right: 0;
@@ -741,4 +750,20 @@ Add a counter to the multi-steps indicator
   .cd-multi-steps.text-bottom.count li > * {
     padding-top: 34px;
   }
+}
+
+
+/* FONTE DO GOOGLE */
+@font-face {
+  font-family: 'Lato';
+  font-weight: 400;
+  font-style: normal;
+  src: url('fonts/Lato-regular/Lato-regular.eot');
+  src: url('fonts/Lato-regular/Lato-regular.eot?#iefix') format('embedded-opentype'),
+       local('Lato Regular'),
+       local('Lato-regular'),
+       url('fonts/Lato-regular/Lato-regular.woff2') format('woff2'),
+       url('fonts/Lato-regular/Lato-regular.woff') format('woff'),
+       url('fonts/Lato-regular/Lato-regular.ttf') format('truetype'),
+       url('fonts/Lato-regular/Lato-regular.svg#Lato') format('svg');
 }

@@ -28,8 +28,12 @@ class EventoController extends AppBaseController
 
 		// TODO: add controller-wide bootstrap code
 		
-		// TODO: if authentiation is required for this entire controller, for example:
-		// $this->RequirePermission(ExampleUser::$PERMISSION_USER,'SecureExample.LoginForm');
+		// DO SOME CUSTOM AUTHENTICATION FOR THIS PAGE
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 	}
 
 	/**

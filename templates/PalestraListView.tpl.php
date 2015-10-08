@@ -1,6 +1,6 @@
 <?php
-	$this->assign('title','Certificados FAROL | Palestras');
-	$this->assign('nav','palestras');
+	$this->assign('title','Atividades - Certificados FAROL');
+	$this->assign('nav','eventos');
 
 	$this->display('_Header.tpl.php');
 ?>
@@ -23,13 +23,14 @@
 		<ol class="cd-multi-steps text-top">
 			<li class="visited"><a href="eventos">Eventos</a></span></li> <!-- Classe "visited" -->
 			<li class="current"><span><span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes do evento</span></span></li>
-			<li>
-			<span class="show-on-single">
-				<a class="btn btn-primary margin-right-bigger-sm block-sm"  href="atividade/<%=firstItem.idPalestra%>/<%=app.parseURL(firstItem.nome)%>/palestrantes/">
-					<i class="icon-microphone"></i>Palestrantes
-				</a>
-			</span>
-			<span class="muted">Palestrantes</span></li>
+			<li>	
+				<span class="show-on-single">
+					<a id="link-palestra-breadcrumb" href="#"><i class="icon-microphone"></i>Palestrantes</a>
+				</span>
+				
+				<span class="muted remove-on-single">Palestrantes</span>
+			</li>
+			
 			<li><span class="muted">Participantes</span></li>
 		</ol>
 </nav>		
@@ -95,6 +96,7 @@
 				<% } %>
 				<th id="header_CargaHoraria">Carga Horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_IdModeloCertificado">Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Palestrantes">Palestrantes<% if (page.orderBy == 'Palestrantes') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -104,8 +106,18 @@
 					<td><%= _.escape(item.get('nome') || '') %></td>
 					<td><%if (item.get('data')) { %><%= _date(app.parseDate(item.get('data'))).format('DD/MM/YYYY') %><% } else { %>Sem data<% } %></td>
 				<% } %>
-				<td><%if (item.get('cargaHoraria')) { %><%= _date(app.parseDate(item.get('cargaHoraria'))).format('HH:mm') %> horas<% } else { %>Sem carga horária<% } %></td>
+				<td>
+					<%if (item.get('cargaHoraria')) { %>
+						<%
+						var tempo = _date(app.parseDate(item.get('cargaHoraria'))).format('HH:mm') + ' horas';
+						if(_date(app.parseDate(item.get('cargaHoraria'))).format('HH') == '00')
+							tempo = _date(app.parseDate(item.get('cargaHoraria'))).format('mm') + ' minutos';
+						%>
+						<%= tempo %>
+					<% } else { %>Sem carga horária<% } %>
+				</td>
 				<td><%= _.escape(item.get('nomeModeloCertificado') || '') %></td>
+				<td class="lista-palestrantes"><span class="muted">Nenhum palestrante</span></td>
 			</tr>
 		<% }); %>
 		</tbody>
@@ -223,7 +235,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deletePalestraButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Palestra</button>
+						<button id="deletePalestraButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Atividade</button>
 						<span id="confirmDeletePalestraContainer" class="hide">
 							<button id="cancelDeletePalestraButton" class="btn">Cancelar</button>
 							<button id="confirmDeletePalestraButton" class="btn btn-success">Confirmar</button>

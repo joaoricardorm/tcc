@@ -30,7 +30,7 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 		if ($propname == 'IdPalestra') return 'id_palestra';
 		if ($propname == 'IdPalestrante') return 'id_palestrante';
 		if ($propname == 'OuterJoinPalestras') return 'id_palestra';
-		
+
 		throw new Exception("Unknown Property '$propname' specified.");
 	
 	}

@@ -133,7 +133,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<a href="evento/<%= _.escape(item.get('idEvento')) %>/atividades" id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tags icon-white"></i> <span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a>
+						<a href="evento/<%= _.escape(item.get('idEvento')) %>/atividades/" id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tags icon-white"></i> <span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a>
 						
 						<span class="show-on-single">
 							<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>

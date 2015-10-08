@@ -271,8 +271,20 @@ class PalestraController extends AppBaseController
 			$pk = $this->GetRouter()->GetUrlParam('idPalestra');
 			$palestra = $this->Phreezer->Get('Palestra',$pk);
 
-			$palestra->Delete();
+			//Verifica se existem certificados emitidos para algum palestrante, senao haver, permite a exclusao
+			require_once("Model/PalestraPalestrante.php");
+			$criteria = new PalestraPalestranteCriteria();
 
+			$criteria->IdPalestra_Equals = $pk;	
+			$criteria->TemCertificado = true;	
+			
+			try {
+				$certificados = $this->Phreezer->GetByCriteria("PalestraPalestranteReporter", $criteria);	
+				throw new Exception('Não foi possível excluir a atividade, pois um dos palestrantes recebeu já certificado por ela');
+			} catch(NotFoundException $nfex){
+				$palestra->Delete();
+			}
+			
 			$output = new stdClass();
 
 			$this->RenderJSON($output, $this->JSONPCallback());

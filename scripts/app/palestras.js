@@ -21,7 +21,9 @@ var page = {
 	dialogIsOpen: false,
 	
 	proprioEvento: 0,
-
+	
+	detalhes: false,
+	
 	/**
 	 *
 	 */
@@ -47,6 +49,9 @@ var page = {
 		$('#palestraDetailDialog').on('hidden',function() {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
+			page.detalhes = false;
+			
+			window.history.pushState('Object', 'Atividades', base+idEvento[0]+'/atividades/');
 		});
 
 		// save the model when the save button is clicked
@@ -146,7 +151,7 @@ var page = {
 		if(idEvento){
 			page.fetchParams.evento = idEvento[1];
 		}
-
+		
 		if (page.fetchInProgress) {
 			if (console) console.log('supressing fetch because it is already in progress');
 		}
@@ -159,15 +164,54 @@ var page = {
 
 			data: params,
 
-			success: function() {
+			success: function(p) {
 				if (page.palestras.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render
+					
+						//Filtra palestra pelo id na url
+						idAtividade = window.location.pathname.match(/evento\/([0-9]+)\/atividades\/([0-9]+)/);
+						if(idAtividade){
+							var m = page.palestras.get(idAtividade[2]);
+							page.showDetailDialog(m);
+						}
+					
+
+					
+					//RETORNA A LISTA DE PALESTRANTES CADASTRADOS EM CADA PALESTRA	
+						
+					var palestranteCollection = new model.PalestraPalestranteCollection();	
+					
+					page.palestras.forEach(function(item,indexPalestrante){
+						
+						palestranteCollection.fetch({
+							data : {
+								'idPalestra': item.get('idPalestra')
+							},
+							success: function(c, response) {
+			
+								//preenche o campo correspondente na view com os nomes dos palestrantes
+								if(response.totalResults > 0)
+									$('#'+item.get('idPalestra')+' .lista-palestrantes').text(c.pluck('nomePalestrante').join(', '));
+							
+							},
+							error: function(model, response) {
+								console.log('Erro ao buscar palestrantre para marcar no checkbox');
+								console.log(response);
+							}
+						});	
+						
+					});
+						
+					
 					
 					//pega o atributo proprioEvento da atividade (se for proprio evento um elemento)
 					if(page.palestras.length > 0 && idEvento){
 						page.proprioEvento = page.palestras.models[0].attributes.proprioEvento;
 						idProprioEvento = page.palestras.models[0].id;
+						
+						//INSERE LINK DA PALESTRA NO BREADCRUMB QUANDO HAVER APENAS UMA PALESTRA OU SEJA O PROPRIO EVENTO
+						$('#link-palestra-breadcrumb').attr('href','atividade/'+idProprioEvento+'/atividade/palestrantes/');
 												
 						//ser for proprio evento faz a magica de apagar elementos e ja mostrar tela de edicao
 						
@@ -227,9 +271,14 @@ var page = {
 			// fetch the model from the server so we are not updating stale data
 			page.palestra.fetch({
 
-				success: function() {
+				success: function(palestra) {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
+					
+					
+					// adiciona a url do evento atual
+					window.history.pushState('Object', 'Atividade '+palestra.get('nome'), base+'evento/'+palestra.get('idEvento')+'/atividades/'+palestra.get('idPalestra')+'/'+app.parseURL(palestra.get('nome'))+'/');
+					
 					
 					$('.show-on-single').hide();		
 					if(page.proprioEvento == 1){
@@ -345,6 +394,8 @@ var page = {
 						success: function(){
 							console.log('Inseriu a palestra temporária');
 							
+							page.detalhes = true;
+							
 							// if the collection was initally new then we need to add it to the collection now
 							if (page.palestra.isNew()) { page.palestras.add(page.palestra) }
 							
@@ -408,14 +459,7 @@ var page = {
 				var palestranteCollection = new model.PalestraPalestranteCollection();	
 				
 				p.forEach(function(item,indexPalestrante){
-					
-					//HACK PARA SELECIONAR O PRIMEIRO ITEM DA LISTA CASO SEJA UM NOVO CADASTRO
-					// if(page.palestra.get('idModeloCertificado')){
-						// sel = page.palestra.get('idModeloCertificado') == item.get('idModeloCertificado');
-					// } else {
-						// sel = index == 0;
-					// }				
-					
+
 					palestranteCollection.fetch({
 						data : {
 							'idPalestra': page.palestra.get('idPalestra'),
@@ -424,16 +468,18 @@ var page = {
 						success: function(c, response) {
 							
 							//Se for palestra nova ele nao seleciona
-							if(!page.palestra.isNew){
+							if(!page.palestra.isNew() || page.detalhes === true){
 								
 								c.forEach(function(pal,index) {
 								
-										$('.multiselect-loading').show();
+									$('.multiselect-loading').show();
 										
 									dd.multiselect('select', pal.get('idPalestrante'));
+
 									
 									//DESABILITA A EXCLUSÃO DO PALESTRANTE NA PALESTRA SE ELE JÁ POSSUIR CERTIFICADO PARA ELE (>0)
 									if(pal.get('idPalestrante') === item.get('idPalestrante')){
+										
 										if(parseInt(pal.get('idCertificado')) > 0){
 											  var input = $('input[value="' + pal.get('idPalestrante') + '"]');
 											  input.prop('disabled', true);
@@ -465,11 +511,9 @@ var page = {
 						item.get('idPalestrante'),
 						item.get('nome') // TODO: change fieldname if the dropdown doesn't show the desired column
 					));
-					
 				});
 				
 				if (!app.browserSucks()) {
-						
 						//Gera o multiselect com as opções e suas ações quando checkadas ou não
 						dd.multiselect({
 							buttonClass: 'btn btn-primary margin-right-bigger-sm block-sm',
@@ -542,10 +586,6 @@ var page = {
 									}
 								}
 								
-							},
-							onDropdownShown: function(e) {
-							},
-							onDropdownHidden: function(e) {
 							}
 						});
 						
@@ -677,24 +717,67 @@ var page = {
 		$('#modelAlert').html('');
 
 		app.showProgress('modelLoader');
-
-		page.palestra.destroy({
-			wait: true,
-			success: function(){
-				$('#palestraDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Palestra record was deleted','alert-success',3000,'collectionAlert')",500);
-				app.hideProgress('modelLoader');
-
-				if (model.reloadCollectionOnModelUpdate) {
-					// re-fetch and render the collection after the model has been updated
-					page.fetchPalestras(page.fetchParams,true);
+		
+		
+			//EXCLUI A RELAÇÃO COM PALESTRANTES ASSOCIADOS ANTES DE APAGAR A PALESTRA
+						
+			var palestranteCollection = new model.PalestraPalestranteCollection();	
+				
+			palestranteCollection.fetch({
+				data : {
+					'idPalestra': page.palestra.get('idPalestra')
+				},
+				success: function(c, response) {
+					
+					//VALIDA SE HÁ CERTIFICADO EMITIDO PARA O PALESTRANTE, SE HOUVER O SISTEMA NÃO DEIXA EXCLUIR
+					var temCertificado = false;
+					c.each(function(pal){
+						if(parseInt(pal.get('idCertificado')) > 0)
+							temCertificado = true;
+					});									
+								
+					
+					//REMOVE AS RELAÇÕES COM O PALESTRANTE E DEPOIS REMOVE A PALESTRA, caso não possua certificado, senão joga um erro
+					
+					c.each(function(pal){
+						
+						if(temCertificado === false){
+						
+							page.palestrante = new model.PalestraPalestranteModel();
+							page.palestrante.id = pal.id;
+							
+							page.palestrante.destroy();
+						
+						}
+						
+					});
+					
+					//REMOVE A PALESTRA
+					page.palestra.destroy({
+						wait: true,
+						success: function(){
+							$('#palestraDetailDialog').modal('hide');
+							setTimeout("app.appendAlert('A atividade foi excluida','alert-success',3000,'collectionAlert')",500);
+							app.hideProgress('modelLoader');
+							
+							if (model.reloadCollectionOnModelUpdate) {
+								// re-fetch and render the collection after the model has been updated
+								page.fetchPalestras(page.fetchParams,true);
+							}
+						},
+						error: function(model,response,scope) {
+							app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+							app.hideProgress('modelLoader');
+						}
+					});
+				
+				},
+				error: function(model, response) {
+					console.log('Erro ao remover a relação do palestrante ao excluir a palestra');
+					console.log(response);
 				}
-			},
-			error: function(model,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-				app.hideProgress('modelLoader');
-			}
-		});
+			});	
+						
 	}
 };
 

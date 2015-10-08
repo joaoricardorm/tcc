@@ -21,6 +21,7 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 	public $IdPalestra_Equals;
 	public $IdPalestrante_Equals;
 	public $OuterJoinPalestras;
+	public $TemCertificado;
 	
 	/**
 	 * This is overridden so that we can instruct Phreezer what database field
@@ -32,6 +33,7 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 		if ($propname == 'IdPalestra') return 'id_palestra';
 		if ($propname == 'IdPalestrante') return 'id_palestrante';
 		if ($propname == 'OuterJoinPalestras') return 'id_palestra';
+		if ($propname == 'TemCertificado') return 'id_certificado';
 		
 		throw new Exception("Unknown Property '$propname' specified.");
 	

@@ -6,7 +6,7 @@
 ?>
 
 <script type="text/javascript">
-	$LAB.script("scripts/app/palestraparticipantes.js").wait(function(){
+	$LAB.script(base+"scripts/app/palestraparticipantes.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});

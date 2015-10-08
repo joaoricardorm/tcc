@@ -74,6 +74,7 @@
 				.script(base+"scripts/libs/underscore-min.js").wait()
 				.script(base+"scripts/libs/underscore.date.min.js")
 				.script(base+"scripts/libs/backbone-min.js")
+				.script(base+"scripts/global.js")
 				.script(base+"scripts/app.js")
 				.script(base+"scripts/model.js").wait()
 				.script(base+"scripts/view.js").wait()
@@ -124,21 +125,21 @@
 						
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a tabindex="1" href="./configuracao"><i class="icon-cog"></i> Configurações</a></li>
-								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a tabindex="1" href="./usuarios"><i class="icon-user"></i> Usuários</a></li>
-								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a tabindex="1" href="./eventos"><i class="icon-calendar"></i> Eventos</a></li>
-								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a tabindex="1" href="./modelocertificados">ModeloCertificados</a></li>
+								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a tabindex="1" href="./configuracao/"><i class="icon-cog"></i> Configurações</a></li>
+								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a tabindex="1" href="./usuarios/"><i class="icon-user"></i> Usuários</a></li>
+								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a tabindex="1" href="./eventos/"><i class="icon-calendar"></i> Eventos</a></li>
+								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a tabindex="1" href="./modelocertificados/">ModeloCertificados</a></li>
 							</ul>
 							<ul class="nav">
 								<li class="dropdown">
 								<a tabindex="1" href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
 									<ul class="dropdown-menu">
-										<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados">Certificados</a></li>
-										<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras">Palestras</a></li>
-										<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes">PalestraPalestrantes</a></li>
-										<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes">PalestraParticipantes</a></li>
-										<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes">Palestrantes</a></li>
-										<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes">Participantes</a></li>
+										<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados/">Certificados</a></li>
+										<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras/">Palestras</a></li>
+										<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes/">PalestraPalestrantes</a></li>
+										<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes/">PalestraParticipantes</a></li>
+										<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes/">Palestrantes</a></li>
+										<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes/">Participantes</a></li>
 									</ul>
 								</li>
 							</ul>

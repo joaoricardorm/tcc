@@ -47,6 +47,8 @@ var page = {
 		$('#eventoDetailDialog').on('hidden',function() {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
+			
+			window.history.pushState('Object', 'Eventos', base+'/eventos/');
 		});
 		
 		// save the model when the save button is clicked
@@ -189,7 +191,7 @@ var page = {
 	 * show the dialog for editing a model
 	 * @param model
 	 */
-	showDetailDialog: function(m) {		
+	showDetailDialog: function(m) {			
 		//restaura funcao do botao salvar e cancelar
 		$('#saveEventoButton').confirmation('hide').confirmation('destroy');
 		$('#saveEventoButton, #cancelSaveEventoButton').removeClass('disabled');
@@ -222,7 +224,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
 					
-					
+					// adiciona a url do evento atual
+					window.history.pushState('Object', 'Evento '+evento.get('nome'), base+'evento/'+evento.id+'/'+app.parseURL(evento.get('nome'))+'/');
 					
 					// busca palestra do evento para ver se e ele proprio ou nao
 					page.palestras.fetch({

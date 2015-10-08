@@ -60,7 +60,7 @@ class PalestraPalestranteReporter extends Reporter
 		if ($criteria->IdPalestra_Equals){
 		
 		$sql = "select
-			`palestra_palestrante`.`id` as Id
+			`palestra_palestrante`.`id` as Id  
 			,`palestrante`.`id_palestrante` as IdPalestrante
 			,`palestrante`.`nome` as NomePalestrante
 			, `palestra_palestrante`.`id_palestra` as IdPalestra
@@ -71,6 +71,9 @@ class PalestraPalestranteReporter extends Reporter
 		
 		if($criteria->IdPalestrante_Equals)
 			$sql .= " AND `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";
+		
+		if($criteria->TemCertificado)
+			$sql .= " AND `palestra_palestrante`.`id_certificado` > 0 ";
 		
 		} else {	
 			$sql = "select

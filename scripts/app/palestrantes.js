@@ -336,7 +336,7 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 			wait: true,
 			success: function(){
 				$('#palestranteDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Palestrante record was deleted','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('O palestrante foi excluido','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 
 				if (model.reloadCollectionOnModelUpdate) {

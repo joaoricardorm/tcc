@@ -61,6 +61,10 @@ class PalestraPalestranteController extends AppBaseController
 				$criteria->IdPalestrante_Equals = RequestUtil::Get('idPalestrante');
 			}
 			
+			if(RequestUtil::Get('temCertificado')){
+				$criteria->TemCertificado = RequestUtil::Get('temCertificado');
+			}
+			
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');

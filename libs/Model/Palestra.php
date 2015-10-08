@@ -44,7 +44,7 @@ class Palestra extends PalestraDAO
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
 
-		if (!$this->Nome) $this->AddValidationError('Nome','Nome da atividade é obrigatório'.$this->CargaHoraria);
+		if (!$this->Nome) $this->AddValidationError('Nome','Nome da atividade é obrigatório');
 		if (!$this->Data) $this->AddValidationError('Data','Data da atividade é obrigatória');
 		if (!$this->IdModeloCertificado) $this->AddValidationError('IdModeloCertificado','Modelo do certificado é obrigatório');
 		//caso nao tenha definido carga horária ao editar palestra. Só vale se houver IdPalestra, pois no caso o proprio evento ele deixa zerado
@@ -63,7 +63,7 @@ class Palestra extends PalestraDAO
 		// the controller create/update methods validate before saving.  this will be a
 		// redundant validation check, however it will ensure data integrity at the model
 		// level based on validation rules.  comment this line out if this is not desired
-		if (!$this->Validate()) throw new Exception('Unable to Save Palestra: ' .  implode(', ', $this->GetValidationErrors()));
+		if (!$this->Validate()) throw new Exception('Não foi possível salvar a atividade: ' .  implode(', ', $this->GetValidationErrors()));
 
 		// OnSave must return true or eles Phreeze will cancel the save operation
 		return true;
