@@ -795,20 +795,21 @@ var page = {
 					});									
 								
 					
-					//REMOVE AS RELAÇÕES COM O PALESTRANTE E DEPOIS REMOVE A PALESTRA, caso não possua certificado, senão joga um erro
-					
-					c.each(function(pal){
-						
-						if(temCertificado === false){
-						
-							page.palestrante = new model.PalestraPalestranteModel();
-							page.palestrante.id = pal.id;
+					//REMOVE AS RELAÇÕES COM O PALESTRANTE E DEPOIS REMOVE A PALESTRA, caso não possua certificado, senão joga um erros
+					if(c.length > 0){
+						c.forEach(function(pal){
 							
-							page.palestrante.destroy();
-						
-						}
-						
-					});
+							if(temCertificado === false){
+							
+								page.palestrante = new model.PalestraPalestranteModel();
+								page.palestrante.id = pal.id;
+								
+								page.palestrante.destroy();
+							
+							}
+							
+						});
+					}
 					
 					//REMOVE A PALESTRA
 					page.palestra.destroy({
