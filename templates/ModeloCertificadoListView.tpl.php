@@ -130,7 +130,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade" id="modeloCertificadoDetailDialog">
+	<div class="modal hide fade modal-on-top"  data-backdrop="static" id="modeloCertificadoDetailDialog">
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>

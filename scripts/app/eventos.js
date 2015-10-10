@@ -21,6 +21,9 @@ var page = {
 	dialogIsOpen: false,
 	
 	proprioEvento: 0,
+	
+	temCertificado: false,
+	excluir: null,
 
 	/**
 	 *
@@ -31,6 +34,76 @@ var page = {
 		page.isInitializing = true;
 
 		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
+		
+		//Abre evento atual se tive na url
+		idEvento = window.location.pathname.match(/evento\/([0-9]+)/);
+		
+		
+		//Abre atividade atual se tive na url sem ser parametro e sim lá na url do _app_config.php
+		excluirURL = /excluir/.test(window.location.pathname);
+
+		if(excluirURL === true && page.excluir === null){
+			page.excluir = true;
+		}
+		
+		
+		if(idEvento !== null){
+			var eventoURL = new model.EventoCollection();
+			eventoURL.fetch({
+				data: {
+					idEvento: idEvento[1]
+				},
+				success: function(ev) {								
+					if(idEvento){
+						var m = eventoURL.get(idEvento[1]);
+						console.log(idEvento[1]);
+						
+						page.showDetailDialog(m);
+					}
+				},
+				error: function(m, response) {
+					console.log('Erro ao obter o evento pelo Id na URL');
+					console.log(response);
+				}
+			});
+		}
+		
+		
+		
+		
+/*		
+		
+		
+		// create pub-sub functionality
+Backbone.pubSub = _.extend({}, Backbone.Events);
+
+// view one needs to trigger an event in view2
+View1 = Backbone.View.extend({ 
+
+   triggerView2Event : function() { 
+       Backbone.pubSub.trigger('view2event', { 'some' : 'data' } );
+   })
+
+});
+
+// view two which changes based on the view2event
+
+View2 = Backbone.View.extend({ 
+  initialize: function() {
+	Backbone.pubSub.on('view2event', this.onChange, this);
+  },
+  onChange : function() { 
+     // update the view
+  }
+});
+
+*/
+
+		
+		
+		
+		
+		
 		
 		// make the new button clickable
 		$("#newEventoButton").click(function(e) {
@@ -48,7 +121,9 @@ var page = {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
 			
-			window.history.pushState('Object', 'Eventos', base+'/eventos/');
+			page.excluir = false;
+			
+			window.history.pushState('Object', 'Eventos', base+'eventos/');
 		});
 		
 		// save the model when the save button is clicked
@@ -163,15 +238,7 @@ var page = {
 
 				if (page.eventos.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
-					// the sync event will trigger the view to re-render
-					
-					//Abre evento atual se tive na url
-					idEvento = window.location.pathname.match(/evento\/([0-9]+)/);
-					if(idEvento){
-						var m = page.eventos.get(idEvento[1]);
-						page.showDetailDialog(m);
-					}
-					
+					// the sync event will trigger the view to re-render					
 				}
 
 				app.hideProgress('loader');
@@ -227,6 +294,18 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					// adiciona a url do evento atual
 					window.history.pushState('Object', 'Evento '+evento.get('nome'), base+'evento/'+evento.id+'/'+app.parseURL(evento.get('nome'))+'/');
 					
+					
+					//Se existir pedido de exclusao
+					if(page.excluir === true){
+						app.appendAlert('Excluindo evento...', 'alert-error',0,'modelAlert');
+						app.showProgress('modelLoader');	
+						
+						$('#eventoModelContainer').prepend('<div class="overlay-big-message">EXCLUINDO EVENTO</div>');
+						
+						page.deleteModel();
+					}
+					
+					
 					// busca palestra do evento para ver se e ele proprio ou nao
 					page.palestras.fetch({
 						data: {
@@ -239,7 +318,6 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 							} else {
 								page.proprioEvento = 0;
 							}
-							
 								
 								//se for proprio evento faz a magica
 								$('.show-on-single').hide();
@@ -447,24 +525,76 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 		$('#modelAlert').html('');
 
 		app.showProgress('modelLoader');
-
-		page.evento.destroy({
-			wait: true,
-			success: function(){
-				$('#eventoDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('O evento foi excluido','alert-success',3000,'collectionAlert')",500);
-				app.hideProgress('modelLoader');
-
-				if (model.reloadCollectionOnModelUpdate) {
-					// re-fetch and render the collection after the model has been updated
-					page.fetchEventos(page.fetchParams,true);
+		
+		//EXCLUI A RELAÇÃO COM PALESTRANTES ASSOCIADOS ANTES DE APAGAR A PALESTRA
+					
+			var palestras = new model.PalestraCollection();	
+				
+			palestras.fetch({
+				data : {
+					'idEvento': page.evento.get('idEvento')
+				},
+				success: function(palestras) {
+					
+					if(palestras.length > 0){
+						app.appendAlert('Este evento possui detalhes ou atividades, portanto, para removê-lo é necessário excluir esses itens primeiro.', 'alert-error',0,'modelAlert');
+						
+						var link = 'evento/'+page.evento.id+'/atividades/excluir/';
+						
+						$('.modal-body .alert.alert-error').append('<br><a href="'+link+'" class="btn btn-danger btn-small">Clique aqui para excluir os detalhes ou atividades deste evento</a>');
+						app.hideProgress('modelLoader');
+						
+						$('.overlay-big-message').remove();
+						
+						$('.modal').addClass('animated shake').delay(1000).queue(function(){
+							$(this).removeClass("animated shake").dequeue();
+						});
+					} else { 
+							
+						
+								
+								
+								
+							// ENTÃO REMOVE O EVENTO PROPRIAMENTE DITO									
+							page.evento.destroy({
+								wait: true,
+								success: function(){
+									$('#eventoDetailDialog').modal('hide');
+									setTimeout("app.appendAlert('O evento foi excluido','alert-success',3000,'collectionAlert')",500);
+									app.hideProgress('modelLoader');
+									
+									page.excluir = false;
+									
+									if (model.reloadCollectionOnModelUpdate) {
+										// re-fetch and render the collection after the model has been updated
+										page.fetchEventos(page.fetchParams,true);
+									}
+								},
+								error: function(model,response,scope) {
+									app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+									app.hideProgress('modelLoader');
+									
+									$('.overlay-big-message').remove();
+									
+									$('.modal').addClass('animated shake').delay(1000).queue(function(){
+										$(this).removeClass("animated shake").dequeue();
+									});
+								}
+							});
+							
+					}
+				
+				},
+				error: function(model, response) {
+					console.log('Erro ao remover a as palestras do evento');
+					console.log(response);
 				}
-			},
-			error: function(model,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-				app.hideProgress('modelLoader');
-			}
-		});
+			});	
+			
+			
+			
+			
+		
 	}
 };
 

@@ -23,6 +23,8 @@ var page = {
 	proprioEvento: 0,
 	
 	detalhes: false,
+	excluir: null,
+	qtdPalestras: 0,
 	
 	/**
 	 *
@@ -32,7 +34,36 @@ var page = {
 		if (page.isInitialized || page.isInitializing) return;
 		page.isInitializing = true;
 
-		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');		
+		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');			
+				
+		//Abre atividade atual se tive na url
+		idAtividade = window.location.pathname.match(/evento\/([0-9]+)\/atividades\/([0-9]+)/);
+		
+		//Abre atividade atual se tive na url sem ser parametro e sim lá na url do _app_config.php
+		excluirURL = /excluir/.test(window.location.pathname);
+
+		if(excluirURL === true && page.excluir === null){
+			page.excluir = true;
+		}
+		
+		if(idAtividade !== null){
+			var palestraURL = new model.PalestraCollection();
+			palestraURL.fetch({
+				data: {
+					idPalestra: idAtividade[2]
+				},
+				success: function(ev) {								
+					if(idAtividade){
+						var m = palestraURL.get(idAtividade[2]);
+						page.showDetailDialog(m);
+					}				
+				},
+				error: function(m, response) {
+					console.log('Erro ao obter a atividade pelo Id na URL');
+					console.log(response);
+				}
+			});		
+		}		
 				
 		// make the new button clickable
 		$("#newPalestraButton").click(function(e) {
@@ -49,7 +80,9 @@ var page = {
 		$('#palestraDetailDialog').on('hidden',function() {
 			$('#modelAlert').html('');
 			page.dialogIsOpen = false;
+			
 			page.detalhes = false;
+			page.excluir = false;
 			
 			window.history.pushState('Object', 'Atividades', base+idEvento[0]+'/atividades/');
 		});
@@ -146,6 +179,12 @@ var page = {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
 		
+		if(page.excluir === true){
+			$('#alertaConfirmarExclusao').removeClass('hide');
+		} else {
+			$('#alertaConfirmarExclusao').addClass('hide');
+		}
+		
 		//Filtra palestras pelo evento
 		idEvento = window.location.pathname.match(/evento\/([0-9]+)/);
 		if(idEvento){
@@ -167,16 +206,7 @@ var page = {
 			success: function(p) {
 				if (page.palestras.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
-					// the sync event will trigger the view to re-render
-					
-						//Filtra palestra pelo id na url
-						idAtividade = window.location.pathname.match(/evento\/([0-9]+)\/atividades\/([0-9]+)/);
-						if(idAtividade){
-							var m = page.palestras.get(idAtividade[2]);
-							page.showDetailDialog(m);
-						}
-					
-
+					// the sync event will trigger the view to re-render				
 					
 					//RETORNA A LISTA DE PALESTRANTES CADASTRADOS EM CADA PALESTRA	
 						
@@ -203,7 +233,7 @@ var page = {
 						
 					});
 						
-					
+					page.qtdPalestras = page.palestras.length;
 					
 					//pega o atributo proprioEvento da atividade (se for proprio evento um elemento)
 					if(page.palestras.length > 0 && idEvento){
@@ -253,8 +283,12 @@ var page = {
 		// if not, then the user is creating a new record
 		page.palestra = m ? m : new model.PalestraModel();
 
-		page.modelView.model = page.palestra;
-
+		page.modelView.model = page.palestra;		
+		
+		if(page.excluir === false){
+			$('#alertaConfirmarExclusao').addClass('hide');
+		}
+		
 		if (page.palestra.id == null || page.palestra.id == '') {
 			
 			$('.titulo-modal').html('Cadastrar Atividade');
@@ -285,6 +319,26 @@ var page = {
 						$('.remove-on-single').remove();
 						$('.show-on-single').show();
 					}
+					
+					
+					//Se existir pedido de exclusao
+					if(page.excluir === true){
+						$('#modalConfirmarExclusao').modal({
+							
+							width: '400px',
+							backdropTemplate: '<div class="modal-backdrop red" />'
+							
+						});
+						$('#modalConfirmarExclusao .modal-body p').html('<p>Tem certeza que deseja excluir a atividade</p><h4>'+page.palestra.get('nome')+'</h4>');
+				
+						$('#btnConfirmarExclusao').click(function(e){
+							$(this).text('Excluindo...');
+							
+							page.deleteModel();
+						});
+					}
+					
+					
 				},
 
 				error: function(m, r) {
@@ -467,8 +521,10 @@ var page = {
 						},
 						success: function(c, response) {
 							
+							console.log(page.palestras.length);
+							
 							//Se for palestra nova ele nao seleciona
-							if(!page.palestra.isNew() || page.detalhes === true){
+							if((!page.palestra.isNew() || page.detalhes === true) && page.palestras.length > 0 && page.palestra.get('nome') !== '.'){
 								
 								c.forEach(function(pal,index) {
 								
@@ -676,6 +732,8 @@ var page = {
 				setTimeout("app.appendAlert('Palestra foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 				
+				page.excluir = false;	
+				
 				// if the collection was initally new then we need to add it to the collection now
 				if (isNew) { page.palestras.add(page.palestra) }
 
@@ -731,7 +789,7 @@ var page = {
 					
 					//VALIDA SE HÁ CERTIFICADO EMITIDO PARA O PALESTRANTE, SE HOUVER O SISTEMA NÃO DEIXA EXCLUIR
 					var temCertificado = false;
-					c.each(function(pal){
+					c.find(function(pal){
 						if(parseInt(pal.get('idCertificado')) > 0)
 							temCertificado = true;
 					});									
@@ -755,19 +813,47 @@ var page = {
 					//REMOVE A PALESTRA
 					page.palestra.destroy({
 						wait: true,
-						success: function(){
+						success: function(p){
 							$('#palestraDetailDialog').modal('hide');
 							setTimeout("app.appendAlert('A atividade foi excluida','alert-success',3000,'collectionAlert')",500);
 							app.hideProgress('modelLoader');
 							
+							console.log(p);
+							
+							if(parseInt(page.proprioEvento) === 1){
+								page.excluir = false;	
+								
+								$('#btnConfirmarExclusao').text('Redirecionando...');
+								
+								//window.event.returnValue = false;
+								document.location.href = base+'evento/'+idEvento[1]+'/evento/excluir/';										
+							} 
+							
 							if (model.reloadCollectionOnModelUpdate) {
 								// re-fetch and render the collection after the model has been updated
 								page.fetchPalestras(page.fetchParams,true);
-							}
+							}	
+							
 						},
 						error: function(model,response,scope) {
 							app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 							app.hideProgress('modelLoader');
+							
+							$('.modal').addClass('animated shake').delay(1000).queue(function(){
+								$(this).removeClass("animated shake").dequeue();
+							});
+				
+						},
+						complete: function(model,response,scope){
+							
+							//Remove Dialogo caso tenha redicionado para exclusão
+							if(page.excluir == true){
+								$('#modalConfirmarExclusao .modal-body p').text('Excluida com sucesso! Aguarde...');
+								
+								$('#btnConfirmarExclusao').text('Sim');
+								$('#modalConfirmarExclusao').modal('hide');
+							}
+							
 						}
 					});
 				
@@ -775,6 +861,7 @@ var page = {
 				error: function(model, response) {
 					console.log('Erro ao remover a relação do palestrante ao excluir a palestra');
 					console.log(response);
+					page.excluir = false;
 				}
 			});	
 						

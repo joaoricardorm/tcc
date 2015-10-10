@@ -106,6 +106,52 @@ var app = {
 	},
 	
 	/**
+	 * obtém um parametro da URL
+	 * @param parametro procurado
+	 * @returns parametro encontrado string
+	 */
+	
+	getUrlParameter: function(sParam) {
+		var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+			sURLVariables = sPageURL.split('&'),
+			sParameterName,
+			i;
+
+		for (i = 0; i < sURLVariables.length; i++) {
+			sParameterName = sURLVariables[i].split('=');
+
+			if (sParameterName[0] === sParam) {
+				return sParameterName[1] === undefined ? true : sParameterName[1];
+			}
+		}
+	},
+	
+	/**
+	 * remove um parametro da URL
+	 * @param parametro procurado
+	 * @returns parametro encontrado string
+	 */
+	removeUrlParam: function(parameter){
+		  var url=document.location.href;
+		  var urlparts= url.split('?');
+
+		 if (urlparts.length>=2) {
+			  var urlBase=urlparts.shift(); 
+			  var queryString=urlparts.join("?"); 
+
+			  var prefix = encodeURIComponent(parameter)+'=';
+			  var pars = queryString.split(/[&;]/g);
+			  for (var i= pars.length; i-->0;)               
+				  if (pars[i].lastIndexOf(prefix, 0)!==-1)   
+					  pars.splice(i, 1);
+			  url = urlBase+'?'+pars.join('&');
+			  window.history.pushState('',document.title,url); // added this line to push the new url directly to url bar .
+
+		}
+		return url;
+	},
+	
+	/**
 	 * return true if user interface should be limited based on browser support
 	 * @returns bool
 	 */

@@ -119,7 +119,10 @@ GlobalConfig::$ROUTE_MAP = array(
 	// Palestra
 	// buscar atividades de um evento
 	'GET:evento/(:num)/atividades' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1)),
+	'GET:evento/(:num)/atividades/excluir' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1)),
 	'GET:evento/(:num)/atividades/(:num)/(:any)' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1, 'idPalestra' => 2)),
+	//para excluir atividade
+	'GET:evento/(:num)/atividades/(:num)/(:any)/excluir' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1, 'idPalestra' => 2)),
 	'GET:palestras/(:num)' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1)),
 	'GET:palestras' => array('route' => 'Palestra.ListView'),
 	'GET:palestra/(:num)' => array('route' => 'Palestra.SingleView', 'params' => array('idPalestra' => 1)),

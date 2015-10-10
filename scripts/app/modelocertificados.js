@@ -339,6 +339,10 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 			error: function(model,response,scope) {
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 				app.hideProgress('modelLoader');
+				
+				$('.modal').addClass('animated shake').delay(1000).queue(function(){
+					$(this).removeClass("animated shake").dequeue();
+				});
 			}
 		});
 	}

@@ -108,7 +108,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade" id="palestraPalestranteDetailDialog">
+	<div class="modal hide fade modal-on-top"  data-backdrop="static" id="palestraPalestranteDetailDialog">
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>

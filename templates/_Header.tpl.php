@@ -26,6 +26,7 @@
 		<link href="bootstrap/css/timepicker.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-combobox.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-multiselect.css" rel="stylesheet" />
+		<link href="bootstrap/css/bootstrap-modal.css" rel="stylesheet" />
 		
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
@@ -71,6 +72,8 @@
 				.script(base+"bootstrap/js/bootstrap-confirmation.js")
 				.script(base+"bootstrap/js/bootstrap-bootbox.min.js")
 				.script(base+"bootstrap/js/bootstrap-tooltip.js")
+				.script(base+"bootstrap/js/bootstrap-modalmanager.js")
+				.script(base+"bootstrap/js/bootstrap-modal.js")
 				.script(base+"scripts/libs/underscore-min.js").wait()
 				.script(base+"scripts/libs/underscore.date.min.js")
 				.script(base+"scripts/libs/backbone-min.js")

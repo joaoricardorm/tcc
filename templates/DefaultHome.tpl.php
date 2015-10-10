@@ -5,7 +5,7 @@
 	$this->display('_Header.tpl.php');
 ?>
 
-	<div class="modal hide fade" id="getStartedDialog">
+	<div class="modal hide fade modal-on-top"  data-backdrop="static" id="getStartedDialog">
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>Getting Started With Phreeze</h3>
