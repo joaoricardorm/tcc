@@ -146,6 +146,9 @@ h1,h2,h3,h4,h5,h6{
 
 h1, .hero-unit h1 {
 	margin-bottom: 15px;
+}
+
+h1, h3 {
 	font-weight:normal;
 }
 
@@ -172,8 +175,9 @@ span.buttonContainer {
 	-moz-transition: all 70ms ease-in-out;
 }
 
-[class^=icon-] { margin-right:5px; }
+[class^=icon-], table.collection tr th [class^="icon"] { margin-right:5px; text-decoration:none; }
 [class^=icon-].icon-margin-left { margin-right:0; margin-left:5px; }
+
 
 .navbar-inverse .nav .caret { margin-left:5px; }
 .sem-margin-right, .add-on [class^=icon-]  { margin-right:0; }
@@ -220,7 +224,8 @@ table.collection th:hover {
 	transition: opacity 250ms ease-in-out;
 }
 table.collection tr th [class^="icon"] {
-    font-size: 12px;
+    font-size: 14px;
+	vertical-align:top;
 }
 
 table.collection.no-hover thead th:hover {
@@ -325,6 +330,7 @@ h1, h2, h3 {
 	.vertical-align-super { vertical-align:super; }
 	span.loader { height:10px; margin:0!important; }
 	.hero-unit.small, h1 { font-size:0.9em; padding:5px; }
+	h3 { font-size:1.2em; }
 	.navbar .brand, .hero-unit { font-size:1em; }
 	.sem-margin-right-xxs { margin-right:0; }
 	.navbar .brand {

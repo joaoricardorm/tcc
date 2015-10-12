@@ -38,32 +38,40 @@
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="usuarioCollectionTemplate">
 	
+	<% if(items.length === 0){ %>
+			<hr>
+			<h3>Nenhum usuário encontrado</h3>
+	<% } else { %>
+	
 	<div id="no-more-tables">
 	
 		<table class="collection table table-hover table-striped responsive-table">
-		<thead>
-			<tr>
-				<th id="header_Nome">Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Email">E-mail<% if (page.orderBy == 'Email') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Login">Usuário<% if (page.orderBy == 'Login') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_TipoUsuario">Tipo de usuário<% if (page.orderBy == 'TipoUsuario') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-			</tr>
-		</thead>
-		<tbody>
-		<% items.each(function(item) { %>
-			<tr id="<%= _.escape(item.get('idUsuario')) %>">
-				<td><%= _.escape(item.get('nome') || '') %></td>
-				<td><%= _.escape(item.get('email') || '') %></td>
-				<td><%= _.escape(item.get('login') || '') %></td>
-				<td><%= _.escape(item.get('tipoUsuario')) == '1' ? 'Administrador' : 'Padrão' %></td>
-			</tr>
-		<% }); %>
-		</tbody>
-		</table>
-		
-	</div>
+			<thead>
+				<tr>
+					<th id="header_Nome"><i class="icon icon-user"></i>Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+					<th id="header_Email"><i class="icon icon-envelope"></i>E-mail<% if (page.orderBy == 'Email') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+					<th id="header_Login"><i class="icon icon-smile"></i>Usuário<% if (page.orderBy == 'Login') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+					<th id="header_TipoUsuario"><i class="icon icon-lock"></i>Tipo de usuário<% if (page.orderBy == 'TipoUsuario') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				</tr>
+			</thead>
+			<tbody>
+			<% items.each(function(item) { %>
+				<tr id="<%= _.escape(item.get('idUsuario')) %>">
+					<td><%= _.escape(item.get('nome') || '') %></td>
+					<td><%= _.escape(item.get('email') || '') %></td>
+					<td><%= _.escape(item.get('login') || '') %></td>
+					<td><%= _.escape(item.get('tipoUsuario')) == '1' ? 'Administrador' : 'Padrão' %></td>
+				</tr>
+			<% }); %>
+			</tbody>
+			</table>
+			
+		</div>
 
 		<%=  view.getPaginationHtml(page) %>
+		
+	<% } %>
+	
 	</script>
 
 	<!-- underscore template for the model -->

@@ -48,18 +48,24 @@
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="eventoCollectionTemplate">
 		
+		<% if(items.length === 0){ %>
+			<hr>
+			<h3>Nenhum evento encontrado</h3>
+		<% } else { %>
+		
 		<div id="no-more-tables">
 		
 		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
 			<tr>
-				<th id="header_Nome">Nome do evento<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Local">Local<% if (page.orderBy == 'Local') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Data">Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Duracao">Duração<% if (page.orderBy == 'Duracao') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Nome"><i class="icon icon-tag"></i>Nome do evento<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Local"><i class="icon icon-home"></i>Local<% if (page.orderBy == 'Local') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Data"><i class="icon icon-calendar"></i>Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Duracao"><i class="icon icon-time"></i>Duração<% if (page.orderBy == 'Duracao') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
+		
 		<% items.each(function(item) { %>
 			<tr id="<%= _.escape(item.get('idEvento')) %>">
 				<td><%= _.escape(item.get('nome') || '') %></td>
@@ -74,6 +80,9 @@
 		</div>
 
 		<%=  view.getPaginationHtml(page) %>
+		
+		<% } %>
+		
 	</script>
 
 	<!-- underscore template for the model -->

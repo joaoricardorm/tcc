@@ -51,10 +51,10 @@
 		<table class="collection table table-hover table-striped no-hover responsive-table">
 		<thead>
 			<tr>
-				<th id="header_NomeInstituicao">Nome da instituição</th>
-				<th id="header_ImagemLogo">Imagem de logotipo</th>
-				<th id="header_Cnpj">CNPJ</th>
-				<th id="header_Telefone">Telefone</th>
+				<th id="header_NomeInstituicao"><i class="icon icon-briefcase"></i>Nome da instituição</th>
+				<th id="header_ImagemLogo"><i class="icon icon-picture"></i>Imagem de logotipo</th>
+				<th id="header_Cnpj"><i class="icon icon-briefcase"></i>CNPJ</th>
+				<th id="header_Telefone"><i class="icon icon-phone"></i>Telefone</th>
 			</tr>
 		</thead>
 		<tbody>

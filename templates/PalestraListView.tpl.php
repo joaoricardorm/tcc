@@ -118,18 +118,23 @@
 			</p>
 		<% } %>
 		
+		<% if(items.length === 0){ %>
+			<hr>
+			<h3>Nenhuma atividade encontrada</h3>
+		<% } else { %>
+		
 		<div id="no-more-tables">
 		
 		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
 			<tr>
 				<% if(proprioEvento == 0){ %>
-					<th id="header_Nome">Nome da atividade<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-					<th id="header_Data">Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+					<th id="header_Nome"><i class="icon icon-tags"></i>Nome da atividade<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+					<th id="header_Data"><i class="icon icon-calendar"></i>Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<% } %>
-				<th id="header_CargaHoraria">Carga Horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_IdModeloCertificado">Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Palestrantes">Palestrantes<% if (page.orderBy == 'Palestrantes') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_CargaHoraria"><i class="icon icon-time"></i>Carga horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_IdModeloCertificado"><i class="icon icon-certificate"></i>Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Palestrantes"><i class="icon icon-user"></i>Palestrantes<% if (page.orderBy == 'Palestrantes') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -159,6 +164,8 @@
 		</div>
 
 		<%=  view.getPaginationHtml(page) %>
+		
+		<% } %>
 	</script>
 
 	<!-- underscore template for the model -->
