@@ -204,34 +204,38 @@ var page = {
 			data: params,
 
 			success: function(p) {
+				
+				
+				//RETORNA A LISTA DE PALESTRANTES CADASTRADOS EM CADA PALESTRA	
+						
+				var palestranteCollection = new model.PalestraPalestranteCollection();	
+				
+				page.palestras.forEach(function(item,indexPalestrante){
+					
+					palestranteCollection.fetch({
+						data : {
+							'idPalestra': item.get('idPalestra'),
+							orderBy: 'NomePalestrante'
+						},
+						success: function(c, response) {
+		
+							//preenche o campo correspondente na view com os nomes dos palestrantes
+							if(response.totalResults > 0)
+								$('#'+item.get('idPalestra')+' .lista-palestrantes').text(c.pluck('nomePalestrante').join(', '));
+						
+						},
+						error: function(model, response) {
+							console.log('Erro ao buscar palestrantre para marcar no checkbox');
+							console.log(response);
+						}
+					});	
+					
+				});
+					
+				
 				if (page.palestras.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render				
-					
-					//RETORNA A LISTA DE PALESTRANTES CADASTRADOS EM CADA PALESTRA	
-						
-					var palestranteCollection = new model.PalestraPalestranteCollection();	
-					
-					page.palestras.forEach(function(item,indexPalestrante){
-						
-						palestranteCollection.fetch({
-							data : {
-								'idPalestra': item.get('idPalestra')
-							},
-							success: function(c, response) {
-			
-								//preenche o campo correspondente na view com os nomes dos palestrantes
-								if(response.totalResults > 0)
-									$('#'+item.get('idPalestra')+' .lista-palestrantes').text(c.pluck('nomePalestrante').join(', '));
-							
-							},
-							error: function(model, response) {
-								console.log('Erro ao buscar palestrantre para marcar no checkbox');
-								console.log(response);
-							}
-						});	
-						
-					});
 						
 					page.qtdPalestras = page.palestras.length;
 					
@@ -502,11 +506,15 @@ var page = {
 		
 		var PalestranteValues = new model.PalestranteCollection();	
 		PalestranteValues.fetch({
+			data : {
+				orderBy: 'Nome'
+			},
 			success: function(p){
 				var dd = $('#palestrantes');
 				dd.empty();
 				//dd.append('<option value=""></option>');
-							
+					
+				console.log(p);
 				
 				//SELECIONA PALESTRANTE QUE JÁ ESTÃO CADASTRADOS NA PALESTRA	
 					
@@ -517,11 +525,10 @@ var page = {
 					palestranteCollection.fetch({
 						data : {
 							'idPalestra': page.palestra.get('idPalestra'),
-							'idPalestrante': item.get('idPalestrante')
+							'idPalestrante': item.get('idPalestrante'),
+							orderBy: 'NomePalestrante'
 						},
 						success: function(c, response) {
-							
-							console.log(page.palestras.length);
 							
 							//Se for palestra nova ele nao seleciona
 							if((!page.palestra.isNew() || page.detalhes === true) && page.palestras.length > 0 && page.palestra.get('nome') !== '.'){
@@ -613,7 +620,8 @@ var page = {
 										
 										palestranteCollection.fetch({
 											data: {
-												idPalestra: dados.idPalestra
+												idPalestra: dados.idPalestra,
+												orderBy: 'NomePalestrante'
 											},
 											success: function(c, response) {
 								
@@ -789,14 +797,18 @@ var page = {
 					
 					//VALIDA SE HÁ CERTIFICADO EMITIDO PARA O PALESTRANTE, SE HOUVER O SISTEMA NÃO DEIXA EXCLUIR
 					var temCertificado = false;
-					c.find(function(pal){
-						if(parseInt(pal.get('idCertificado')) > 0)
+					c.some(function(pal){
+						if(parseInt(pal.get('idCertificado')) > 0){
 							temCertificado = true;
+							return false;
+						}
 					});									
 								
 					
-					//REMOVE AS RELAÇÕES COM O PALESTRANTE E DEPOIS REMOVE A PALESTRA, caso não possua certificado, senão joga um erros
+					//REMOVE AS RELAÇÕES COM O PALESTRANTE, caso possua palestrantes, E DEPOIS REMOVE A PALESTRA, caso não possua certificado, senão joga um erro
+	
 					if(c.length > 0){
+						var qtd = 1;
 						c.forEach(function(pal){
 							
 							if(temCertificado === false){
@@ -805,58 +817,67 @@ var page = {
 								page.palestrante.id = pal.id;
 								
 								page.palestrante.destroy();
-							
+						
 							}
 							
+							if(qtd === c.length){
+								removerPalestra();
+							}
+							qtd++;
+							
 						});
+					} else {
+						removerPalestra();
 					}
 					
 					//REMOVE A PALESTRA
-					page.palestra.destroy({
-						wait: true,
-						success: function(p){
-							$('#palestraDetailDialog').modal('hide');
-							setTimeout("app.appendAlert('A atividade foi excluida','alert-success',3000,'collectionAlert')",500);
-							app.hideProgress('modelLoader');
-							
-							console.log(p);
-							
-							if(parseInt(page.proprioEvento) === 1){
-								page.excluir = false;	
+					function removerPalestra(){
+						
+						page.palestra.destroy({
+							wait: true,
+							success: function(p){
+								$('#palestraDetailDialog').modal('hide');
+								setTimeout("app.appendAlert('A atividade foi excluida','alert-success',3000,'collectionAlert')",500);
+								app.hideProgress('modelLoader');
 								
-								$('#btnConfirmarExclusao').text('Redirecionando...');
+								if(parseInt(page.proprioEvento) === 1){
+									page.excluir = false;	
+									
+									$('#btnConfirmarExclusao').text('Redirecionando...');
+									
+									//window.event.returnValue = false;
+									document.location.href = base+'evento/'+idEvento[1]+'/evento/excluir/';										
+								} 
 								
-								//window.event.returnValue = false;
-								document.location.href = base+'evento/'+idEvento[1]+'/evento/excluir/';										
-							} 
-							
-							if (model.reloadCollectionOnModelUpdate) {
-								// re-fetch and render the collection after the model has been updated
-								page.fetchPalestras(page.fetchParams,true);
-							}	
-							
-						},
-						error: function(model,response,scope) {
-							app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-							app.hideProgress('modelLoader');
-							
-							$('.modal').addClass('animated shake').delay(1000).queue(function(){
-								$(this).removeClass("animated shake").dequeue();
-							});
-				
-						},
-						complete: function(model,response,scope){
-							
-							//Remove Dialogo caso tenha redicionado para exclusão
-							if(page.excluir == true){
-								$('#modalConfirmarExclusao .modal-body p').text('Excluida com sucesso! Aguarde...');
+								if (model.reloadCollectionOnModelUpdate) {
+									// re-fetch and render the collection after the model has been updated
+									page.fetchPalestras(page.fetchParams,true);
+								}	
 								
-								$('#btnConfirmarExclusao').text('Sim');
-								$('#modalConfirmarExclusao').modal('hide');
+							},
+							error: function(model,response,scope) {
+								app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+								app.hideProgress('modelLoader');
+								
+								$('.modal').addClass('animated shake').delay(1000).queue(function(){
+									$(this).removeClass("animated shake").dequeue();
+								});
+					
+							},
+							complete: function(model,response,scope){
+								
+								//Remove Dialogo caso tenha redicionado para exclusão
+								if(page.excluir == true){
+									$('#modalConfirmarExclusao .modal-body p').text('Excluida com sucesso! Aguarde...');
+									
+									$('#btnConfirmarExclusao').text('Sim');
+									$('#modalConfirmarExclusao').modal('hide');
+								}
+								
 							}
-							
-						}
-					});
+						});
+					
+					}
 				
 				},
 				error: function(model, response) {

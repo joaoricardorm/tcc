@@ -83,6 +83,9 @@ var page = {
 				// toggle the ascending/descending before we change the sort prop
 				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
 				page.fetchParams.orderBy = prop;
+				
+				console.log(page.fetchParams);
+				
 				page.fetchParams.page = 1;
  				page.fetchPalestrantes(page.fetchParams);
  			});
@@ -99,7 +102,7 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchPalestrantes({ page: 1 });
+		this.fetchPalestrantes({ page: 1, orderBy: 'Nome' });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
@@ -128,8 +131,7 @@ var page = {
 	fetchPalestrantes: function(params, hideLoader) {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
-		
-		
+
 		//Filtra palestras pelo evento
 		idPalestra = window.location.pathname.match(/atividade\/([0-9]+)/);
 		if(idPalestra){

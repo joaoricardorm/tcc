@@ -44,12 +44,10 @@ class PalestranteController extends AppBaseController
 	 * API Method queries for Palestrante records and render as JSON
 	 */
 	public function Query()
-	{
+	{		
 		try
 		{
 			$criteria = new PalestranteCriteria();
-			
-			
 			
 			// FILTRA OS PALESTRANTES PELA PALESTRA SE EXISTIR TAL DADO NA URL
 			$arquivoReporter = 'Palestrante';
@@ -63,7 +61,11 @@ class PalestranteController extends AppBaseController
 				$arquivoReporter .= 'Reporter';
 			}
 			
-		
+			if(RequestUtil::Get('ordemLouca')){
+				$criteria->OrdemLouca = RequestUtil::Get('ordemLouca');
+				$arquivoReporter .= 'Reporter';
+			}
+			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
@@ -108,7 +110,7 @@ class PalestranteController extends AppBaseController
 				// LOOK AT THE SOURCE OF Book->GetAuthorsUsingReporter TO SEE HOW A CUSTOM REPORTER IS USED
 				// $palestrantes = $palestra->GetPalestrantesUsingReporter();
 				
-				$palestrantes = $this->Phreezer->Query($arquivoReporter,$criteria)->GetDataPage($page, $pagesize);
+				$palestrantes = $this->Phreezer->Query('PalestranteReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $palestrantes->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $palestrantes->TotalResults;
 				$output->totalPages = $palestrantes->TotalPages;
@@ -118,7 +120,7 @@ class PalestranteController extends AppBaseController
 			else
 			{
 				// return all results
-				$palestrantes = $this->Phreezer->Query($arquivoReporter,$criteria);
+				$palestrantes = $this->Phreezer->Query('PalestranteReporter',$criteria);
 				$output->rows = $palestrantes->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;

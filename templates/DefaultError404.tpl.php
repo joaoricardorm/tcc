@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','Certificados FAROL | File Not Found');
+	$this->assign('title','Página não encontrada - Erro 404! - Certificados FAROL');
 	$this->assign('nav','home');
 
 	$this->display('_Header.tpl.php');

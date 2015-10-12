@@ -22,6 +22,7 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 	public $IdPalestrante_Equals;
 	public $OuterJoinPalestras;
 	public $TemCertificado;
+	public $OrderByNomePalestrante;
 	
 	/**
 	 * This is overridden so that we can instruct Phreezer what database field
@@ -29,13 +30,25 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 	 * @see Criteria::GetFieldFromProp()
 	 */
 	public function GetFieldFromProp($propname)
-	{
-		if ($propname == 'IdPalestra') return 'id_palestra';
-		if ($propname == 'IdPalestrante') return 'id_palestrante';
-		if ($propname == 'OuterJoinPalestras') return 'id_palestra';
-		if ($propname == 'TemCertificado') return 'id_certificado';
+	{		
+		switch($propname){
+			case 'IdPalestra':
+				return 'id_palestra';
+			case 'IdPalestrante':
+				return 'id_palestrante';
+			case 'OuterJoinPalestras':
+				return 'id_palestra';
+			case 'TemCertificado':
+				return 'id_certificado';
+
+			case 'NomePalestrante':
+				return 'NomePalestrante';
+				
+			default:
+				return parent::GetFieldFromProp($propname);
+		}
 		
-		throw new Exception("Unknown Property '$propname' specified.");
+		//throw new Exception("Unknown Property '$propname' specified.");
 	
 	}
 	

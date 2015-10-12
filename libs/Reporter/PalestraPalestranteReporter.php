@@ -86,6 +86,7 @@ class PalestraPalestranteReporter extends Reporter
 		from `palestrante`
 		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`";
 		
+		/*
 		if($criteria->IdPalestrante_Equals){
 			//NESSE CASO FILTRA POR PALESTRANTES QUE NÃO SEJAM COM ID IGUAL AOS ENVIADOS PELA URL, se houver
 			
@@ -97,16 +98,14 @@ class PalestraPalestranteReporter extends Reporter
 			$idsArray.="'";
 			
 			$sql .= "
-			where `palestra_palestrante`.`id_palestrante` NOT IN (" . $idsArray . ")
+			 where `palestra_palestrante`.`id_palestrante` NOT IN (" . $idsArray . ")
 			";
-		}
+		}*/
 		
 		//Agrupa os palestrantes para não duplicar
-		$sql .= "group by `palestrante`.`id_palestrante`";
+		$sql .= " group by `palestrante`.`id_palestrante` ";
 		
 		}
-		
-		
 		
 		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();

@@ -46,16 +46,21 @@ class PalestranteReporter extends Reporter
 			,`palestrante`.`cpf` as Cpf
 			,`palestrante`.`cargo` as Cargo
 			,`palestrante`.`imagem_assinatura` as ImagemAssinatura
-		from `palestrante`
+		from `palestrante` ";
 		
-		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
 		
-		where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
-
+		if($criteria->IdPalestra_Equals){
+			$sql .= " inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante` ";
+		}
+		
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
-		//$sql .= $criteria->GetWhere();
+		$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();
+		
+		if($criteria->OrdemLouca){
+			$sql .= ' order by '. $criteria->Escape($criteria->OrdemLouca); 
+		}
 
 		return $sql;
 	}

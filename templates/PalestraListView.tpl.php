@@ -238,7 +238,7 @@
 						</select> 
 						<span class="help-inline"></span>
 						
-						<a title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-user"></i>Cadastrar novo palestrante</a>
+						<a class="vertical-align-super" title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-user"></i>Cadastrar novo palestrante</a>
 					</div>
 				</div>
 				

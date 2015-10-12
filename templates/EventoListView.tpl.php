@@ -47,7 +47,8 @@
 
 	<!-- underscore template for the collection -->
 	<script type="text/template" id="eventoCollectionTemplate">
-		<div ++="no-more-tables">
+		
+		<div id="no-more-tables">
 		
 		<table class="collection table table-hover table-striped responsible-table">
 		<thead>
@@ -152,7 +153,7 @@
 				<div class="control-group">
 					<label class="control-label"></label>
 					<div class="controls">
-						<button id="deleteEventoButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Evento</button>
+						<button id="deleteEventoButton" class="btn btn-danger block-sm"><i class="icon-trash icon-white"></i> Excluir Evento</button>
 						<span id="confirmDeleteEventoContainer" class="hide">
 							<button id="cancelDeleteEventoButton" class="btn">Cancelar</button>
 							<button id="confirmDeleteEventoButton" class="btn btn-success">Confirmar</button>
