@@ -57,55 +57,39 @@ class PalestraPalestranteReporter extends Reporter
 		
 		//if (!$criteria->IdPalestra_Equals && !$criteria->IdPalestrante_Equals) throw new Exception('IdPalestra_Equals ou IdPalestrante_Equals é obrigatório!');
 		
-		if ($criteria->IdPalestra_Equals){
-		
 		$sql = "select
 			`palestra_palestrante`.`id` as Id  
-			,`palestrante`.`id_palestrante` as IdPalestrante
-			,`palestrante`.`nome` as NomePalestrante
-			, `palestra_palestrante`.`id_palestra` as IdPalestra
-			,`palestra_palestrante`.`id_certificado` as IdCertificado
-		from `palestrante`
-		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
-		where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
-		
-		if($criteria->IdPalestrante_Equals)
-			$sql .= " AND `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";
-		
-		if($criteria->TemCertificado)
-			$sql .= " AND `palestra_palestrante`.`id_certificado` > 0 ";
-		
-		} else {	
-			$sql = "select
-			`palestra_palestrante`.`id` as Id
 			,`palestrante`.`id_palestrante` as IdPalestrante
 			,`palestrante`.`nome` as NomePalestrante
 			,`palestrante`.`cpf` as CpfPalestrante
 			, `palestra_palestrante`.`id_palestra` as IdPalestra
 			,`palestra_palestrante`.`id_certificado` as IdCertificado
-		from `palestrante`
-		inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`";
+		from `palestrante` ";
 		
-		/*
-		if($criteria->IdPalestrante_Equals){
-			//NESSE CASO FILTRA POR PALESTRANTES QUE NÃO SEJAM COM ID IGUAL AOS ENVIADOS PELA URL, se houver
-			
-			//TRANSFORMA O ARRAY SEPARADOS POR | NA URL, POR ARRAY CORRETO
-			$escapa = explode('|',$criteria->Escape($criteria->IdPalestrante_Equals));
-			
-			$idsArray="'";
-			$idsArray.=implode("','", $escapa);
-			$idsArray.="'";
-			
-			$sql .= "
-			 where `palestra_palestrante`.`id_palestrante` NOT IN (" . $idsArray . ")
-			";
-		}*/
+		if ($criteria->IdPalestra_Equals){
 		
-		//Agrupa os palestrantes para não duplicar
-		$sql .= " group by `palestrante`.`id_palestrante` ";
+			$sql .= "inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
+			where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
+			
+			if($criteria->IdPalestrante_Equals)
+				$sql .= " AND `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";
+
+		
+		} else {
+			
+			$sql .= "inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`";
+		
+			if($criteria->IdPalestrante_Equals)
+				$sql .= " WHERE `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";			
 		
 		}
+		
+		if($criteria->TemCertificado)
+			$sql .= " AND `palestra_palestrante`.`id_certificado` > 0 ";
+		
+		//Agrupa os palestrantes para não duplicar
+		if ($criteria->IdPalestra_Equals)
+			$sql .= " group by `palestrante`.`id_palestrante` ";
 		
 		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();

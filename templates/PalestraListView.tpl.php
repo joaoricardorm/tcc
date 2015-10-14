@@ -22,17 +22,17 @@
 
 <nav class="container hero-unit small">
 		<ol class="cd-multi-steps text-top">
-			<li class="visited"><a href="eventos">Eventos</a></span></li> <!-- Classe "visited" -->
-			<li class="current"><span><span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes do evento</span></span></li>
+			<li class="visited"><a href="eventos"><i class="icon-tag"></i>Eventos</a></span></li> <!-- Classe "visited" -->
+			<li class="current"><span><span class="remove-on-single"><i class="icon-tags"></i>Atividades</span><span class="show-on-single"><i class="icon-tag"></i>Detalhes do evento</span></span></li>
 			<li>	
 				<span class="show-on-single">
 					<a id="link-palestra-breadcrumb" href="#"><i class="icon-microphone"></i>Palestrantes</a>
 				</span>
 				
-				<span class="muted remove-on-single">Palestrantes</span>
+				<span class="muted remove-on-single"><i class="icon-microphone"></i>Palestrantes</span>
 			</li>
 			
-			<li><span class="muted">Participantes</span></li>
+			<li><span class="muted"><i class="icon-group"></i>Participantes</span></li>
 		</ol>
 </nav>		
 
@@ -123,6 +123,16 @@
 			<h3>Nenhuma atividade encontrada</h3>
 		<% } else { %>
 		
+		<p class="ordemCadastro" id="ordemCadastro_IdPalestra">
+			<a href="#">
+			<% if (page.orderBy == 'IdPalestra') { %> 
+				<%= page.orderDesc ? "Mostrar antigas primeiro <i class='icon-arrow-down' />" : "Mostrar recentes primeiro <i class='icon-arrow-up' />" %>
+			<% } else { %>
+				Ordenar pelo cadastro no sistema <i class='icon-arrow-down' />
+			<% } %>
+			</a>
+		</p>
+		
 		<div id="no-more-tables">
 		
 		<table class="collection table table-hover table-striped responsible-table">
@@ -133,8 +143,8 @@
 					<th id="header_Data"><i class="icon icon-calendar"></i>Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<% } %>
 				<th id="header_CargaHoraria"><i class="icon icon-time"></i>Carga horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_IdModeloCertificado"><i class="icon icon-certificate"></i>Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Palestrantes"><i class="icon icon-user"></i>Palestrantes<% if (page.orderBy == 'Palestrantes') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th><i class="icon icon-certificate"></i>Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th><i class="icon icon-user"></i>Palestrantes<% if (page.orderBy == 'Palestrantes') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -245,7 +255,7 @@
 						</select> 
 						<span class="help-inline"></span>
 						
-						<a class="vertical-align-super" title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-user"></i>Cadastrar novo palestrante</a>
+						<a class="vertical-align-super" title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-microphone"></i>Cadastrar novo palestrante</a>
 					</div>
 				</div>
 				
@@ -287,7 +297,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade modal-on-top"  data-backdrop="static" id="palestraDetailDialog">
+	<div class="modal hide fade animated bounceIn modal-on-top"  data-backdrop="static" id="palestraDetailDialog">
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>

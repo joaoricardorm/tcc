@@ -37,6 +37,28 @@ class PalestranteController extends AppBaseController
 	 */
 	public function ListView()
 	{				 
+	
+		//Dados da palestra
+		$this->Assign('Palestra',null);
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if($pk){
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$pkEvento = $palestra->IdEvento;
+				
+				$evento = $this->Phreezer->Get('Evento',$pkEvento);
+				$this->Assign('Evento',$evento);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe");
+			}
+		
+		}
+	
 		$this->Render();
 	}
 
@@ -47,7 +69,7 @@ class PalestranteController extends AppBaseController
 	{		
 		try
 		{
-			$criteria = new PalestranteCriteria();
+			$criteria = new PalestranteCriteria();			
 			
 			// FILTRA OS PALESTRANTES PELA PALESTRA SE EXISTIR TAL DADO NA URL
 			$arquivoReporter = 'Palestrante';
@@ -266,8 +288,21 @@ class PalestranteController extends AppBaseController
 
 			$pk = $this->GetRouter()->GetUrlParam('idPalestrante');
 			$palestrante = $this->Phreezer->Get('Palestrante',$pk);
-
-			$palestrante->Delete();
+			
+			//Verifica se existem certificados para o palestrante, senao existerem, permite a exclusao
+			require_once("Model/PalestraPalestrante.php");
+			$criteria = new PalestraPalestranteCriteria();
+	
+			$criteria->IdPalestrante_Equals = $pk;
+			$criteria->IdCertificado_NotEquals = 0;
+	
+			try {
+				$palestraPalestrante = $this->Phreezer->GetByCriteria("PalestraPalestrante", $criteria);	
+				
+				throw new Exception('Não é possível esse palestrante do do sistema, pois ele já possui certificado por alguma palestra');
+			} catch(NotFoundException $nfex){
+				$palestrante->Delete();
+			}
 
 			$output = new stdClass();
 

@@ -31,7 +31,7 @@
 <div class="container hero-unit">
 
 <h1>
-	<i class="icon-user"></i> Eventos
+	<i class="icon-tag"></i> Eventos
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 </h1>
 
@@ -52,6 +52,18 @@
 			<hr>
 			<h3>Nenhum evento encontrado</h3>
 		<% } else { %>
+		
+		
+		<p class="ordemCadastro" id="ordemCadastro_IdEvento">
+			<a href="#">
+			<% if (page.orderBy == 'IdEvento') { %> 
+				<%= page.orderDesc ? "Mostrar antigos primeiro <i class='icon-arrow-down' />" : "Mostrar recentes primeiro <i class='icon-arrow-up' />" %>
+			<% } else { %>
+				Ordenar pelo cadastro no sistema <i class='icon-arrow-down' />
+			<% } %>
+			</a>
+		</p>
+		
 		
 		<div id="no-more-tables">
 		
@@ -174,7 +186,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade modal-on-top"  data-backdrop="static" id="eventoDetailDialog">
+	<div class="modal hide fade animated bounceIn modal-on-top"  data-backdrop="static" id="eventoDetailDialog">
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>

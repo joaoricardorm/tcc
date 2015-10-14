@@ -168,6 +168,18 @@ View2 = Backbone.View.extend({
 				page.showDetailDialog(m);
 			});
 
+			//Ordenar pelo cadastro
+			$('.ordemCadastro').click(function(e) {
+ 				e.preventDefault();
+				var prop = this.id.replace('ordemCadastro_','');
+
+				// toggle the ascending/descending before we change the sort prop
+				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
+				page.fetchParams.orderBy = prop;
+				page.fetchParams.page = 1;
+ 				page.fetchEventos(page.fetchParams);
+ 			});
+			
 			// make the headers clickable for sorting
  			$('table.collection thead tr th').click(function(e) {
  				e.preventDefault();

@@ -21,8 +21,7 @@ input, button, select, textarea,
 	text-rendering: optimizeSpeed;
 }
 
-
-a, .a { color:lightslateblue; text-decoration:none; cursor:pointer; }
+a, .a { color:lightslateblue; text-decoration:none!important; cursor:pointer; }
 a:active .a:active, a:visited, .a:visited { color:slateblue; text-decoration:none; }
 a:hover, .a:hover { color:crimson; text-decoration:none; }
 
@@ -35,6 +34,23 @@ a:hover, .a:hover { color:crimson; text-decoration:none; }
 a.btn.btn-default { color:#333; }
 a.btn.btn-danger { color:white; }
 .btn { text-decoration:none; }
+
+img.thumbnail.small {
+	max-width:250px;
+	max-height:250px;
+}
+
+.grayscale-contrast-filter {
+	-webkit-filter: grayscale(100%) brightness(150%);
+	   -moz-filter: grayscale(100%) brightness(150%);
+		-ms-filter: grayscale(100%) brightness(150%);
+		 -o-filter: grayscale(100%) brightness(150%);
+	filter: grayscale(100%) brightness(150%);
+}
+
+.thumb-imagem-alterar {
+	margin-top:5px;
+}
 
 .container.hero-unit { padding-bottom:10px; }
 
@@ -79,6 +95,17 @@ h1.titulo { margin-top:0; float:left; }
 	margin-top:0!important;
 }
 
+/* Altera animação de abertura do modal */
+.modal.fade {
+	-webkit-animation-duration: 300ms;
+	animation-duration: 300ms;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+
+	-webkit-animation-name: zoomInUp;
+	animation-name: zoomInUp;
+}
+
 .modal-backdrop, .modal-backdrop.fade.in {
 	background-color:#7a6ec7!important;
 }
@@ -113,6 +140,7 @@ h1.titulo { margin-top:0; float:left; }
 /**INPUT LADO A LADO EM FORM**/
 .margin-right-bigger-sm { margin-right:15px; }
 @media screen and (max-width:767px){
+	img.thumbnail.small { zoom:0.8; }
 	.margin-right-bigger-sm { margin-right:0; }
 	.block-sm { display:block; margin:0 0 15px 0; width:100%; box-sizing:border-box;}
 	.modal-footer .btn.block-sm { margin-left:0; } 
@@ -175,7 +203,7 @@ span.buttonContainer {
 	-moz-transition: all 70ms ease-in-out;
 }
 
-[class^=icon-], table.collection tr th [class^="icon"] { margin-right:5px; text-decoration:none; }
+[class^=icon-], table.collection tr th [class^="icon"] { margin-right:5px; text-decoration:none!important; }
 [class^=icon-].icon-margin-left { margin-right:0; margin-left:5px; }
 
 
@@ -392,8 +420,8 @@ Basic Style
 
 -------------------------------- */
 .cd-breadcrumb, .cd-multi-steps {
-  width: 90%;
-  max-width: 768px;
+  width: 100%;
+  /*max-width: 768px;*/
   padding: 0em 0em;
   margin: 0em auto;
   /* background-color: #edeff0; */
@@ -684,7 +712,7 @@ Multi steps indicator
   }
 
   .cd-multi-steps.text-top li, .cd-multi-steps.text-bottom li {
-    width: 155px;
+    width: 160px;
     text-align: center;
   }
   .cd-multi-steps.text-top li::after, .cd-multi-steps.text-bottom li::after {

@@ -28,7 +28,31 @@ class Palestrante extends PalestranteDAO
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
 
-		return parent::Validate();
+		// EXAMPLE OF CUSTOM VALIDATION LOGIC
+		$this->ResetValidationErrors();
+		$errors = $this->GetValidationErrors();
+		
+		// CAMPOS OBRIGATÓRIOS
+		if (!$this->Nome) $this->AddValidationError('Nome','Nome é obrigatório');
+		if (!$this->Cpf) $this->AddValidationError('Cpf','CPF é obrigatório');
+		
+		//validacao do CPF e E-mail
+		if($this->Cpf && !preg_match('/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/i', $this->Cpf)) $this->AddValidationError('Cpf','CPF inválido');
+		if($this->Email && !filter_var($this->Email, FILTER_VALIDATE_EMAIL)) $this->AddValidationError('Email','E-mail inválido'); 
+		
+		//Valida se palestrante ja existe pelo cpf
+		try {
+			$criteria = new PalestranteCriteria();
+			$criteria->Cpf_Equals = $this->Cpf;
+		
+			$user = $this->_phreezer->GetByCriteria("Palestrante", $criteria);	
+		} catch(Exception $ex) {
+		}
+		//mostra erro somente se o novo email pertencer a outro usuario e nao a si mesmo		
+		if(isset($user->Cpf) && $user->IdPalestrante != $this->IdPalestrante)
+			$this->AddValidationError('Cpf','Esse CPF pertence a outro palestrante cadastrado no sistema');
+		
+		return !$this->HasValidationErrors();
 	}
 
 	/**

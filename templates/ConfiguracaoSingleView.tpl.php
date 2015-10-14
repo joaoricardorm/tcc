@@ -7,7 +7,6 @@
 
 <script type="text/javascript">	
 	$LAB
-	.script(base+"scripts/jquery.maskedinput.min.js").wait()
 	.script(base+"scripts/Simple-Ajax-Uploader/SimpleAjaxUploader.js").wait()
 	.script(base+"scripts/app/configuracoes.js").wait(function(){
 		$(document).ready(function(){			
@@ -21,15 +20,6 @@
 </script>
 
 <link href="scripts/Simple-Ajax-Uploader/styles.css" type="text/css" rel="stylesheet">
-	
-<style>
-.cropit-image-preview, .zoom {
-	width:300px;
-}
-.cropit-image-preview {
-	height:250px;
-}
-</style>
 
 <div class="container">
 	
@@ -52,7 +42,7 @@
 		<thead>
 			<tr>
 				<th id="header_NomeInstituicao"><i class="icon icon-briefcase"></i>Nome da instituição</th>
-				<th id="header_ImagemLogo"><i class="icon icon-picture"></i>Imagem de logotipo</th>
+				<th id="header_ImagemLogo"><i class="icon icon-picture"></i>Logotipo</th>
 				<th id="header_Cnpj"><i class="icon icon-briefcase"></i>CNPJ</th>
 				<th id="header_Telefone"><i class="icon icon-phone"></i>Telefone</th>
 			</tr>
@@ -144,7 +134,7 @@
 	</script>
 
 	<!-- modal edit dialog -->
-	<div class="modal hide fade modal-on-top"  data-backdrop="static" id="configuracaoDetailDialog">
+	<div class="modal hide fade animated bounceIn modal-on-top"  data-backdrop="static" id="configuracaoDetailDialog">
 		<div class="modal-header">
 			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
 			<h3>

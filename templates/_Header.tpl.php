@@ -19,6 +19,7 @@
 		<link href="styles/style.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" />
 		<link href="bootstrap/css/font-awesome.min.css" rel="stylesheet" />
+		<link href="styles/animate.min.css" rel="stylesheet" />
 		<!--[if IE 7]>
 		<link rel="stylesheet" href="bootstrap/css/font-awesome-ie7.min.css">
 		<![endif]-->
@@ -78,6 +79,7 @@
 				.script(base+"scripts/libs/underscore.date.min.js")
 				.script(base+"scripts/libs/backbone-min.js")
 				.script(base+"scripts/global.js")
+				.script(base+"scripts/jquery.maskedinput.min.js").wait()
 				.script(base+"scripts/app.js")
 				.script(base+"scripts/model.js").wait()
 				.script(base+"scripts/view.js").wait()

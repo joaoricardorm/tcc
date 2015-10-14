@@ -355,7 +355,19 @@ model.PalestranteModel = Backbone.Model.extend({
 		'cpf': '',
 		'cargo': '',
 		'imagemAssinatura': ''
-	}
+	},
+	
+	
+	 save: function (key, val, options) {
+     this.beforeSave(key, val, options);
+     return Backbone.Model.prototype.save.call(this, key, val, options);
+   },
+
+   beforeSave: function (key, val, options) {
+
+   }
+	
+	
 });
 
 /**

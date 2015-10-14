@@ -125,6 +125,18 @@ var page = {
 				page.showDetailDialog(m);
 			});
 
+			//Ordenar pelo cadastro
+			$('.ordemCadastro').click(function(e) {
+ 				e.preventDefault();
+				var prop = this.id.replace('ordemCadastro_','');
+
+				// toggle the ascending/descending before we change the sort prop
+				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
+				page.fetchParams.orderBy = prop;
+				page.fetchParams.page = 1;
+ 				page.fetchPalestras(page.fetchParams);
+ 			});
+			
 			// make the headers clickable for sorting
  			$('table.collection thead tr th').click(function(e) {
  				e.preventDefault();
@@ -220,8 +232,23 @@ var page = {
 						success: function(c, response) {
 		
 							//preenche o campo correspondente na view com os nomes dos palestrantes
-							if(response.totalResults > 0)
-								$('#'+item.get('idPalestra')+' .lista-palestrantes').text(c.pluck('nomePalestrante').join(', '));
+							if(response.totalResults > 0){
+								
+								//JUNTAR NOMES COM , E "e" no final
+								var index;
+								var nomes = '';
+								var a = c.pluck('nomePalestrante');
+								for (index = 0; index < a.length; ++index) {
+									if(index === a.length-2)
+										nomes += a[index] + ' e ';
+									else if(index < a.length-1)
+										nomes += a[index] + ', ';
+									else
+										nomes += a[index];
+								}
+	
+								$('#'+item.get('idPalestra')+' .lista-palestrantes').text(nomes);
+							}
 						
 						},
 						error: function(model, response) {
@@ -457,8 +484,8 @@ var page = {
 							// if the collection was initally new then we need to add it to the collection now
 							if (page.palestra.isNew()) { page.palestras.add(page.palestra) }
 							
-							//REMOVE A PALESTRA TEMPORÁRIA AO CLICAR EM CANCELAR
-							$("#cancelarSavePalestraButton").click(function(e) {
+							//REMOVE A PALESTRA TEMPORÁRIA AO CLICAR EM CANCELAR OU FECHAR
+							$('#palestraDetailDialog').on('hidden',function(e) {
 								e.preventDefault();
 								
 								//se o nome for .
@@ -737,7 +764,7 @@ var page = {
 			wait: true,
 			success: function(){
 				$('#palestraDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('Palestra foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('Palestra foi " + (isNew ? "inserida" : "editada") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 				
 				page.excluir = false;	

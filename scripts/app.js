@@ -233,7 +233,7 @@ var app = {
 	 * @param server response
 	 */
 	getErrorMessage: function(resp) {
-		var msg = 'Ocorreu um erro desconhecido';
+		var msg = 'Ocorreu um erro desconhecido' + JSON.stringify( resp );
 		try	{
 			var json = $.parseJSON(resp.responseText);
 			msg = json.message;
