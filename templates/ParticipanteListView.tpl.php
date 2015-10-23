@@ -6,7 +6,9 @@
 ?>
 
 <script type="text/javascript">
-	$LAB.script(base+"scripts/app/participantes.js").wait(function(){
+	$LAB
+	.script(base+"scripts/handsontable/handsontable.full.js")
+	.script(base+"scripts/app/participantes.js").wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});
@@ -18,7 +20,48 @@
 	});
 </script>
 
+<link href="scripts/handsontable/handsontable.full.css" rel="stylesheet" />
+
 <div class="container">
+
+
+<div id="modalNaoPodeExcluirVarios" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close btn btn-danger btn-big" data-dismiss="modal">×</a>
+        <h4 class="modal-title">Não foi possível excluir</h4>
+      </div>
+      <div class="modal-body">
+        <p>É necessário excluir um participante por vez</p>
+      </div>
+      <div class="modal-footer">
+	    <button id="btnOkNaoPodeExcluirVarios" type="button" data-dismiss="modal" class="btn btn-primary">Ok</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="modalConfirmarExclusao" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a id="btnCloseExclusao" class="close btn btn-danger btn-big" data-dismiss="modal">×</a>
+        <h4 class="modal-title">Excluir participante</h4>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir o(a) participante?</p>
+		<h4></h4>
+      </div>
+      <div class="modal-footer">
+	    <button id="btnConfirmarExclusao" type="button" class="btn btn-primary">Sim</button>
+        <button id="btnCancelarExclusao" type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <h1>
 	<i class="icon-th-list"></i> Participantes
@@ -56,55 +99,31 @@
 	</script>
 
 	<!-- underscore template for the model -->
-	<script type="text/template" id="participanteModelTemplate">
+	<script type="text/template" id="participanteModelTemplate">		
 		<form class="form-horizontal" onsubmit="return false;">
-			<fieldset>
-				<div id="idParticipanteInputContainer" class="control-group">
-					<label class="control-label" for="idParticipante">Id Participante</label>
-					<div class="controls inline-inputs">
-						<span class="input-xlarge uneditable-input" id="idParticipante"><%= _.escape(item.get('idParticipante') || '') %></span>
-						<span class="help-inline"></span>
-					</div>
+			
+			<p>
+				<button tabindex="3" id="remove_car" class="intext-btn btn btn-danger block-sm"><i class="icon-trash icon-white"></i> Excluir Participante Selecionado</button>
+				
+				<span class="pull-right">
+					<button id="save_car" class="intext-btn btn btn-primary block-sm"><i class="icon-save icon-white"></i> Salvar</button>
 				</div>
-				<div id="nomeInputContainer" class="control-group">
-					<label class="control-label" for="nome">Nome</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="nome" placeholder="Nome" value="<%= _.escape(item.get('nome') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div id="emailInputContainer" class="control-group">
-					<label class="control-label" for="email">Email</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="email" placeholder="Email" value="<%= _.escape(item.get('email') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-				<div id="cpfInputContainer" class="control-group">
-					<label class="control-label" for="cpf">Cpf</label>
-					<div class="controls inline-inputs">
-						<input type="text" class="input-xlarge" id="cpf" placeholder="Cpf" value="<%= _.escape(item.get('cpf') || '') %>">
-						<span class="help-inline"></span>
-					</div>
-				</div>
-			</fieldset>
+			</p>
+			<p class="clearfix">
+				<span class="pull-right">
+					<a id="add_car" class="intext-btn margin-right-bigger-sm block-sm"><i class="icon-plus icon-white"></i> Adicionar Novo Participante</a>
+					
+					<span class="input-append searchContainer">
+						<input id="search_field" type="text" placeholder="Buscar..." />
+						<span class="btn add-on"><i class="icon-search"></i></span>
+					</span>
+				</span>
+			</p>
+			
+			<div id="table-participantes"></div>
+			
 		</form>
 
-		<!-- delete button is is a separate form to prevent enter key from triggering a delete -->
-		<form id="deleteParticipanteButtonContainer" class="form-horizontal" onsubmit="return false;">
-			<fieldset>
-				<div class="control-group">
-					<label class="control-label"></label>
-					<div class="controls">
-						<button id="deleteParticipanteButton" class="btn btn-danger"><i class="icon-trash icon-white"></i> Excluir Participante</button>
-						<span id="confirmDeleteParticipanteContainer" class="hide">
-							<button id="cancelDeleteParticipanteButton" class="btn">Cancelar</button>
-							<button id="confirmDeleteParticipanteButton" class="btn btn-success">Confirmar</button>
-						</span>
-					</div>
-				</div>
-			</fieldset>
-		</form>
 	</script>
 
 	<!-- modal edit dialog -->
@@ -119,10 +138,6 @@
 		<div class="modal-body">
 			<div id="modelAlert"></div>
 			<div id="participanteModelContainer"></div>
-		</div>
-		<div class="modal-footer">
-			<button id="saveCertificadoButton" class="btn btn-primary">Salvar</button>
-			<button class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>
 

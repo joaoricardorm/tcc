@@ -228,6 +228,44 @@ background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
 	opacity: 1;	
 }
 
+/* HANDSONTABLE */
+#table-participantes {
+	overflow:scroll;
+}
+#table-participantes table td:nth-child(2),
+#table-participantes table th:nth-child(2)
+{
+	width:10px!important;
+}
+#table-participantes .currentRow {
+    background: #e0dbfc;
+}
+
+#table-participantes td[data-error], td.htInvalid {
+    background: #ff4c42!important;
+    color:white;
+}
+
+#table-participantes td[data-error]:after, td.htInvalid:before {
+    /* position: absolute; */
+    float:right;
+    white-space: nowrap;
+    color:darkred;
+    text-align: right;
+    font-weight: 700;
+	font-size:10px;
+    content: 'Erro';
+}
+
+.htComments { z-index:6000!important; }
+
+.error-handsontable-item {
+	margin:0 -10px;
+    padding: 5px 20px;
+    background: darkred;
+    color: lightyellow;
+}
+
 table.collection { background:#FFF; }
 table.collection thead {
 	background: darkorange;
@@ -283,6 +321,23 @@ table.collection.no-hover thead th:hover {
 	clear:both;
 	font-size:14px;
 }
+.alert.alert-dark {
+    background: #333;
+	background: rgba(0,0,0,0.8);
+    border: none;
+    color: #ccc;
+}
+.alert.alert-dark.small {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+.alert.alert-dark .close {
+	top: -2px;
+    right: 0px;
+    line-height: 20px;
+    padding: 2px 5px;
+}
+.goto {margin-left:10px;}
 
 /* IE8 hack para exibir senha ao digitar */
 input[type="password"] {

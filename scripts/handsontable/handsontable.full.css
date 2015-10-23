@@ -86,7 +86,7 @@
 
 .handsontable th,
 .handsontable td {
-  border-right: 1px solid #CCC;
+  border-left: 1px solid #CCC!important;
   border-bottom: 1px solid #CCC;
   height: 22px;
   empty-cells: show;
@@ -109,7 +109,7 @@
   white-space: nowrap;
 }
 
-.handsontable th:last-child {
+.handsontable th:last-child, .handsontable td:last-child {
   /*Foundation framework fix*/
   border-right: 1px solid #CCC;
   border-bottom: 1px solid #CCC;

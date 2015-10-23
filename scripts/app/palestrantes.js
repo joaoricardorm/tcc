@@ -266,7 +266,9 @@ var page = {
 			window.history.pushState('Object', 'Palestrantes', base+'atividade/'+page.palestra.get('idPalestra')+'/'+app.parseURL(page.palestra.get('nome'))+'/palestrantes/');
 			
 			//RECARREGA A PAGINA POR CAUSA DO UPLOADER
-			window.location.reload();
+			setTimeout(function(){
+				window.location.reload();
+			}, 1000);
 		});
 
 		// save the model when the save button is clicked

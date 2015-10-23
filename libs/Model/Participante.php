@@ -28,7 +28,19 @@ class Participante extends ParticipanteDAO
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
 
-		return parent::Validate();
+		// EXAMPLE OF CUSTOM VALIDATION LOGIC
+		$this->ResetValidationErrors();
+		$errors = $this->GetValidationErrors();
+
+		// THESE ARE CUSTOM VALIDATORS
+		if (!$this->Nome) $this->AddValidationError('Nome','Nome é obrigatório');
+		if (!$this->Cpf) $this->AddValidationError('Cpf','CPF é obrigatório');
+		
+		//validacao do CPF e E-mail
+		if($this->Cpf && !preg_match('/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/i', $this->Cpf)) $this->AddValidationError('Cpf','CPF inválido');
+		if($this->Email && !filter_var($this->Email, FILTER_VALIDATE_EMAIL)) $this->AddValidationError('Email','E-mail inválido'); 
+		
+		return !$this->HasValidationErrors();
 	}
 
 	/**

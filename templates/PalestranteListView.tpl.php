@@ -67,7 +67,7 @@
 			<h3>Nenhum palestrante encontrado</h3>
 	<% } else { %>
 		
-	<p class="pull-left block-sm ordemCadastro" id="ordemCadastro_IdPalestrante">
+	<p class="ordemCadastro" id="ordemCadastro_IdPalestrante">
 		<a href="#">
 		<% if (page.orderBy == 'IdPalestrante') { %> 
 			<%= page.orderDesc ? "Mostrar antigos primeiro <i class='icon-arrow-down' />" : "Mostrar recentes primeiro <i class='icon-arrow-up' />" %>
@@ -77,29 +77,7 @@
 		</a>
 	</p>
 	
-	
-	 <% 
-		var total = items.totalResults;
-		var quantidade = items.pageSize;
-		var pagina = items.currentPage;
-		var inicio= quantidade * pagina - quantidade;
-		var fim;
-		
-		if(pagina == 1)
-			inicio = 1;
-		else
-			inicio = inicio+1;
-		
-		if((quantidade*pagina) <= total)
-			fim = quantidade*pagina;
-		else
-			fim = total
-	 %>
-	
-	<p class="pull-right block-sm">Mostrando de <%=inicio%> a <%=fim%> de <%=items.totalResults%> <%console.log(items)%> palestrantes encontrados</p>
-	
-	
-		<div id="no-more-tables">
+	<div id="no-more-tables">
 	
 		<table class="collection table table-hover table-striped">
 		<thead>

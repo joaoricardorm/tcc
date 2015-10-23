@@ -252,6 +252,116 @@ class ParticipanteController extends AppBaseController
 			$this->RenderExceptionJSON($ex);
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * API Method para inserir um array de participantes vindos da handsontable
+	 */
+	public function UpdateAll()
+	{
+		
+		//$someJSON = $_GET['dados']; 
+		
+		try
+		{
+						
+			$json = json_decode(RequestUtil::GetBody());
+			
+			//$json = json_decode($someJSON);
+
+			if (!$json)
+			{
+				throw new Exception('The request body does not contain valid JSON');
+			}
+
+			$errors_p = array();
+			
+			$row = 0;
+			foreach ($json->data as $json){
+				
+				if($json->idParticipante == '' && $json->nome == '' && $json->email == '' && $json->nome == ''){
+				  //se linha estiver em branco
+				} else {
+			
+					$pk = $this->SafeGetVal($json, 'idParticipante', null);
+					
+					//SE TIVER ID É EDIÇÃO SENÃO CRIA UM NOVO PARTICIPANTE
+					if($pk != ''){
+						
+						try {
+							$participante = $this->Phreezer->Get('Participante',$pk);	
+						} catch (NotFoundException $ex){
+							$participante = new Participante($this->Phreezer);
+						}
+						
+					} else {
+						$participante = new Participante($this->Phreezer);
+					}
+
+					//se existir id, mas tudo estiver em branco o sistema exclui do banco
+					if($json->idParticipante != '' && $json->nome == '' && $json->email == '' && $json->nome == ''){
+					  $participante->Delete();
+					} else {
+
+					$participante->Nome = $this->SafeGetVal($json, 'nome', $participante->Nome);
+					$participante->Email = $this->SafeGetVal($json, 'email', $participante->Email);
+					$participante->Cpf = $this->SafeGetVal($json, 'cpf', $participante->Cpf);
+					
+					$participante->Validate();
+					$errors = $participante->GetValidationErrors();
+					
+					if (count($errors) > 0){
+						$errors_p[$participante->IdParticipante]['message'] = $participante->GetValidationErrors();								
+						$errors_p[ $participante->IdParticipante]['success'] = false;
+						$errors_p[ $participante->IdParticipante]['row'] = $row;
+					} else {
+						$participante->Save();
+						
+						if($pk == ''){
+							$dados = array( 'idParticipante' => $participante->IdParticipante, 'row' => $row);
+							$sucesso['novo'][] = $dados;
+						}
+					}
+
+					// if (count($errors) > 0)
+					// {
+						// $this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors);
+					// }
+					// else
+					// {
+						// $participante->Save();
+						// $this->RenderJSON($participante, $this->JSONPCallback(), true, $this->SimpleObjectParams());
+					// }
+					
+					} //fim do cadastro se nao for exclusao
+			
+				} //fim do cadastro caso nada esteja em branco
+				
+				$row++;
+			}
+			
+			if (count($errors_p) > 0)
+			{
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors_p);
+			} else {
+				$sucesso['success'] = true;
+				$sucesso['message'] = 'Participantes salvos com sucesso';
+				$this->RenderJSON($sucesso);
+			}
+			
+		}
+		catch (Exception $ex)
+		{
+			$this->RenderExceptionJSON($ex);
+		}
+	}
+	
 }
 
 ?>

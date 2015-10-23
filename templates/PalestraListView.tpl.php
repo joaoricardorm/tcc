@@ -51,7 +51,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <a class="close btn btn-danger btn-big" data-dismiss="modal">×</a>
         <h4 class="modal-title">Excluir atividade</h4>
       </div>
       <div class="modal-body">

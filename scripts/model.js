@@ -401,8 +401,19 @@ model.ParticipanteModel = Backbone.Model.extend({
  */
 model.ParticipanteCollection = model.AbstractCollection.extend({
 	url: 'api/participantes',
-	model: model.ParticipanteModel
+	model: model.ParticipanteModel,
+	splice: hackedSplice
 });
+
+// use the "good" Collection methods to emulate Array.splice
+function hackedSplice(index, howMany /* model1, ... modelN */) {
+var args = _.toArray(arguments).slice(2).concat({at: index}),
+  removed = this.models.slice(index, index + howMany);
+
+this.remove(removed).add.apply(this, args);
+
+return removed;
+}
 
 /**
  * Usuario Backbone Model

@@ -25,7 +25,7 @@ var app = {
 
 		var html = '<div id="'+id+'" class="alert '+ this.escapeHtml(style) +'" style="display: none;">'
 			+ '<a class="close" data-dismiss="alert">&times;</a>'
-			+ '<span>'+ this.escapeHtml(message) +'</span>'
+			+ '<span>'+ message +'</span>'
 			+ '</div>';
 
 		// scroll the alert message into view
