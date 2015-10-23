@@ -25,14 +25,18 @@
 			<li class="visited"><a href="eventos"><i class="icon-tag"></i>Eventos</a></span></li> <!-- Classe "visited" -->
 			<li class="current"><span><span class="remove-on-single"><i class="icon-tags"></i>Atividades</span><span class="show-on-single"><i class="icon-tag"></i>Detalhes do evento</span></span></li>
 			<li>	
-				<span class="show-on-single">
-					<a id="link-palestra-breadcrumb" href="#"><i class="icon-microphone"></i>Palestrantes</a>
+				<span class="hidden">
+					<a id="link-palestrantes-breadcrumb" href="#"><i class="icon-microphone"></i>Palestrantes</a>
 				</span>
-				
 				<span class="muted remove-on-single"><i class="icon-microphone"></i>Palestrantes</span>
 			</li>
 			
-			<li><span class="muted"><i class="icon-group"></i>Participantes</span></li>
+			<li>
+				<span class="hidden">
+					<a id="link-participantes-breadcrumb" href="#"><i class="icon-group"></i>Participantes</a>
+				</span>
+				<span class="muted remove-on-single"><i class="icon-group"></i>Participantes</span>
+			</li>
 		</ol>
 </nav>		
 
@@ -111,10 +115,12 @@
 					<a class="btn btn-primary margin-right-bigger-sm block-sm"  href="atividade/<%=firstItem.idPalestra%>/<%=app.parseURL(firstItem.nome)%>/palestrantes/">
 						<i class="icon-microphone"></i>Palestrantes
 					</a>
+					
+					<a class="btn btn-primary margin-right-bigger-sm block-sm"  href="atividade/<%=firstItem.idPalestra%>/<%=app.parseURL(firstItem.nome)%>/participantes/">
+						<i class="icon-group"></i>Participantes
+					</a>
 				
 				<?php } ?>
-				
-				<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
 			</p>
 		<% } %>
 		
@@ -198,7 +204,13 @@
 					</a>
 				</span>
 			</li>
-			<li><span class="muted"><i class="icon-group"></i>Participantes</span></li>
+			<li>
+				<span>
+					<a href="atividade/<%=item.get('idPalestra')%>/<%=app.parseURL(item.get('nome'))%>/participantes/">
+						<i class="icon-group"></i>Participantes
+					</a>
+				</span>
+			</li>
 		</ol>
 		</nav>
 	
@@ -271,7 +283,9 @@
 							<i class="icon-microphone"></i>Detalhes dos Palestrantes
 						</a>
 						
-						<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
+						<a class="btn btn-primary margin-right-bigger-sm block-sm" id="participantesButton" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/participantes/">
+							<i class="icon-group"></i>Participantes
+						</a>
 					
 					</div>
 				</div>

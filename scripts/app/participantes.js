@@ -84,6 +84,18 @@ var page = {
 				//acha o participante clicado na handsontable
 				page.SearchTableById = this.id;		
 			});
+			
+			//Ordenar pelo cadastro
+			$('.ordemCadastro').click(function(e) {
+ 				e.preventDefault();
+				var prop = this.id.replace('ordemCadastro_','');
+
+				// toggle the ascending/descending before we change the sort prop
+				page.fetchParams.orderDesc = (prop == page.fetchParams.orderBy && !page.fetchParams.orderDesc) ? '1' : '';
+				page.fetchParams.orderBy = prop;
+				page.fetchParams.page = 1;
+ 				page.fetchParticipantes(page.fetchParams);
+ 			});
 
 			// make the headers clickable for sorting
  			$('table.collection thead tr th').click(function(e) {
@@ -97,6 +109,14 @@ var page = {
  				page.fetchParticipantes(page.fetchParams);
  			});
 
+			// Adiciona o atributo data-title nas tr da tabela para responsividade
+			$( "table.collection tbody td" ).each(function(index){
+				total = $( "table.collection thead th").length;
+				titulo = $( "table.collection thead th").eq(index % total).text();
+				
+				$(this).attr('data-title',titulo); 
+			}); 
+			
 			// attach click handlers to the pagination controls
 			$('.pageButton').click(function(e) {
 				e.preventDefault();
@@ -109,7 +129,7 @@ var page = {
 		});
 
 		// backbone docs recommend bootstrapping data on initial page load, but we live by our own rules!
-		this.fetchParticipantes({ page: 1 });
+		this.fetchParticipantes({ page: 1, orderBy: 'IdParticipante', orderDesc: '1' });
 
 		// initialize the model view
 		this.modelView = new view.ModelView({
@@ -159,12 +179,14 @@ var page = {
 				}
 
 				app.hideProgress('loader');
+				app.hideProgress('savingFloat');
 				page.fetchInProgress = false;
 			},
 
 			error: function(m, r) {
 				app.appendAlert(app.getErrorMessage(r), 'alert-error',0,'collectionAlert');
 				app.hideProgress('loader');
+				app.hideProgress('savingFloat');
 				page.fetchInProgress = false;
 			}
 
@@ -179,6 +201,17 @@ var page = {
 	
 		// show the modal dialog
 		$('#participanteDetailDialog').modal({ backdrop: 'static', show: true });
+		
+		//FIXA BOTÃO DE SALVAR AO ROLAR PÁGINA
+		$('.modal-scrollable').scroll(function() {
+			 var a=$('.modal-scrollable').scrollTop();
+			 if(a > 100){
+				$('#save_car').css('top',(a+20)+'px').addClass('affix');
+			 } else {
+				$('#save_car').removeClass('affix'); 
+			 }
+		});		
+		
 
 		// if a model was specified then that means a user is editing an existing record
 		// if not, then the user is creating a new record
@@ -190,8 +223,7 @@ var page = {
 			// this is a new record, there is no need to contact the server
 			page.renderModelView(false);
 		} else {
-$('#titulo-modal').html('Editar');
-$('#icone-acao-modal').removeClass('icon-plus-sign');
+
 			app.showProgress('modelLoader');
 
 			// fetch the model from the server so we are not updating stale data
@@ -205,6 +237,7 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 				error: function(m, r) {
 					app.appendAlert(app.getErrorMessage(r), 'alert-error',0,'modelAlert');
 					app.hideProgress('modelLoader');
+					app.hideProgress('savingFloat');
 				}
 
 			});
@@ -221,7 +254,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 	$('.modal .modal-body input[type=text]').first().click().focus();
 }, 500);
 
-		app.hideProgress('modelLoader');		
+		app.hideProgress('modelLoader');	
+		app.hideProgress('savingFloat');		
 
 
 //CARREGANDO
@@ -341,7 +375,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	
    // contextMenu: ["row_above", "row_below", "remove_row", "undo", "redo"],
 	height: $(window).height()-( $(window).height()/3.4 ),
-	colWidths: [10], //ESCONDE ID 0.1
+	colWidths: [0.1], //ESCONDE ID 0.1
 	stretchH: 'all',
 	className:  p.get('idParticipante'),
 	currentRowClassName: 'currentRow',
@@ -394,8 +428,10 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 					$(this).text('Excluindo...');
 				
 					//se existir id
-					if(hot.getDataAtCell(index, 0) != '')
+					if(hot.getDataAtCell(index, 0) != ''){
 						page.deleteModel();
+						page.fetchParticipantes(page.fetchParams);
+					}
 					
 					$('#modalConfirmarExclusao').modal('toggle');
 				});
@@ -441,19 +477,19 @@ var customRenderer = function (instance, td, row, col, prop, value) {
             // if first row, disable this option
             return hot.getSelected()[0] === 0;
           },
-		  name: 'Inserir linha acima'
+		  name: '<i class="icon-plus"></i> Inserir linha acima'
         },
-        "row_below": { name: 'Inserir linha abaixo'},
+        "row_below": { name: '<i class="icon-plus"></i> Inserir linha abaixo'},
         "hsep1": "---------",
         "remove_row": {
-          name: 'Excluir participante'
+          name: '<i class="icon-trash"></i> Excluir participante'
         },
 		"hsep2": "---------",
         "undo": {
-          name: 'Desfazer (Ctrl+Z)'
+          name: '<i class="icon-undo"></i> Desfazer (Ctrl+Z)'
         },
 		"redo": {
-          name: 'Refazer (Ctrl+Y)'
+          name: '<i class="icon-repeat"></i> Refazer (Ctrl+Y)'
         }
       }
     }
@@ -474,7 +510,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	});
 	var queryResult = hot.search.query(page.SearchTableById);
 	
-	hot.selectCell(queryResult[0].row, queryResult[0].col); //seleciona o item
+	hot.selectCell(queryResult[0].row, 1); //seleciona a coluna nome nome
 	
 	if(queryResult !== null)
     hot.render();
@@ -486,7 +522,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		search: true
 	});
 	var queryResult = hot.search.query(this.value);
-	if(queryResult !== null)
+	if(queryResult !== null && this.value !== '')
     hot.render();
   });
   
@@ -522,10 +558,10 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	hot.alter('insert_row',0);	
   });
 
-  Handsontable.Dom.addEvent(removeCar, 'click', function () {
-	console.log(hot.getSelected());
-	hot.alter('remove_row',hot.getSelected());	
-  });
+  // Handsontable.Dom.addEvent(removeCar, 'click', function () {
+	// console.log(hot.getSelected());
+	// hot.alter('remove_row',hot.getSelected());	
+  // });
   
   
   Handsontable.Dom.addEvent(saveCar, 'click', function() {
@@ -543,6 +579,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		},
 		beforeSend: function(){
 			app.showProgress('modelLoader');
+			app.showProgress('savingFloat');
 		},
 		error: function(model,response,scope){	
 
@@ -552,13 +589,12 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				$('.help-inline').html('');
 				
 				//Volta ao topo se der erro
-				$('.modal-scrollable').animate({
-					scrollTop: 30
-				}, 500);
+				$('.modal-scrollable').scrollTop(0);
 				
 				app.hideProgress('modelLoader');
+				app.hideProgress('savingFloat');
 				
-				app.appendAlert('Ocorreram erros ao salvar os participantes. Por favor verifique.', 'alert-error',0,'modelAlert');
+				app.appendAlert('Ocorreram erros ao salvar alguns participantes. Por favor verifique.', 'alert-error',0,'modelAlert');
 
 				try {
 					var json = $.parseJSON(model.responseText); 
@@ -574,8 +610,6 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 							if(!key)
 								elemento = $('#table-participantes');
 							//elemento.addClass('error');
-							
-							console.log('LELL',elemento);
 							
 							$.each( value.message , function(campo, msg, row) {
 								// var options = {
@@ -599,30 +633,27 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 								}
 								
 								app.appendAlert('<b style="color:#999">Erro na linha '+ (value.row+1) +' - '+nomeCampo+':</b> '+msg+' ', 'alert-dark small',0,'modelAlert');
-								$('<a class="goto btn btn-small btn-warning" data-row="'+value.row+'">CORRIGIR</a>').appendTo('#modelAlert .alert:last-child');
+						
+								$('<a class="goto btn btn-small btn-warning" data-id="'+key+'"data-row="'+value.row+'">CORRIGIR</a>').appendTo('#modelAlert .alert:last-child');
 								$('<a class="gotoback btn btn-small btn-primary hide" data-row="'+value.row+'">CORRIGIDO</a>').appendTo('#modelAlert .alert:last-child');
 								
-								$('.goto').on('click',function(e){
+								$('.goto').click(function(e){
+									var id = $(this).data('id');
 									var linha = parseInt($(this).data('row'));
 									hot.selectCell(linha, 0, linha, 3, true);
 									
 									//$(this).parent().css({position:'fixed',top: $('.modal-scrollable').scrollTop() ,zindex:6000});
 									$('.alert').removeClass('stick');
-									$(this).parent().addClass('stick').css({'position':'absolute','z-index':6000});
+									$(this).parent().addClass('stick').addClass('float-bottom-notification');
 									
 									$('.modal-scrollable').scroll(function() {
 										 var a=$('.modal-scrollable').scrollTop();
-										 $('.stick').css('top',a+'px');
+										 $('.stick').css('margin-top',a+'px');
 									});
 									
-									//Desce até a linha do elemento
-									// console.log('ROLAGEM DESSE CARA',elemento.offset().top, 'Nova alt', elemento.offset().top - $('.modal-scrollable').scrollTop());
-									$('.wtHolder').animate({
-									  scrollTop: elemento.offset().top
-									}, 0);
-									$('.modal-scrollable').animate({
-										scrollTop: elemento.offset().top
-									}, 500);
+									//Desce até a linha do elemento (-500 no monitor 22 pol)
+									$('.wtHolder').scrollTop( $('#item_'+id).position().top - ($('.handsontable').height()/2) );
+									$('.modal-scrollable').scrollTop( $(document).height() + 300 ); 
 									
 									$(this).parent().find('.gotoback').removeClass('hide');
 									$(this).hide();
@@ -633,12 +664,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 									//$(this).unbind('click');
 								
 										//Volta ao topo se der erro
-										$('.wtHolder').animate({
-											scrollTop: 0
-										}, 500);
-										$('.modal-scrollable').animate({
-											scrollTop: 30
-										}, 500);
+										$('.modal-scrollable, .wtHolder').scrollTop(0);
 				
 										$('.alert.stick').addClass('animated bounceOut').delay(1000).queue(function(){
 											$(this).remove();
@@ -681,7 +707,15 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		$('.control-group').removeClass('error');
 		$('.help-inline').html('');
 		
-		app.hideProgress('modelLoader');		
+		//Volta ao topo se der erro
+		$('.modal-scrollable').scrollTop(0);
+				
+		//Recarrega dados		
+		hot.loadData(ppp.rows);
+		page.fetchParticipantes(page.fetchParams);
+		
+		app.hideProgress('modelLoader');
+		app.hideProgress('savingFloat');		
 		app.appendAlert(response.message, 'alert-success',0,'modelAlert');
 		
 		//Adiciona id dos novos participantes cadastrados na tabela
@@ -811,7 +845,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				$('#participanteDetailDialog').modal('hide');
 				setTimeout("app.appendAlert('Participante foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
-
+				app.hideProgress('savingFloat');
 				// if the collection was initally new then we need to add it to the collection now
 				if (isNew) { page.participantes.add(page.participante) }
 
@@ -826,6 +860,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 			error: function(model,response,scope){
 
 				app.hideProgress('modelLoader');
+				app.hideProgress('savingFloat');
 
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 
@@ -859,8 +894,9 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 			wait: true,
 			success: function(){
 				$('#participanteDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('The Participante record was deleted','alert-success',3000,'collectionAlert')",500);
+				setTimeout("app.appendAlert('O participante foi excluido','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
+				app.hideProgress('savingFloat');
 
 				if (model.reloadCollectionOnModelUpdate) {
 					// re-fetch and render the collection after the model has been updated
@@ -870,6 +906,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 			error: function(model,response,scope) {
 				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 				app.hideProgress('modelLoader');
+				app.hideProgress('savingFloat');
 				
 				$('.modal').addClass('animated shake').delay(1000).queue(function(){
 					$(this).removeClass("animated shake").dequeue();

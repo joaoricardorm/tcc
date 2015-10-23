@@ -266,6 +266,25 @@ background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
     color: lightyellow;
 }
 
+.float-bottom-notification {
+	position: absolute;
+    left: -25%;
+    z-index: 6000;
+    bottom: 5%;
+    right: auto;
+    margin: auto auto auto 50%;
+    height: auto;
+}
+#savingFloat { display:none; bottom:10%; left:-10%; }
+
+#save_car.affix {
+    position: absolute;
+	z-index:6000;
+    right: 5%;
+    width: 120px;
+    border: 10px white solid;
+}
+
 table.collection { background:#FFF; }
 table.collection thead {
 	background: darkorange;

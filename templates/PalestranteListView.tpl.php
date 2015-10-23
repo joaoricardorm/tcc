@@ -37,14 +37,14 @@
 
 
 <p><a href="evento/<?php $this->eprint( $this->Palestra->IdEvento . '/atividades/' . $this->Palestra->IdPalestra . '/'. AppBaseController::parseURL($this->Palestra->Nome) . '/' ); ?>">
-	<button class="btn btn-default block-sm"><i class="icon-arrow-left"></i>Outras informações da atividade</button>
+	<button class="btn btn-default block-sm"><i class="icon-arrow-left"></i>Outras informações <?php echo ($this->Palestra->ProprioEvento) ? 'do evento' : 'da atividade'; ?></button>
 </a></p>
 
 <?php } ?>
 
 
 <h1>
-	<i class="icon-microphone"></i> Palestrantes da atividade <?php $this->eprint($this->Palestra->Nome); ?> 
+	<i class="icon-microphone"></i> Palestrantes <?php echo ($this->Palestra->ProprioEvento) ? 'do evento' : 'da atividade'; ?> <?php $this->eprint($this->Palestra->Nome); ?> 
 	<span id=loader class="loader progress progress-striped active"><span class="bar"></span></span>
 </h1>
 

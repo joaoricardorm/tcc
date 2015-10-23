@@ -37,6 +37,29 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function ListView()
 	{
+		
+		//Dados da palestra
+		$this->Assign('Palestra',null);
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if($pk){
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$pkEvento = $palestra->IdEvento;
+				
+				$evento = $this->Phreezer->Get('Evento',$pkEvento);
+				$this->Assign('Evento',$evento);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe");
+			}
+		
+		}
+		
+		
 		$this->Render();
 	}
 
@@ -291,17 +314,18 @@ class ParticipanteController extends AppBaseController
 			
 					$pk = $this->SafeGetVal($json, 'idParticipante', null);
 					
-					//SE TIVER ID É EDIÇÃO SENÃO CRIA UM NOVO PARTICIPANTE
+						
 					if($pk != ''){
 						
+						//SE TIVER ID É EDIÇÃO SENÃO CRIA UM NOVO PARTICIPANTE
 						try {
-							$participante = $this->Phreezer->Get('Participante',$pk);	
-						} catch (NotFoundException $ex){
-							$participante = new Participante($this->Phreezer);
+							$participante = $this->Phreezer->Get('Participante',$pk);								
+						} catch (NotFoundException $ex){ 
+							throw new Exception('Participante não encontrado');
 						}
-						
+					
 					} else {
-						$participante = new Participante($this->Phreezer);
+							$participante = new Participante($this->Phreezer);
 					}
 
 					//se existir id, mas tudo estiver em branco o sistema exclui do banco

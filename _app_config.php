@@ -175,6 +175,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'DELETE:api/palestrante/(:num)' => array('route' => 'Palestrante.Delete', 'params' => array('idPalestrante' => 2)),
 		
 	// Participante
+	'GET:atividade/(:num)/(:any)/participantes' => array('route' => 'Participante.ListView', 'params' => array('idPalestra' => 1)),
 	'GET:participantes' => array('route' => 'Participante.ListView'),
 	'GET:participante/(:num)' => array('route' => 'Participante.SingleView', 'params' => array('idParticipante' => 1)),
 	'GET:api/participantes' => array('route' => 'Participante.Query'),

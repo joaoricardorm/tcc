@@ -271,8 +271,9 @@ var page = {
 						page.proprioEvento = page.palestras.models[0].attributes.proprioEvento;
 						idProprioEvento = page.palestras.models[0].id;
 						
-						//INSERE LINK DA PALESTRA NO BREADCRUMB QUANDO HAVER APENAS UMA PALESTRA OU SEJA O PROPRIO EVENTO
-						$('#link-palestra-breadcrumb').attr('href','atividade/'+idProprioEvento+'/atividade/palestrantes/');
+						//INSERE LINK DO PALESTRANTES E PARTICIPANTES NO BREADCRUMB QUANDO HAVER APENAS UMA PALESTRA OU SEJA O PROPRIO EVENTO
+						$('#link-palestrantes-breadcrumb').attr('href','atividade/'+idProprioEvento+'/atividade/palestrantes/').parent().removeClass('hidden');
+						$('#link-participantes-breadcrumb').attr('href','atividade/'+idProprioEvento+'/atividade/participantes/').parent().removeClass('hidden');
 												
 						//ser for proprio evento faz a magica de apagar elementos e ja mostrar tela de edicao
 						

@@ -40,6 +40,24 @@ class Participante extends ParticipanteDAO
 		if($this->Cpf && !preg_match('/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/i', $this->Cpf)) $this->AddValidationError('Cpf','CPF inválido');
 		if($this->Email && !filter_var($this->Email, FILTER_VALIDATE_EMAIL)) $this->AddValidationError('Email','E-mail inválido'); 
 		
+		
+		
+		//Valida se participante ja existe pelo cpf
+		try {
+			$criteria = new ParticipanteCriteria();
+			$criteria->Cpf_Equals = $this->Cpf;
+			$criteria->IdParticipante_NotEquals = $this->IdParticipante;	
+		
+			$user = $this->_phreezer->GetByCriteria("Participante", $criteria);	
+
+			if($user->IdParticipante != $this->IdParticipante)
+				$this->AddValidationError('Cpf','O CPF informado já está sendo utilizado por '.$user->Nome);
+		} catch(Exception $ex) {
+		}
+		
+		
+		
+		
 		return !$this->HasValidationErrors();
 	}
 
