@@ -80,10 +80,10 @@
 	<div id="no-more-tables">
 	
 		<table class="collection table table-hover table-striped">
-		<thead>
+		<thead> 
 			<tr>
 				<th id="header_Nome"><i class="icon icon-user"></i>Nome<% if (page.orderBy == 'Nome') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th id="header_Email"><i class="icon icon-envelope"></i>Email<% if (page.orderBy == 'Email') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<th id="header_Email"><i class="icon icon-envelope"></i>E-mail<% if (page.orderBy == 'Email') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Cpf"><i class="icon icon-user"></i>CPF<% if (page.orderBy == 'Cpf') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_Cargo"><i class="icon icon-briefcase"></i>Cargo<% if (page.orderBy == 'Cargo') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<th id="header_ImagemAssinatura"><i class="icon icon-picture"></i>Assinatura<% if (page.orderBy == 'ImagemAssinatura') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>

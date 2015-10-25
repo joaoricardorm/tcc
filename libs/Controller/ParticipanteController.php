@@ -296,6 +296,15 @@ class ParticipanteController extends AppBaseController
 						
 			$json = json_decode(RequestUtil::GetBody());
 			
+			//FILTRA OBJETOS DUPLICADOS NA TABELA DE PARTICIPANTES HANDSONTABLE
+			$unique = array(); 
+			foreach ($json->data as $object) { 
+				if (isset($unique[$object->idParticipante])) { 
+					continue; 
+				} 
+				$unique[$object->idParticipante] = $object; 
+			}  
+
 			//$json = json_decode($someJSON);
 
 			if (!$json)
@@ -306,7 +315,7 @@ class ParticipanteController extends AppBaseController
 			$errors_p = array();
 			
 			$row = 0;
-			foreach ($json->data as $json){
+			foreach ($unique as $json){ //trocar $unique por $json->data se não for usá-lo
 				
 				if($json->idParticipante == '' && $json->nome == '' && $json->email == '' && $json->nome == ''){
 				  //se linha estiver em branco

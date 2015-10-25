@@ -366,6 +366,19 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		callback(true);
   } 
   
+  //LISTAS PARA AUTOCOMPLETE
+  var listaNomes = [];
+  var listaEmails = [];
+  var listaCpfs = [];
+  $.each( res.rows , function(key, value) {
+	if(value.nome != '')
+		listaNomes.push(value.nome);
+	if(value.email != '')
+		listaEmails.push(value.email);
+	if(value.cpf != '')
+		listaCpfs.push(value.cpf);
+  });		
+  
   hot = new Handsontable(container, {
     // data: cars,
     // dataSchema: makeCar,
@@ -390,10 +403,35 @@ var customRenderer = function (instance, td, row, col, prop, value) {
     minRows: 1,
 	columns: [
 		{data: 'idParticipante' },
-		{data: 'nome', validator: emptyValidator, allowInvalid: false},
-		{data: 'email', validator: emailValidator, allowInvalid: true},
-		{data: 'cpf', validator: cpfValidator, allowInvalid: true}
+		//{data: 'nome', validator: emptyValidator, allowInvalid: false},
+		//{data: 'email', validator: emailValidator, allowInvalid: true},
+		//{data: 'cpf', validator: cpfValidator, allowInvalid: true}
+		{
+			data: 'nome',
+			type: 'autocomplete',
+			source: listaNomes,
+			strict: false,
+			validator: emptyValidator, 
+			allowInvalid: false
+		},
+		{
+			data: 'email',
+			type: 'autocomplete',
+			source: listaEmails,
+			strict: false,
+			validator: emailValidator,
+			allowInvalid: true
+		},
+		{
+			data: 'cpf',
+			type: 'autocomplete',
+			source: listaCpfs,
+			strict: false,
+			validator: cpfValidator,
+			allowInvalid: true
+		},
     ],
+	
 	
 	beforeRemoveRow: function (index, amount) {
 			if((hot.getDataAtCell(index, 0) === null && hot.getDataAtCell(index, 1) === null && hot.getDataAtCell(index, 3) === null)
@@ -443,7 +481,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	},
 	
 	beforeChange: function (changes, source) {		
-      for (var i = changes.length - 1; i >= 0; i--) {
+	  for (var i = changes.length - 1; i >= 0; i--) {
 		  
 			//tenta converter o valor para cpf se for na coluna cpf
 			if(changes[i][1] === 'cpf')
@@ -451,6 +489,32 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 			
 		
       }
+	  
+	  
+	    //PREENCHE O RESTO DA LINHA COM O DOS DADOS DO CIDADÃO, CASO EXISTA
+	    //FALAR NO RELATÓRIO SOBRE O SEU USO NO EVENTO BEFORECHANGE INVÉS DE AFTER CHANGE
+		if(source=="edit"&&changes.length==1) {
+			var oldValue = changes[0][2];
+			var value = changes[0][3];
+			for(var i=0;i<ppp.rows.length;i++) {
+				if(ppp.rows[i].nome == value || ppp.rows[i].email == value || ppp.rows[i].cpf == value) {
+					hot.setDataAtCell(changes[0][0], 0, ppp.rows[i].idParticipante);
+					hot.setDataAtCell(changes[0][0], 1, ppp.rows[i].nome);
+					hot.setDataAtCell(changes[0][0], 2, ppp.rows[i].email);
+					hot.setDataAtCell(changes[0][0], 3, ppp.rows[i].cpf);
+
+					//REMOVE O PARTICIPANTE SELECIONADO DA LISTAGEM DO AUTOCOMPLETE
+					listaNomes.splice(listaNomes.indexOf(value), 1);
+					listaEmails.splice(listaEmails.indexOf(value), 1);
+					listaCpfs.splice(listaCpfs.indexOf(value), 1);
+					
+					return false;
+				}
+			}
+		}
+	  
+	  
+	  
     },
 	
 	cells: function(row, col, prop){
@@ -512,7 +576,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	
 	hot.selectCell(queryResult[0].row, 1); //seleciona a coluna nome nome
 	
-	if(queryResult !== null)
+	if(queryResult !== null & this.value !== '')
     hot.render();
   });
   
