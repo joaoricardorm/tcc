@@ -167,7 +167,7 @@ class PalestraParticipanteController extends AppBaseController
 			}
 			else
 			{
-				$palestraparticipante->Save();
+				$palestraparticipante->Save(false, true); //$force_insert = false, $ignore_duplicate = false
 				$this->RenderJSON($palestraparticipante, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 
@@ -215,7 +215,7 @@ class PalestraParticipanteController extends AppBaseController
 			}
 			else
 			{
-				$palestraparticipante->Save();
+				$palestraparticipante->Save(false, true); //$force_insert = false, $ignore_duplicate = false
 				$this->RenderJSON($palestraparticipante, $this->JSONPCallback(), true, $this->SimpleObjectParams());
 			}
 

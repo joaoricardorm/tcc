@@ -25,14 +25,14 @@
 			<li class="visited"><a href="eventos"><i class="icon-tag"></i>Eventos</a></span></li> <!-- Classe "visited" -->
 			<li class="current"><span><span class="remove-on-single"><i class="icon-tags"></i>Atividades</span><span class="show-on-single"><i class="icon-tag"></i>Detalhes do evento</span></span></li>
 			<li>	
-				<span class="hidden">
+				<span class="hidden show-on-single">
 					<a id="link-palestrantes-breadcrumb" href="#"><i class="icon-microphone"></i>Palestrantes</a>
 				</span>
 				<span class="muted remove-on-single"><i class="icon-microphone"></i>Palestrantes</span>
 			</li>
 			
 			<li>
-				<span class="hidden">
+				<span class="hidden show-on-single">
 					<a id="link-participantes-breadcrumb" href="#"><i class="icon-group"></i>Participantes</a>
 				</span>
 				<span class="muted remove-on-single"><i class="icon-group"></i>Participantes</span>

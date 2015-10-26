@@ -243,7 +243,7 @@ background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
 
 #table-participantes td[data-error], td.htInvalid {
     background: #ff4c42!important;
-    color:white;
+    color:white!important;
 }
 
 #table-participantes td[data-error]:after, td.htInvalid:before {
@@ -268,15 +268,27 @@ background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
 
 .float-bottom-notification {
 	position: absolute;
-    left: -25%;
+    left: -20%;
     z-index: 6000;
-    bottom: 5%;
+    bottom: 35%;
     right: auto;
     margin: auto auto auto 50%;
     height: auto;
 }
 #savingFloat { display:none; bottom:10%; left:-10%; }
 
+#save_car:before {	
+    color: #777;
+    content: attr(data-autosave);
+    position: absolute;
+    font-size: 12px;
+    right: 140px;
+}
+#save_car.affix:before {
+	right: 100px;
+    background: white;
+    padding: 5px;
+}
 #save_car.affix {
     position: absolute;
 	z-index:6000;
@@ -350,6 +362,7 @@ table.collection.no-hover thead th:hover {
     margin-bottom: 10px;
     padding: 5px;
 }
+.alert.alert-dark.small.margin-bottom-normal { margin-bottom:20px; }
 .alert.alert-dark .close {
 	top: -2px;
     right: 0px;

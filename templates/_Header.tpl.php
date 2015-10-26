@@ -98,17 +98,16 @@
 						</a>
 						</div>
 						
-						
 						<?php  if ($this->CURRENT_USER) { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
 								
-								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i><?php $this->eprint($this->CURRENT_USER->Nome); ?><i class="caret"></i></a>
+								<a href="#" tabindex="2" class="dropdown-toggle hidden-xlg" data-toggle="dropdown"><i class="icon-lock"></i><?php $this->eprint($_SESSION['nomeUser']); ?><i class="caret"></i></a>
 								
-								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock sem-margin-right-xxs"></i><span class="hidden-xxs"><?php $this->eprint($this->CURRENT_USER->Nome); ?></span><i class="caret"></i></a>
+								<a href="#" tabindex="2" class="btn btn-navbar dropdown-toggle" data-toggle="dropdown"><i class="icon-lock sem-margin-right-xxs"></i><span class="hidden-xxs"><?php $this->eprint($_SESSION['nomeUser']); ?></span><i class="caret"></i></a>
 								
 								<ul class="dropdown-menu">
-									<li class="disabled escondido visible-xxs"><a tabindex="-1"><?php $this->eprint($this->CURRENT_USER->Nome); ?></a></li>
+									<li class="disabled escondido visible-xxs"><a tabindex="-1"><?php $this->eprint($_SESSION['nomeUser']); ?></a></li>
 									<li><a tabindex="2" href="./logout">Sair</a></li>
 								</ul>
 								</li>

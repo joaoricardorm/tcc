@@ -20,8 +20,7 @@ class ParticipanteReporter extends Reporter
 
 	// the properties in this class must match the columns returned by GetCustomQuery().
 	// 'CustomFieldExample' is an example that is not part of the `participante` table
-	public $CustomFieldExample;
-
+	public $IdPalestra;
 	public $IdParticipante;
 	public $Nome;
 	public $Email;
@@ -38,13 +37,17 @@ class ParticipanteReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
+			`palestra_participante`.`id_palestra` as IdPalestra
 			,`participante`.`id_participante` as IdParticipante
 			,`participante`.`nome` as Nome
 			,`participante`.`email` as Email
 			,`participante`.`cpf` as Cpf
 		from `participante`";
 
+		if($criteria->IdPalestra_Equals){
+			$sql .= " inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante` ";
+		}
+		
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
 		$sql .= $criteria->GetWhere();
@@ -66,6 +69,10 @@ class ParticipanteReporter extends Reporter
 	{
 		$sql = "select count(1) as counter from `participante`";
 
+		if($criteria->IdPalestra_Equals){
+			$sql .= " inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante` ";
+		}
+		
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
 		$sql .= $criteria->GetWhere();

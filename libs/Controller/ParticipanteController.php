@@ -16,7 +16,7 @@ require_once("Model/Participante.php");
  */
 class ParticipanteController extends AppBaseController
 {
-
+	
 	/**
 	 * Override here for any controller-specific functionality
 	 *
@@ -37,7 +37,6 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function ListView()
 	{
-		
 		//Dados da palestra
 		$this->Assign('Palestra',null);
 		
@@ -54,7 +53,7 @@ class ParticipanteController extends AppBaseController
 				$this->Assign('Evento',$evento);
 				
 			} catch(NotFoundException $ex){
-				throw new NotFoundException("A atividade #$pk n„o existe");
+				throw new NotFoundException("A atividade #$pk n√£o existe");
 			}
 		
 		}
@@ -71,6 +70,14 @@ class ParticipanteController extends AppBaseController
 		try
 		{
 			$criteria = new ParticipanteCriteria();
+			
+			// FILTRA OS PALESTRANTES PELA PALESTRA SE EXISTIR TAL DADO NA URL
+			$arquivoReporter = 'Participante';
+			
+			if(RequestUtil::Get('idPalestra')){
+				$criteria->IdPalestra_Equals = RequestUtil::Get('idPalestra');
+				$arquivoReporter .= 'Reporter';
+			}
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
@@ -110,7 +117,7 @@ class ParticipanteController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$participantes = $this->Phreezer->Query('Participante',$criteria)->GetDataPage($page, $pagesize);
+				$participantes = $this->Phreezer->Query($arquivoReporter,$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $participantes->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $participantes->TotalResults;
 				$output->totalPages = $participantes->TotalPages;
@@ -120,7 +127,7 @@ class ParticipanteController extends AppBaseController
 			else
 			{
 				// return all results
-				$participantes = $this->Phreezer->Query('Participante',$criteria);
+				$participantes = $this->Phreezer->Query($arquivoReporter,$criteria);
 				$output->rows = $participantes->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
@@ -185,7 +192,7 @@ class ParticipanteController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{
@@ -232,7 +239,7 @@ class ParticipanteController extends AppBaseController
 
 			if (count($errors) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors);
 			}
 			else
 			{
@@ -263,7 +270,20 @@ class ParticipanteController extends AppBaseController
 			$pk = $this->GetRouter()->GetUrlParam('idParticipante');
 			$participante = $this->Phreezer->Get('Participante',$pk);
 
-			$participante->Delete();
+			//Verifica se existem certificados para o participante, senao existerem, permite a exclusao
+			require_once("Model/PalestraParticipante.php");
+			$criteria = new PalestraParticipanteCriteria();
+	
+			$criteria->IdParticipante_Equals = $pk;
+			$criteria->IdCertificado_NotEquals = 0;
+			
+			try {
+				$palestraParticipante = $this->Phreezer->GetByCriteria("PalestraParticipante", $criteria);	
+				
+				throw new Exception('N√£o √© poss√≠vel esse participante do sistema, pois ele j√° possui certificado por alguma palestra');	
+			} catch(NotFoundException $nfex){
+				$participante->Delete();
+			}
 
 			$output = new stdClass();
 
@@ -326,11 +346,11 @@ class ParticipanteController extends AppBaseController
 						
 					if($pk != ''){
 						
-						//SE TIVER ID … EDI«√O SEN√O CRIA UM NOVO PARTICIPANTE
+						//SE TIVER ID √â EDI√á√ÉOO SEN√ÉO CRIA UM NOVO PARTICIPANTE
 						try {
 							$participante = $this->Phreezer->Get('Participante',$pk);								
 						} catch (NotFoundException $ex){ 
-							throw new Exception('Participante n„o encontrado');
+							//throw new Exception('Participante n√£o encontrado');
 						}
 					
 					} else {
@@ -354,11 +374,20 @@ class ParticipanteController extends AppBaseController
 						$errors_p[ $participante->IdParticipante]['success'] = false;
 						$errors_p[ $participante->IdParticipante]['row'] = $row;
 					} else {
-						$participante->Save();
-						
-						if($pk == ''){
-							$dados = array( 'idParticipante' => $participante->IdParticipante, 'row' => $row);
-							$sucesso['novo'][] = $dados;
+						if( $this->SafeGetVal($json, 'cpf', $participante->Cpf) == ''){
+							$errors_p[$participante->IdParticipante]['message'] = 'Falta CPF!!!';								
+							$errors_p[ $participante->IdParticipante]['success'] = false;
+							$errors_p[ $participante->IdParticipante]['row'] = $row;
+							
+						} else {
+							//para fazer a associaÁ„o na tabela palestra_participante
+							$sucesso['idsParticipantes'][] = $participante->IdParticipante;
+							
+							$participante->Save();
+							if($pk == ''){
+								$dados = array( 'idParticipante' => $participante->IdParticipante, 'row' => $row);
+								$sucesso['novo'][] = $dados;
+							}
 						}
 					}
 
@@ -381,7 +410,7 @@ class ParticipanteController extends AppBaseController
 			
 			if (count($errors_p) > 0)
 			{
-				$this->RenderErrorJSON('Verifique erros no preenchimento do formul·rio',$errors_p);
+				$this->RenderErrorJSON('Verifique erros no preenchimento do formul√°rio',$errors_p);
 			} else {
 				$sucesso['success'] = true;
 				$sucesso['message'] = 'Participantes salvos com sucesso';

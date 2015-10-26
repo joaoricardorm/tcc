@@ -175,7 +175,7 @@
 			
 			<div id="table-participantes"></div>
 			
-			<div id="savingFloat" class="text-center alert alert-dark stick float-bottom-notification"><span class="icon-big icon-refresh icon-spin" style="font-size:28px; vertical-align:middle; text-align:center;"></span> Salvando</div>
+			<div id="savingFloat" class="text-center alert alert-dark stick float-bottom-notification"><span class="icon-big icon-refresh icon-spin" style="font-size:28px; vertical-align:middle; text-align:center;"></span> <span class="texto">Salvando</span></div>
 			
 		</form>
 

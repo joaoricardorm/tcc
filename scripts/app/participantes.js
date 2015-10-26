@@ -19,6 +19,7 @@ var page = {
 	dialogIsOpen: false,
 	
 	SearchTableById: '',
+	erroExcluir: false,
 
 	/**
 	 *
@@ -29,6 +30,12 @@ var page = {
 		page.isInitializing = true;
 
 		if (!$.isReady && console) console.warn('page was initialized before dom is ready.  views may not render properly.');
+		
+		
+		//RETORNA A PALESTRA ATUAL VIA URL
+		idPalestra = window.location.pathname.match(/atividade\/([0-9]+)/);
+		
+		
 
 		// make the new button clickable
 		$("#newParticipanteButton").click(function(e) {
@@ -159,6 +166,11 @@ var page = {
 		// persist the params so that paging/sorting/filtering will play together nicely
 		page.fetchParams = params;
 
+		//Filtra pelo id da palestra na URL
+		if(idPalestra){
+			page.fetchParams.idPalestra = idPalestra[1];
+		}
+		
 		if (page.fetchInProgress) {
 			if (console) console.log('supressing fetch because it is already in progress');
 		}
@@ -166,7 +178,7 @@ var page = {
 		page.fetchInProgress = true;
 
 		if (!hideLoader) app.showProgress('loader');
-
+		
 		page.participantes.fetch({
 
 			data: params,
@@ -262,29 +274,37 @@ var page = {
 $('#table-participantes').html('<div class="text-center"><span class="multiselect-loading icon-big icon-refresh icon-spin" style="margin:20px; font-size:48px; vertical-align:middle;"></span> Carregando dados</div>');
 
 
-var listaParticipantes = $.getJSON(base+'api/participantes');
+var listaParticipantes = $.getJSON(base+'api/participantes?orderDesc=1&orderBy=IdParticipante');
 
-listaParticipantes.success(function(res){
-	ppp = res;
+listaParticipantes.success(function(todosParticipantes){
+
+
+var listaParticipantesPalestra = $.getJSON(base+'api/palestraparticipantes?orderDesc=1&orderBy=IdParticipante&IdPalestra='+idPalestra[1]);
+
+listaParticipantesPalestra.success(function(palestraParticipantes){	
+
+	//FAZ O INNER JOIN DE PARTICIPANTES NA PALESTRA
+	var arrayFinal = {};
+	arrayFinal['rows'] = [];
+	$.each( todosParticipantes.rows , function(key, value) {
+	 if($.inArray(value.idParticipante, _.pluck(palestraParticipantes.rows, 'idParticipante')) >= 0)
+		 arrayFinal.rows.push(value);
+	});	
+	 
 	
-
-
-
-page.participantes.fetch({
-
-			data: '',
-
-			success: function(p) {
+	//Listagem final filtrada
+	//ppp = todosParticipantes;	
+	ppp = arrayFinal;		
 				
 				
-				
-				
-				var
+	var
     container = document.getElementById('table-participantes'),
     addCar = document.getElementById('add_car'),
     removeCar = document.getElementById('remove_car'),	
 	saveCar = document.getElementById('save_car'),
 	searchFiled = document.getElementById('search_field'),
+	autosaveNotification,
+	salvoUltimaVez,
     eventHolder = document.getElementById('example1_events'),
     CarModel = Backbone.Model.extend({}),
     CarCollection,
@@ -299,7 +319,7 @@ page.participantes.fetch({
 
  // cars = new model.ParticipanteCollection();
 
-  cars = p;
+  cars = '';
 
  function customRender(instance, td, row, col, prop, value, cellProperties) {
     // change to the type of renderer you need; eg. if this is supposed
@@ -367,17 +387,19 @@ var customRenderer = function (instance, td, row, col, prop, value) {
   } 
   
   //LISTAS PARA AUTOCOMPLETE
+  //////SUBSTITUIR O RES.ROWS POR OUTRO GET COM TODOS OS PARTICIPANTES DO BANCO E NÃO SÓ OS DA ATIVIDADE ATUAL.
+  var listaIds = [];
   var listaNomes = [];
   var listaEmails = [];
   var listaCpfs = [];
-  $.each( res.rows , function(key, value) {
-	if(value.nome != '')
+  $.each( todosParticipantes.rows , function(key, value) {
+		listaIds.push(value.idParticipante);
 		listaNomes.push(value.nome);
-	if(value.email != '')
 		listaEmails.push(value.email);
-	if(value.cpf != '')
 		listaCpfs.push(value.cpf);
-  });		
+  });
+
+  console.log(listaEmails);
   
   hot = new Handsontable(container, {
     // data: cars,
@@ -388,19 +410,20 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	
    // contextMenu: ["row_above", "row_below", "remove_row", "undo", "redo"],
 	height: $(window).height()-( $(window).height()/3.4 ),
-	colWidths: [0.1], //ESCONDE ID 0.1
+	colWidths: [10], //ESCONDE ID 0.1
 	stretchH: 'all',
-	className:  p.get('idParticipante'),
 	currentRowClassName: 'currentRow',
     currentColClassName: 'currentCol',
 	allowInsertColumn: false,
 	comments: true,
 	columnSorting: true,
+	sortIndicator: true,
 	fillHandle: false,
 	search: true,
 	rowHeaders: true,
     colHeaders: ['#', 'Nome', 'Email', 'CPF'],	
     minRows: 1,
+	minSpareRows: 1,
 	columns: [
 		{data: 'idParticipante' },
 		//{data: 'nome', validator: emptyValidator, allowInvalid: false},
@@ -408,6 +431,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		//{data: 'cpf', validator: cpfValidator, allowInvalid: true}
 		{
 			data: 'nome',
+			placeholder: 'Nome', 
 			type: 'autocomplete',
 			source: listaNomes,
 			strict: false,
@@ -416,6 +440,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		},
 		{
 			data: 'email',
+			placeholder: 'E-mail', 
 			type: 'autocomplete',
 			source: listaEmails,
 			strict: false,
@@ -424,6 +449,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		},
 		{
 			data: 'cpf',
+			placeholder: 'CPF', 
 			type: 'autocomplete',
 			source: listaCpfs,
 			strict: false,
@@ -432,6 +458,18 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		},
     ],
 	
+	afterChange: function (change, source) {
+		if (source === 'loadData') {
+			return; //don't save this change
+		}
+		
+		//SALVA A TABELA AUTOMATICAMENTE A CADA X TEMPO 35000 = 35 segundos, se parar de mexer na tabela
+		var salvoUltimaVez = new Date();
+		clearTimeout(autosaveNotification);
+		autosaveNotification = setTimeout(function() {
+		  saveCar.click();
+        }, 35000);
+	},
 	
 	beforeRemoveRow: function (index, amount) {
 			if((hot.getDataAtCell(index, 0) === null && hot.getDataAtCell(index, 1) === null && hot.getDataAtCell(index, 3) === null)
@@ -447,16 +485,17 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 			} else {
 				$('#modalConfirmarExclusao').modal({
 					width: '400px',
+					backdrop: 'static',
+					keyboard: false,
 					backdropTemplate: '<div class="modal-backdrop red" />'
 				});
 				
 				//se existir id
 				if(hot.getDataAtCell(index, 0) != ''){
 					idExcluido = hot.getDataAtCell(index, 0);
-				
 					console.log('idEX',idExcluido);
-				
-					page.participante = page.participantes.get( idExcluido );
+					if(idExcluido != null)
+						page.participante = page.participantes.get( idExcluido );
 				}
 					
 				$('#modalConfirmarExclusao .modal-body h4').text(page.participante.get('nome'));
@@ -469,9 +508,17 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 					if(hot.getDataAtCell(index, 0) != ''){
 						page.deleteModel();
 						page.fetchParticipantes(page.fetchParams);
+						
+						//se der erro na exclusão por causa da chave estrangeira
+						setTimeout(function(){ 
+							if(page.erroExcluir === true)
+								hot.undo(); 
+						}, 5000);
+						
+						$(this).text('Sim');
 					}
 					
-					$('#modalConfirmarExclusao').modal('toggle');
+					$('#modalConfirmarExclusao').modal('hide');
 				});
 				$('#btnCloseExclusao, #btnCancelarExclusao').click(function(){
 					hot.undo();
@@ -481,40 +528,39 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	},
 	
 	beforeChange: function (changes, source) {		
-	  for (var i = changes.length - 1; i >= 0; i--) {
+		for (var i = changes.length - 1; i >= 0; i--) {
 		  
 			//tenta converter o valor para cpf se for na coluna cpf
 			if(changes[i][1] === 'cpf')
 				changes[i][3] = changes[i][3].replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/g,"\$1.\$2.\$3\-\$4");
-			
-		
-      }
-	  
-	  
-	    //PREENCHE O RESTO DA LINHA COM O DOS DADOS DO CIDADÃO, CASO EXISTA
-	    //FALAR NO RELATÓRIO SOBRE O SEU USO NO EVENTO BEFORECHANGE INVÉS DE AFTER CHANGE
-		if(source=="edit"&&changes.length==1) {
-			var oldValue = changes[0][2];
-			var value = changes[0][3];
-			for(var i=0;i<ppp.rows.length;i++) {
-				if(ppp.rows[i].nome == value || ppp.rows[i].email == value || ppp.rows[i].cpf == value) {
-					hot.setDataAtCell(changes[0][0], 0, ppp.rows[i].idParticipante);
-					hot.setDataAtCell(changes[0][0], 1, ppp.rows[i].nome);
-					hot.setDataAtCell(changes[0][0], 2, ppp.rows[i].email);
-					hot.setDataAtCell(changes[0][0], 3, ppp.rows[i].cpf);
+			}
+	
+			//DESLOCA CELULAS PARA BAIXO SE COLAR ALGUMA COISA
+			if(changes.length > 1)
+			  hot.alter('insert_row',hot.getSelected()[0], changes.length);
+				  
+			//PREENCHE O RESTO DA LINHA COM O DOS DADOS DO CIDADÃO, CASO EXISTA ao escrever ou colar dados
+			//FALAR NO RELATÓRIO SOBRE O SEU USO NO EVENTO BEFORECHANGE INVÉS DE AFTER CHANGE
+			if(source==="edit" || source==='paste'&&changes.length===1) {
+				var oldValue = changes[0][2];
+				var value = changes[0][3];
+				for(var i=0;i<todosParticipantes.rows.length;i++) {
+					if(todosParticipantes.rows[i].nome === value || todosParticipantes.rows[i].email === value || todosParticipantes.rows[i].cpf === value) {
+						hot.setDataAtCell(changes[0][0], 0, todosParticipantes.rows[i].idParticipante);
+						hot.setDataAtCell(changes[0][0], 1, todosParticipantes.rows[i].nome);
+						hot.setDataAtCell(changes[0][0], 2, todosParticipantes.rows[i].email);
+						hot.setDataAtCell(changes[0][0], 3, todosParticipantes.rows[i].cpf);
 
-					//REMOVE O PARTICIPANTE SELECIONADO DA LISTAGEM DO AUTOCOMPLETE
-					listaNomes.splice(listaNomes.indexOf(value), 1);
-					listaEmails.splice(listaEmails.indexOf(value), 1);
-					listaCpfs.splice(listaCpfs.indexOf(value), 1);
-					
-					return false;
+						//REMOVE O PARTICIPANTE SELECIONADO DA LISTAGEM DO AUTOCOMPLETE
+						//listaNomes.splice(listaNomes.indexOf(value), 1);
+						//listaEmails.splice(listaEmails.indexOf(value), 1);
+						//listaCpfs.splice(listaCpfs.indexOf(value), 1);
+						
+						return false;
+					}
 				}
 			}
-		}
-	  
-	  
-	  
+	   
     },
 	
 	cells: function(row, col, prop){
@@ -558,12 +604,10 @@ var customRenderer = function (instance, td, row, col, prop, value) {
       }
     }
   });
-  
-  
-  
+	
   //BUSCA
   function onlyExactMatch(queryStr, value) {
-    if(queryStr.toString() === value.toString())
+    if(value !== null && queryStr.toString() === value.toString())
 		return true;
   }
 
@@ -574,10 +618,10 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	});
 	var queryResult = hot.search.query(page.SearchTableById);
 	
-	hot.selectCell(queryResult[0].row, 1); //seleciona a coluna nome nome
-	
-	if(queryResult !== null & this.value !== '')
-    hot.render();
+	if(queryResult !== null & this.value !== ''){
+    	hot.selectCell(queryResult[0].row, 1); //seleciona a coluna nome nome
+		hot.render();
+	}
   });
   
   //SE NÃO, BUSCA PELO QUE FOR DIGITADO
@@ -592,7 +636,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
   
   setTimeout(function(){
 		if(page.SearchTableById !== ''){
-			$('#search_field').blur().focus();
+			$('#search_field').blur().dblclick().focus();
 			$('td.htDimmed.htSearchResult').parent().find('td').addClass('currentRow');
 		}
   }, 1000);
@@ -619,7 +663,8 @@ var customRenderer = function (instance, td, row, col, prop, value) {
   }
 
   Handsontable.Dom.addEvent(addCar, 'click', function () {
-	hot.alter('insert_row',0);	
+	//ia ser no índice 0, mas por causa do Ctr+V pode substituir o conteúdo :(
+	hot.alter('insert_row');	
   });
 
   // Handsontable.Dom.addEvent(removeCar, 'click', function () {
@@ -699,12 +744,16 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 								app.appendAlert('<b style="color:#999">Erro na linha '+ (value.row+1) +' - '+nomeCampo+':</b> '+msg+' ', 'alert-dark small',0,'modelAlert');
 						
 								$('<a class="goto btn btn-small btn-warning" data-id="'+key+'"data-row="'+value.row+'">CORRIGIR</a>').appendTo('#modelAlert .alert:last-child');
-								$('<a class="gotoback btn btn-small btn-primary hide" data-row="'+value.row+'">CORRIGIDO</a>').appendTo('#modelAlert .alert:last-child');
+								$('<a style="margin-left:5px" class="gotoback btn btn-small btn-primary hide" data-row="'+value.row+'">CORRIGIDO</a>').appendTo('#modelAlert .alert:last-child');
 								
 								$('.goto').click(function(e){
 									var id = $(this).data('id');
 									var linha = parseInt($(this).data('row'));
 									hot.selectCell(linha, 0, linha, 3, true);
+									
+									var itemTop = $('.handsontable').position().top;
+									if(id != '')
+										itemTop = $('#item_'+id).position().top;
 									
 									//$(this).parent().css({position:'fixed',top: $('.modal-scrollable').scrollTop() ,zindex:6000});
 									$('.alert').removeClass('stick');
@@ -716,7 +765,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 									});
 									
 									//Desce até a linha do elemento (-500 no monitor 22 pol)
-									$('.wtHolder').scrollTop( $('#item_'+id).position().top - ($('.handsontable').height()/2) );
+									$('.wtHolder').scrollTop( itemTop - ($('.handsontable').height()/2) );
 									$('.modal-scrollable').scrollTop( $(document).height() + 300 ); 
 									
 									$(this).parent().find('.gotoback').removeClass('hide');
@@ -730,13 +779,14 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 										//Volta ao topo se der erro
 										$('.modal-scrollable, .wtHolder').scrollTop(0);
 				
-										$('.alert.stick').addClass('animated bounceOut').delay(1000).queue(function(){
+										$('.alert.stick').addClass('animated bounceOutUp').delay(1000).queue(function(){
 											$(this).remove();
 											
 											console.log($( ".alert.alert-dark" ).length);
 										
 											//Se não existir mais nenhum erro ele já salva
-											if ( !$( ".alert.alert-dark" ).length ) {
+											//O LENGTH DEVERIA SER 0 PARA MOSTRA TODAS AS NOTIFICAÇÕES DE ERRO, MAS NÃO ESTÁ MOSTRANDO
+											if ( $( ".alert.alert-dark" ).length === 1) {
 												
 												$('#modelAlert').html('');
 												$('.control-group').removeClass('error');
@@ -763,9 +813,11 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 					if (console) console.log('error parsing server response: '+e2.message);
 				}
 		}
+		
 	});	
 	
 	request.success(function( response ) {
+		
 		// reset any previous errors
 		$('#modelAlert').html('');
 		$('.control-group').removeClass('error');
@@ -773,6 +825,9 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		
 		//Volta ao topo se der erro
 		$('.modal-scrollable').scrollTop(0);
+		
+		//Mensagem com a hora que foi salvo
+		$('#save_car').attr('data-autosave','Salvo às '+_date(app.parseDate(salvoUltimaVez)).format('HH:mm:ss'));
 				
 		//Recarrega dados		
 		hot.loadData(ppp.rows);
@@ -782,10 +837,51 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		app.hideProgress('savingFloat');		
 		app.appendAlert(response.message, 'alert-success',0,'modelAlert');
 		
+		//para nao dar erro no length
+		if (typeof response.novo == "undefined")
+			response.novo = {};
+
 		//Adiciona id dos novos participantes cadastrados na tabela
+		if(response.novo.length > 0){
 		$.each( response.novo , function(index, novo) {
-			hot.setDataAtCell(novo.row, 0, novo.idParticipante);
+			hot.setDataAtCell(novo.row, 0, novo.idParticipante);	
 		});
+		}
+		
+		console.log(response.idsParticipantes);
+		
+		app.appendAlert('<span class="multiselect-loading icon-big icon-refresh icon-spin" style="font-size:14px; vertical-align:middle; margin:5px 10px;"></span> Associando participantes à palestra', 'alert alert-dark small margin-bottom-normal',0,'modelAlert');
+		
+		//Associa o participante a palestra
+		$.each( response.idsParticipantes , function(index, idParticipante) {
+
+			var palestraParticipante = new model.PalestraParticipanteModel();
+			
+			palestraParticipante.save({
+					'idPalestra': idPalestra[1],
+					'idParticipante': idParticipante,
+					'idCertificado': 0, //pois nao recebeu ainda por essa palestra
+					'presenca': 0 //só marca se confirmar a presenca
+				}, {
+				wait: true,
+				success: function(){
+					console.log('Associou participante a palestra');	
+		
+					if(index === response.idsParticipantes.length-1){
+						$('#modelAlert').addClass('animated bounceOutUp');
+						setTimeout(function(){ 
+							$('#modelAlert').html('');
+							$('#modelAlert').removeClass('animated bounceOutUp');							
+						}, 500);	
+					}
+				},
+				error: function(model,response,scope){
+					console.log('Erro ao associar participante a palestra');
+					console.log(response);
+				}
+			});
+		});
+		
 		
 	});
 	 
@@ -802,21 +898,15 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				
 				
 				
-				
-			},
-
-			error: function(m, r) {
-				console.log('Erro ao carregar participantes');
-			}
-		});
 
 
 
 
 
 
+}); //Fim get participantespalestra
 
-}); //Fim get
+}); //Fim get todos participantes
 
 
 
@@ -952,31 +1042,106 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		// reset any previous errors
 		$('#modelAlert').html('');
 
-		app.showProgress('modelLoader');
-
-		page.participante.destroy({
-			wait: true,
-			success: function(){
-				$('#participanteDetailDialog').modal('hide');
-				setTimeout("app.appendAlert('O participante foi excluido','alert-success',3000,'collectionAlert')",500);
-				app.hideProgress('modelLoader');
-				app.hideProgress('savingFloat');
-
-				if (model.reloadCollectionOnModelUpdate) {
-					// re-fetch and render the collection after the model has been updated
-					page.fetchParticipantes(page.fetchParams,true);
-				}
-			},
-			error: function(model,response,scope) {
-				app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
-				app.hideProgress('modelLoader');
-				app.hideProgress('savingFloat');
+		app.showProgress('modelLoader');		
+		
+		console.log('IDATUAL',page.participante.id);
+		
+		//EXCLUI A RELAÇÃO COM PALESTRANTES ASSOCIADOS ANTES DE APAGAR A PALESTRA
+						
+			var participanteCollection = new model.PalestraParticipanteCollection();	
 				
-				$('.modal').addClass('animated shake').delay(1000).queue(function(){
-					$(this).removeClass("animated shake").dequeue();
-				});
-			}
-		});
+			participanteCollection.fetch({
+				data : {
+					'idParticipante': page.participante.id,
+				},
+				success: function(c, response) {
+					console.log('PARTICIPANTE PRA EXCLUIR',page.participante,'LISTA',c);
+					//VALIDA SE HÁ CERTIFICADO EMITIDO PARA O PALESTRANTE, SE HOUVER O SISTEMA NÃO DEIXA EXCLUIR
+					var temCertificado = false;
+					c.some(function(pal){
+						if(parseInt(pal.get('idCertificado')) > 0){
+							temCertificado = true;
+							return false;
+						}
+					});									
+								
+					
+					//REMOVE AS RELAÇÕES COM O PALESTRANTE, caso possua palestrantes, caso não possua certificado, senão joga um erro
+	
+					if(c.length > 0){
+						var qtd = 1;
+						c.forEach(function(pal){
+							
+							if(temCertificado === false){
+							
+								page.palestraParticipante = new model.PalestraParticipanteModel();
+								page.palestraParticipante.id = pal.id;
+								
+								try {
+									page.palestraParticipante.destroy();
+								} catch(e2) {
+									console.log('Não dá para remover pois tem certificado'+e2);
+									hot.undo();
+								}
+						
+							}
+							
+							if(qtd === c.length){
+								console.log('Vai remover o palestrante');
+								removerParticipante();
+							}
+							qtd++;
+							
+						});
+					} else {
+						console.log('Vai remover o palestrante');
+						removerParticipante();
+					}
+				
+				},
+				error: function(model, response) {
+					console.log('Erro ao remover a relação do palestrante');
+					console.log(response);
+					page.excluir = false;
+				}
+			});	
+		
+		
+		
+		
+		
+		// REMOVE A PALESTRANTE
+		function removerParticipante(){
+
+			page.participante.destroy({
+				wait: true,
+				success: function(){
+					//$('#participanteDetailDialog').modal('hide');
+					setTimeout("app.appendAlert('O participante foi excluido','alert-success',3000,'modelAlert')",1000);
+					app.hideProgress('modelLoader');
+					app.hideProgress('savingFloat');
+
+					if (model.reloadCollectionOnModelUpdate) {
+						// re-fetch and render the collection after the model has been updated
+						page.fetchParticipantes(page.fetchParams,true);
+					}
+				},
+				error: function(model,response,scope) {
+					console.log(response.responseText.message);
+					app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
+					app.hideProgress('modelLoader');
+					app.hideProgress('savingFloat');
+					
+					page.erroExcluir = true;
+					
+					$('.modal').addClass('animated shake').delay(1000).queue(function(){
+						$(this).removeClass("animated shake").dequeue();
+					});
+				}
+			});
+		
+		}
+		
 	}
 };
 

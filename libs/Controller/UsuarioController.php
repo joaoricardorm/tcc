@@ -38,7 +38,7 @@ class UsuarioController extends AppBaseController
 	/**
      * Displays a list view of Usuario objects
      */
-    public function ListView() {		
+    public function ListView() {			
         $this->Render();
     }
 
@@ -199,6 +199,11 @@ class UsuarioController extends AppBaseController
             if (count($errors) > 0) {
                 $this->RenderErrorJSON('Verifique erros no preenchimento do formulário', $errors);
             } else {
+				
+				//Substitui o nome do usuário se estiver logado ali em cima no header e editá-lo
+				if($usuario->IdUsuario == $this->GetCurrentUser()->IdUsuario)
+					$_SESSION['nomeUser'] = $usuario->Nome;
+				
                 $usuario->Save();
                 $this->RenderJSON($usuario, $this->JSONPCallback(), true, $this->SimpleObjectParams());
             }

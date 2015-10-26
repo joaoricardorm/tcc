@@ -130,7 +130,7 @@
 			<div id="palestraParticipanteModelContainer"></div>
 		</div>
 		<div class="modal-footer">
-			<button id="saveCertificadoButton" class="btn btn-primary">Salvar</button>
+			<button id="savePalestraParticipanteButton" class="btn btn-primary">Salvar</button>
 			<button class="btn" data-dismiss="modal" >Cancelar</button>
 		</div>
 	</div>

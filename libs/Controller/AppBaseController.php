@@ -18,7 +18,7 @@ class AppBaseController extends Controller
 {
 
 	static $DEFAULT_PAGE_SIZE = 5;
-
+	
 	/**
 	 * Init is called by the base controller before the action method
 	 * is called.  This provided an oportunity to hook into the system

@@ -84,6 +84,7 @@ class SecureExampleController extends AppBaseController
 		{
 			// login success			
 			$this->SetCurrentUser($user);
+			$_SESSION['nomeUser'] = $this->GetCurrentUser()->Nome;
 			
 			//se existir uma pagina na url, senão manda para pagina padrao
 			if($this->paginaLoginRedirect)
@@ -110,6 +111,7 @@ class SecureExampleController extends AppBaseController
 	public function Logout()
 	{
 		$this->ClearCurrentUser();
+		unset($_SESSION['nomeUser']);
 		$this->Redirect("SecureExample.LoginForm","You are now logged out");
 	}
 
