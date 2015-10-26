@@ -17,7 +17,7 @@ require_once("verysimple/Phreeze/Controller.php");
 class AppBaseController extends Controller
 {
 
-	static $DEFAULT_PAGE_SIZE = 5;
+	static $DEFAULT_PAGE_SIZE = 10;
 	
 	/**
 	 * Init is called by the base controller before the action method

@@ -872,7 +872,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 						setTimeout(function(){ 
 							$('#modelAlert').html('');
 							$('#modelAlert').removeClass('animated bounceOutUp');							
-						}, 2000);	
+						}, 500);	
 					}
 				},
 				error: function(model,response,scope){
