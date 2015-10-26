@@ -513,7 +513,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 						setTimeout(function(){ 
 							if(page.erroExcluir === true)
 								hot.undo(); 
-						}, 5000);
+						}, 2000);
 						
 						$(this).text('Sim');
 					}
@@ -639,7 +639,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 			$('#search_field').blur().dblclick().focus();
 			$('td.htDimmed.htSearchResult').parent().find('td').addClass('currentRow');
 		}
-  }, 1000);
+  }, 500);
  
 
   // you'll have to make something like these until there is a better
@@ -872,7 +872,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 						setTimeout(function(){ 
 							$('#modelAlert').html('');
 							$('#modelAlert').removeClass('animated bounceOutUp');							
-						}, 500);	
+						}, 2000);	
 					}
 				},
 				error: function(model,response,scope){
@@ -1117,7 +1117,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				wait: true,
 				success: function(){
 					//$('#participanteDetailDialog').modal('hide');
-					setTimeout("app.appendAlert('O participante foi excluido','alert-success',3000,'modelAlert')",1000);
+					setTimeout("app.appendAlert('O participante foi excluido','alert-success',3000,'modelAlert')",2000);
 					app.hideProgress('modelLoader');
 					app.hideProgress('savingFloat');
 
