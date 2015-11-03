@@ -89,10 +89,8 @@ class SecureExampleController extends AppBaseController
 			//se existir uma pagina na url, senão manda para pagina padrao
 			if($this->paginaLoginRedirect)
 				$pagina = $this->paginaLoginRedirect;
-			elseif($this->GetCurrentUser()->TipoUsuario == 1)
-				$pagina = 'SecureExample.AdminPage';
-			else	
-				$pagina = 'SecureExample.UserPage';
+			elseif($this->GetCurrentUser()->TipoUsuario != '')
+				$pagina = 'Default.Home';
 			
 			//$pagina = ;
 			

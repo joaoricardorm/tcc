@@ -10,8 +10,8 @@
 		<base href="<?php $this->eprint($this->ROOT_URL); ?>" />
 		<title><?php $this->eprint($this->title); ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Certificados FAROL" />
-		<meta name="author" content="phreeze builder | phreeze.com" />
+		<meta name="description" content="Certifica-μ" />
+		<meta name="author" content="João Ricardo Alves de Paula - joaoricardo.rm@gmail.com" />
 
 		<!-- Le styles minificados pelo gulp cssmin -->
 		<link href="bootstrap/css/min/bootstrap-original-unminified.css" rel="stylesheet" />
@@ -91,14 +91,14 @@
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">	
-						<div class="pull-left">
-						<a tabindex="1" class="btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
-							<span class="icon-reorder sem-margin-right"></span>
-							<span class="hidde-sxs"> Menu</span>
-						</a>
-						</div>
+						<?php if ($this->CURRENT_USER) { ?>
+							<div class="pull-left">
+							<a tabindex="1" class="btn btn-navbar hidden-lg" data-toggle="collapse" data-target=".nav-collapse">
+								<span class="icon-reorder sem-margin-right"></span>
+								<span class="hidde-sxs"> Menu</span>
+							</a>
+							</div>
 						
-						<?php  if ($this->CURRENT_USER) { ?>
 							<ul class="nav pull-right">
 								<li class="dropdown">
 								
@@ -124,30 +124,48 @@
 						
 						
 						<a class="brand" href="./" tabindex="1" autofocus="autofocus">
-							<span>Certificados FAROL</span>
-						</a>					
+							<span>Certifica-<big>µ</big></span>
+						</a>			
 						
+						<?php if($this->CURRENT_USER){ ?>
 						<div class="nav-collapse collapse">
-							<ul class="nav">
-								<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a tabindex="1" href="./configuracao/"><i class="icon-cog"></i> Configurações</a></li>
-								<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a tabindex="1" href="./usuarios/"><i class="icon-user"></i> Usuários</a></li>
-								<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a tabindex="1" href="./eventos/"><i class="icon-calendar"></i> Eventos</a></li>
-								<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a tabindex="1" href="./modelocertificados/">ModeloCertificados</a></li>
-							</ul>
-							<ul class="nav">
-								<li class="dropdown">
-								<a tabindex="1" href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
-									<ul class="dropdown-menu">
-										<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados/">Certificados</a></li>
-										<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras/">Palestras</a></li>
-										<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes/">PalestraPalestrantes</a></li>
-										<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes/">PalestraParticipantes</a></li>
-										<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes/">Palestrantes</a></li>
-										<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes/">Participantes</a></li>
-									</ul>
-								</li>
-							</ul>
+								<ul class="nav">
+								<?php if($this->CURRENT_USER->TipoUsuario == Usuario::$P_ADMIN){ //menu completo disponível somente para administrador ?>
+									<li <?php if ($this->nav=='configuracao') { echo 'class="active"'; } ?>><a tabindex="1" href="./configuracao/"><i class="icon-cog"></i> Configurações</a></li>
+									<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a tabindex="1" href="./usuarios/"><i class="icon-user"></i> Usuários</a></li>
+									<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a tabindex="1" href="./eventos/"><i class="icon-calendar"></i> Eventos</a></li>
+								<?php } ?>
+									<li <?php if ($this->nav=='presenca') { echo 'class="active"'; } ?>><a tabindex="1" href="./presenca/"><i class="icon-group"></i> Presença</a></li>
+								</ul>
+								<ul class="nav">
+									<li class="dropdown">
+									<a tabindex="1" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-certificate"></i> Certificados <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<?php if($this->CURRENT_USER->TipoUsuario == Usuario::$P_ADMIN){ //menu completo disponível somente para administrador ?>
+												<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./emitir-certificados/"><i class="icon-certificate"></i>Emitir Certificados</a></li>
+											<?php } ?>
+											<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./validar-certificado/"><i class="icon-ok"></i>Validar Certificado</a></li>
+											<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./obter-certificado/"><i class="icon-certificate"></i>Obter Certificado(s)</a></li>
+										</ul>
+									</li>
+								</ul>
+								<!--<ul class="nav">
+									<li class="dropdown">
+									<a tabindex="1" href="#" class="dropdown-toggle" data-toggle="dropdown">Mais <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<li <?php if ($this->nav=='modelocertificados') { echo 'class="active"'; } ?>><a  href="./modelocertificados/">ModeloCertificados</a></li>
+											<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./certificados/">Certificados</a></li>
+											<li <?php if ($this->nav=='palestras') { echo 'class="active"'; } ?>><a href="./palestras/">Palestras</a></li>
+											<li <?php if ($this->nav=='palestrapalestrantes') { echo 'class="active"'; } ?>><a href="./palestrapalestrantes/">PalestraPalestrantes</a></li>
+											<li <?php if ($this->nav=='palestraparticipantes') { echo 'class="active"'; } ?>><a href="./palestraparticipantes/">PalestraParticipantes</a></li>
+											<li <?php if ($this->nav=='palestrantes') { echo 'class="active"'; } ?>><a href="./palestrantes/">Palestrantes</a></li>
+											<li <?php if ($this->nav=='participantes') { echo 'class="active"'; } ?>><a href="./participantes/">Participantes</a></li>
+										</ul>
+									</li>
+								</ul>-->
+							
 						</div><!--/.nav-collapse -->
+						<?php } ?>
 					</div>
 				</div>
 			</div>

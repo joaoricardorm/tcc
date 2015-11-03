@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','Certificados FAROL | PalestraParticipantes');
+	$this->assign('title','Palestra Participantes Associação - Certifica-µ');
 	$this->assign('nav','palestraparticipantes');
 
 	$this->display('_Header.tpl.php');

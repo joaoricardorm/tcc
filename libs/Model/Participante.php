@@ -51,7 +51,7 @@ class Participante extends ParticipanteDAO
 			$user = $this->_phreezer->GetByCriteria("Participante", $criteria);	
 
 			if($user->IdParticipante != $this->IdParticipante)
-				$this->AddValidationError('Cpf','O CPF informado já está sendo utilizado por '.$user->Nome);
+				$this->AddValidationError('Cpf','O CPF informado já está sendo utilizado por '.$user->Nome.'. Provavelmente já foi inserido nessa atividade.');
 		} catch(Exception $ex) {
 		}
 		

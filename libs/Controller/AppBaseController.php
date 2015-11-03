@@ -37,6 +37,17 @@ class AppBaseController extends Controller
 			$this->RequirePermission(ExampleUser::$PERMISSION_ADMIN,'SecureExample.LoginForm');
 		}
 		//*/
+		
+		//Dados da configuracao do sistema		
+		try {
+			$configuracao = $this->Phreezer->Get('Configuracao',1);
+			$this->Assign('Configuracao',$configuracao);
+			
+		} catch(Exception $ex){
+			$c = new Configuracao($this->Phreezer);
+			$this->Assign('Configuracao',$c);
+			throw new Exception("O banco de dados do sistema ainda não foi configurado, ou foi configurado incorretamente. Entre em contato com o administrador do servidor ou o desenvolvedor do sistema. Código de erro #0x42CFG");
+		}
 	}
 	
 	static public function parseURL($text)

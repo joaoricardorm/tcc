@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','Certificados FAROL | Autenticação');
+	$this->assign('title','Autenticação - Certifica-μ');
 	$this->assign('nav','secureexample');
 
 	$this->display('_Header.tpl.php');
@@ -58,6 +58,10 @@
 			Agora você está autenticado como '<strong><?php echo ($this->CURRENT_USER) ? $this->CURRENT_USER->Nome : ''; ?></strong>'</p>
 		</div>
 	<?php } ?>
+	
+	<style>
+	 .footer.container { max-width:500px; }
+	</style>
 
 	<?php
 	$this->display('_Footer.tpl.php');

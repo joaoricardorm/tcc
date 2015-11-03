@@ -4,3 +4,15 @@ window.onpopstate = function(e) {
 		window.location.reload();
 	}
 };
+
+//DIMINUI O TOPO AO ROLAR
+$(window).scroll(function() {
+	if($(window).width() > 767){
+		 var a=$(window).scrollTop();
+		 if(a > 100){
+			$('.navbar').addClass('scroll');
+		 } else {
+			$('.navbar').removeClass('scroll');
+		 }
+	}
+});	

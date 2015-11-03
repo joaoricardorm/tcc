@@ -1,5 +1,5 @@
 <?php
-	$this->assign('title','Certificados FAROL | Participantes');
+	$this->assign('title','Participantes - Certifica-μ');
 	$this->assign('nav','participantes');
 
 	$this->display('_Header.tpl.php');
@@ -62,7 +62,22 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<div id="modalSalvarAlteracoes" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Salvar alterações</h4>
+      </div>
+      <div class="modal-body">
+        <p>Deseja salvar as alterações realizadas nos participantes?</p>
+      </div>
+      <div class="modal-footer">
+	    <button id="btnSalvarAlteracoes" type="button" class="btn btn-primary">Sim</button>
+        <button id="btnCancelarSalvarAlteracoes" type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 
 
@@ -184,13 +199,17 @@
 	<!-- modal edit dialog -->
 	<div class="modal hide fade animated bounceIn modal-on-top"  data-backdrop="static" id="participanteDetailDialog">
 		<div class="modal-header">
-			<a class="close btn btn-danger btn-big" data-dismiss="modal">&times;</a>
+			<a id="btnCloseModalPrincipal" class="close btn btn-danger btn-big">&times;</a>
 			<h3>
 				<i class="icon-group"></i> Gerenciar Participantes
 				<span id="modelLoader" class="loader progress progress-striped active"><span class="bar"></span></span>
 			</h3>
 		</div>
 		<div class="modal-body">
+			<div class="alert alert-warning alert-dismissible" role="alert">
+			  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			  <strong>Dica</strong> Você pode colar o conteúdo de outra planilha de participantes aqui. =)
+			</div>
 			<div id="modelAlert"></div>
 			<div id="participanteModelContainer"></div>
 		</div>

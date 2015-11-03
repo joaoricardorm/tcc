@@ -311,6 +311,8 @@ class ParticipanteController extends AppBaseController
 		
 		//$someJSON = $_GET['dados']; 
 		
+		require_once("Model/PalestraParticipante.php");
+		
 		try
 		{
 						
@@ -335,14 +337,13 @@ class ParticipanteController extends AppBaseController
 			$errors_p = array();
 			
 			$row = 0;
-			foreach ($unique as $json){ //trocar $unique por $json->data se não for usá-lo
+			foreach ($unique as $json){ //trocar $unique por $json->data se nao for usa-lo
 				
 				if($json->idParticipante == '' && $json->nome == '' && $json->email == '' && $json->nome == ''){
 				  //se linha estiver em branco
 				} else {
 			
 					$pk = $this->SafeGetVal($json, 'idParticipante', null);
-					
 						
 					if($pk != ''){
 						
@@ -350,11 +351,11 @@ class ParticipanteController extends AppBaseController
 						try {
 							$participante = $this->Phreezer->Get('Participante',$pk);								
 						} catch (NotFoundException $ex){ 
-							//throw new Exception('Participante nÃ£o encontrado');
+							throw new Exception('Participante nÃ£o encontrado');
 						}
 					
 					} else {
-							$participante = new Participante($this->Phreezer);
+						$participante = new Participante($this->Phreezer);
 					}
 
 					//se existir id, mas tudo estiver em branco o sistema exclui do banco
@@ -369,31 +370,36 @@ class ParticipanteController extends AppBaseController
 					$participante->Validate();
 					$errors = $participante->GetValidationErrors();
 					
+					//if(!$participante->Cpf) echo $participante->Nome .'--' . $participante->Cpf.'mmmm';
+					
 					if (count($errors) > 0){
 						$errors_p[$participante->IdParticipante]['message'] = $participante->GetValidationErrors();								
-						$errors_p[ $participante->IdParticipante]['success'] = false;
-						$errors_p[ $participante->IdParticipante]['row'] = $row;
+						$errors_p[$participante->IdParticipante]['success'] = false;
+						$errors_p[$participante->IdParticipante]['row'] = $row;
 					} else {
-						if( $this->SafeGetVal($json, 'cpf', $participante->Cpf) == ''){
-							$errors_p[$participante->IdParticipante]['message'] = 'Falta CPF!!!';								
-							$errors_p[ $participante->IdParticipante]['success'] = false;
-							$errors_p[ $participante->IdParticipante]['row'] = $row;
-							
-						} else {
-							//para fazer a associação na tabela palestra_participante
-							$sucesso['idsParticipantes'][] = $participante->IdParticipante;
-							
+						
 							$participante->Save();
+							
+							//para fazer a associaÃ§Ã£oo na tabela palestra_participante
+							$table2 = new PalestraParticipante($this->Phreezer);
+							
+							$table2->IdParticipante = $participante->IdParticipante;
+							$table2->IdPalestra = RequestUtil::Get('idPalestra');
+							$table2->Presenca = 0;
+							$table2->IdCertificado = 0;
+							$table2->Save(false, true);
+							
+							
 							if($pk == ''){
 								$dados = array( 'idParticipante' => $participante->IdParticipante, 'row' => $row);
 								$sucesso['novo'][] = $dados;
 							}
-						}
+						
 					}
 
 					// if (count($errors) > 0)
 					// {
-						// $this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors);
+						// $this->RenderErrorJSON('Verifique erros no preenchimento do formulario',$errors);
 					// }
 					// else
 					// {

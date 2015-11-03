@@ -20,6 +20,8 @@ var page = {
 	
 	SearchTableById: '',
 	erroExcluir: false,
+	timerLigado: false,
+	temAlteracoes: false,
 
 	/**
 	 *
@@ -46,8 +48,12 @@ var page = {
 		// let the page know when the dialog is open
 		$('#participanteDetailDialog').on('show',function() {
 			page.dialogIsOpen = true;
-		});
-
+		});	
+		
+		$('#btnCloseModalPrincipal').on('click',function() {
+			$('#participanteDetailDialog').modal('hide');
+		});	
+		
 		// when the model dialog is closed, let page know and reset the model view
 		$('#participanteDetailDialog').on('hidden',function() {
 			$('#modelAlert').html('');
@@ -325,8 +331,6 @@ listaParticipantesPalestra.success(function(palestraParticipantes){
     // change to the type of renderer you need; eg. if this is supposed
     // to be a checkbox, use CheckboxRenderer instead of TextRenderer
     Handsontable.renderers.TextRenderer.apply(this, arguments);
-
-	console.log(td);
 	
     // get the jquery selector for the td or add the class name using native JS
     $(td).addClass("error");
@@ -335,7 +339,6 @@ listaParticipantesPalestra.success(function(palestraParticipantes){
 }
 
 var yourErrorRenderer = function (instance,td, row, col, prop, value, cellProperties) {
- console.log(instance.getDataAtCell(row, '_tr_attr1'));
  if($('#table-participantes').handsontable('getDataAtCell',row, 1) == 'error'){
     $(td).parent().css('background-color','#205199');
   }else{
@@ -398,8 +401,6 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		listaEmails.push(value.email);
 		listaCpfs.push(value.cpf);
   });
-
-  console.log(listaEmails);
   
   hot = new Handsontable(container, {
     // data: cars,
@@ -464,11 +465,38 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		}
 		
 		//SALVA A TABELA AUTOMATICAMENTE A CADA X TEMPO 35000 = 35 segundos, se parar de mexer na tabela
+		page.timerLigado = true;
+		page.temAlteracoes = true;
+		
 		var salvoUltimaVez = new Date();
-		clearTimeout(autosaveNotification);
-		autosaveNotification = setTimeout(function() {
-		  saveCar.click();
-        }, 35000);
+		if(page.timerLigado === true){
+			clearTimeout(autosaveNotification);
+			autosaveNotification = setTimeout(function() {
+			  saveCar.click();
+			}, 35000);
+		}
+		
+		
+		//CONFIRMAR SALVAR ALTERAÇÕES AO CLICAR EM SAIR DO MODAL
+		if(page.temAlteracoes === true){
+			$('#btnCloseModalPrincipal').unbind('click');	
+			$('#btnCloseModalPrincipal').on('click',function() {
+				$('#participanteDetailDialog').modal('show');
+				$('#modalSalvarAlteracoes').modal({
+						width: '400px',
+						backdrop: 'static',
+						keyboard: false
+				});
+				$('#btnSalvarAlteracoes').click(function(){
+					saveCar.click();
+					$('#modalSalvarAlteracoes').modal('hide');
+				});
+				$('#btnCancelarSalvarAlteracoes').click(function(){
+					$('#modalSalvarAlteracoes, #participanteDetailDialog').modal('hide');
+				});
+			});	
+		}
+		
 	},
 	
 	beforeRemoveRow: function (index, amount) {
@@ -493,7 +521,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				//se existir id
 				if(hot.getDataAtCell(index, 0) != ''){
 					idExcluido = hot.getDataAtCell(index, 0);
-					console.log('idEX',idExcluido);
+
 					if(idExcluido != null)
 						page.participante = page.participantes.get( idExcluido );
 				}
@@ -524,7 +552,6 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 					hot.undo();
 				});
 			}
-			console.log(index, amount, 'VALOR DA CELULAR',hot.getDataAtCell(index, 0));
 	},
 	
 	beforeChange: function (changes, source) {		
@@ -678,13 +705,13 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	
 	// save all cell's data
     var request = $.ajax({
-		url: base+'api/participantes/updateall',
+		url: base+'api/participantes/updateall?idPalestra='+idPalestra[1],
 		type: "post",
 		contentType: "application/json",
 		dataType: 'json',
 		data: JSON.stringify({data: hot.getData()}),
 		complete: function(t){
-			console.log('AEEE',t);
+			page.timerLigado = false;
 		},
 		beforeSend: function(){
 			app.showProgress('modelLoader');
@@ -706,13 +733,9 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				app.appendAlert('Ocorreram erros ao salvar alguns participantes. Por favor verifique.', 'alert-error',0,'modelAlert');
 
 				try {
-					var json = $.parseJSON(model.responseText); 
-
-					console.log('AQUIQUIQ',json.errors);
-				
+					var json = $.parseJSON(model.responseText); 				
 					
 						$.each( json.errors , function(key, value) {
-							console.log(key, value);
 							
 							var elemento = null;
 							elemento = $('.htCore tr#item_'+key);
@@ -781,8 +804,6 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 				
 										$('.alert.stick').addClass('animated bounceOutUp').delay(1000).queue(function(){
 											$(this).remove();
-											
-											console.log($( ".alert.alert-dark" ).length);
 										
 											//Se não existir mais nenhum erro ele já salva
 											//O LENGTH DEVERIA SER 0 PARA MOSTRA TODAS AS NOTIFICAÇÕES DE ERRO, MAS NÃO ESTÁ MOSTRANDO
@@ -829,6 +850,12 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		//Mensagem com a hora que foi salvo
 		$('#save_car').attr('data-autosave','Salvo às '+_date(app.parseDate(salvoUltimaVez)).format('HH:mm:ss'));
 				
+		//Para nao perguntar para salvar ao fechar modal		
+		page.temAlteracoes = false;	
+		$('#btnCloseModalPrincipal').on('click',function() {
+			$('#modalSalvarAlteracoes, #participanteDetailDialog').modal('hide');
+		});			
+				
 		//Recarrega dados		
 		hot.loadData(ppp.rows);
 		page.fetchParticipantes(page.fetchParams);
@@ -848,46 +875,12 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		});
 		}
 		
-		console.log(response.idsParticipantes);
-		
-		app.appendAlert('<span class="multiselect-loading icon-big icon-refresh icon-spin" style="font-size:14px; vertical-align:middle; margin:5px 10px;"></span> Associando participantes à palestra', 'alert alert-dark small margin-bottom-normal',0,'modelAlert');
-		
-		//Associa o participante a palestra
-		$.each( response.idsParticipantes , function(index, idParticipante) {
-
-			var palestraParticipante = new model.PalestraParticipanteModel();
-			
-			palestraParticipante.save({
-					'idPalestra': idPalestra[1],
-					'idParticipante': idParticipante,
-					'idCertificado': 0, //pois nao recebeu ainda por essa palestra
-					'presenca': 0 //só marca se confirmar a presenca
-				}, {
-				wait: true,
-				success: function(){
-					console.log('Associou participante a palestra');	
-		
-					if(index === response.idsParticipantes.length-1){
-						$('#modelAlert').addClass('animated bounceOutUp');
-						setTimeout(function(){ 
-							$('#modelAlert').html('');
-							$('#modelAlert').removeClass('animated bounceOutUp');							
-						}, 500);	
-					}
-				},
-				error: function(model,response,scope){
-					console.log('Erro ao associar participante a palestra');
-					console.log(response);
-				}
-			});
-		});
-		
 		
 	});
 	 
 	request.fail(function( jqXHR, textStatus ) {
 	 console.log( "FALHA AO ENVIAR PARTICIPANTES PARA O SERVIDOR: " + textStatus );
-	 console.log(jqXHR);
+	 //console.log(jqXHR);
 	 console.log('.........');
 	});
 	
@@ -1044,8 +1037,6 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 
 		app.showProgress('modelLoader');		
 		
-		console.log('IDATUAL',page.participante.id);
-		
 		//EXCLUI A RELAÇÃO COM PALESTRANTES ASSOCIADOS ANTES DE APAGAR A PALESTRA
 						
 			var participanteCollection = new model.PalestraParticipanteCollection();	
@@ -1055,7 +1046,6 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 					'idParticipante': page.participante.id,
 				},
 				success: function(c, response) {
-					console.log('PARTICIPANTE PRA EXCLUIR',page.participante,'LISTA',c);
 					//VALIDA SE HÁ CERTIFICADO EMITIDO PARA O PALESTRANTE, SE HOUVER O SISTEMA NÃO DEIXA EXCLUIR
 					var temCertificado = false;
 					c.some(function(pal){
@@ -1080,14 +1070,14 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 								try {
 									page.palestraParticipante.destroy();
 								} catch(e2) {
-									console.log('Não dá para remover pois tem certificado'+e2);
+									console.log('Não é possível remover pois tem certificado'+e2);
 									hot.undo();
 								}
 						
 							}
 							
 							if(qtd === c.length){
-								console.log('Vai remover o palestrante');
+								console.log('Vai remover o palestrante, pois removeu as associacoes');
 								removerParticipante();
 							}
 							qtd++;

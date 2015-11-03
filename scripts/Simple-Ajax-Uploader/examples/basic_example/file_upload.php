@@ -1,5 +1,6 @@
 <?php
 require('../../extras/Uploader.php');
+require_once('../../../../configuracao_servidor.php');
 
 // Directory where we're storing uploaded images
 // Remember to set correct permissions or it won't work
@@ -14,7 +15,7 @@ ini_set('post_max_size', '64M');
 if ($_SERVER["REMOTE_ADDR"] == '127.0.0.1'){
 	$server_root = $_SERVER["DOCUMENT_ROOT"].'/tcc/'; 
 } else {
-	$server_root = '/home/redhiper/public_html/tcc/';
+	$server_root = $pasta_upload; // vem do arquivo de configuracao do servidor
 }
 
 $upload_dir = $server_root . '/images/uploads/logos/';

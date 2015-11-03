@@ -8,3 +8,6 @@ _machine_config.php
 _machine_config.php
 node_modules
 _machine_config.php
+*.psd
+configuracao_servidor.php
+*.log
