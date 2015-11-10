@@ -48,6 +48,8 @@ class UsuarioController extends AppBaseController
     public function Query() {
         try {
             $criteria = new UsuarioCriteria();
+			
+			$criteria->IdUsuario_GreaterThan = 1; // para não lista o usuario Master
 
             // TODO: this will limit results based on all properties included in the filter list 
             $filter = RequestUtil::Get('filter');

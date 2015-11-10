@@ -316,6 +316,8 @@ listaParticipantesPalestra.success(function(palestraParticipantes){
     CarCollection,
     cars,
     hot;
+	
+	salvoUltimaVez = new Date();
 
   CarCollection = Backbone.Collection.extend({
     model: page.participante,
@@ -564,7 +566,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	
 			//DESLOCA CELULAS PARA BAIXO SE COLAR ALGUMA COISA
 			if(changes.length > 1)
-			  hot.alter('insert_row',hot.getSelected()[0], changes.length);
+			  hot.alter('insert_row',hot.getSelected()[0], changes.length/2); //divide por dois por alguma razão está inserindo duplicado
 				  
 			//PREENCHE O RESTO DA LINHA COM O DOS DADOS DO CIDADÃO, CASO EXISTA ao escrever ou colar dados
 			//FALAR NO RELATÓRIO SOBRE O SEU USO NO EVENTO BEFORECHANGE INVÉS DE AFTER CHANGE
@@ -846,7 +848,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 		
 		//Volta ao topo se der erro
 		$('.modal-scrollable').scrollTop(0);
-		
+
 		//Mensagem com a hora que foi salvo
 		$('#save_car').attr('data-autosave','Salvo às '+_date(app.parseDate(salvoUltimaVez)).format('HH:mm:ss'));
 				

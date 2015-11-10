@@ -344,7 +344,9 @@ class ParticipanteController extends AppBaseController
 				} else {
 			
 					$pk = $this->SafeGetVal($json, 'idParticipante', null);
-						
+					$cpf = $this->SafeGetVal($json, 'cpf', null);
+					$jatem=true;
+					
 					if($pk != ''){
 						
 						//SE TIVER ID É EDIÇÃOO SENÃO CRIA UM NOVO PARTICIPANTE
@@ -354,7 +356,40 @@ class ParticipanteController extends AppBaseController
 							throw new Exception('Participante não encontrado');
 						}
 					
-					} else {
+					} elseif($pk == '' && $cpf != '') {
+						//SE TIVER CPF É EDIÇÃO SENÃO CRIA UM NOVO PARTICIPANTE
+						// try {
+							// $participante = $this->Phreezer->Get('Participante',$pk);								
+						// } catch (NotFoundException $ex){ 
+							// throw new Exception('Participante não encontrado');
+						// }
+						
+						
+						$criteria = new ParticipanteCriteria();
+	
+						$criteria->Cpf_Equals = $cpf;
+						
+						$jatem=true;
+						
+						try {
+							$participante = $this->Phreezer->GetByCriteria("Participante", $criteria);	
+							//throw new Exception('MAQU');
+						} catch(NotFoundException $nfex){
+							//throw new Exception($nfex);
+							$participante = new Participante($this->Phreezer);
+							
+				
+							//$this->RenderExceptionJSON($nfex);
+	
+						}
+						
+						
+						
+						
+						
+						
+						
+					} else {	
 						$participante = new Participante($this->Phreezer);
 					}
 
@@ -377,7 +412,7 @@ class ParticipanteController extends AppBaseController
 						$errors_p[$participante->IdParticipante]['success'] = false;
 						$errors_p[$participante->IdParticipante]['row'] = $row;
 					} else {
-						
+							//Salva o participante no banco
 							$participante->Save();
 							
 							//para fazer a associaçãoo na tabela palestra_participante
@@ -390,7 +425,7 @@ class ParticipanteController extends AppBaseController
 							$table2->Save(false, true);
 							
 							
-							if($pk == ''){
+							if($pk == '' or $jatem == true){
 								$dados = array( 'idParticipante' => $participante->IdParticipante, 'row' => $row);
 								$sucesso['novo'][] = $dados;
 							}

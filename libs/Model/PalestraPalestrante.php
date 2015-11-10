@@ -30,7 +30,7 @@ class PalestraPalestrante extends PalestraPalestranteDAO
 
 		
 		//Se não houver certificado, pois usa chave estrangeira
-		if (!$this->IdCertificado) $this->IdCertificado = 0;
+		if (!$this->IdCertificado) $this->IdCertificado = 1;
 	
 		return !$this->HasValidationErrors();
 

@@ -34,16 +34,18 @@
 
 		<div class="hero-unit">			
 			<h3 class="sem-margin-top">Gerenciador de certificados <?php $this->eprint($this->Configuracao->NomeInstituicao); ?></h3>
-			<h1>O que você deseja fazer?</h1>		
+			<h1 class="sem-margin-bottom">O que você deseja fazer?</h1>	
+
+			<!--<iframe src="./gera_pdf.php" width="100%" height="500">-->
 			
-			<div class="row margem-itens">
+			<div class="row margem-itens first">
 				<?php if($this->CURRENT_USER){ //menu disponível apenas para usuários logados ?>
 				<div class="item span3">
 					
 					<a class="btn btn-block btn-primary" data-toggle="modal" href-usar-para-modal="#getStartedDialog" href="./presenca/">
 					  <h3 class="white-text">
 						<i class="icon-group"></i>
-						<span class="block-md">Gerir presença de participantes</span>
+						<span class="block-md">Gerenciar presença de participantes</span>
 					  </h3>
 					</a>
 				
@@ -65,7 +67,7 @@
 					<a class="btn btn-block btn-primary" href="./usuarios/">
 					  <h3 class="white-text">
 						<i class="icon-user"></i>
-						<span class="block-md">Gerir usuários do sistema</span>
+						<span class="block-md">Gerenciar usuários do sistema</span>
 					  </h3>
 					</a>
 					
@@ -75,7 +77,7 @@
 					<a class="btn btn-block btn-primary" href="./eventos/">
 					  <h3 class="white-text">
 						<i class="icon-calendar"></i>
-						<span class="block-md">Gerir eventos</span>
+						<span class="block-md">Gerenciar eventos</span>
 					  </h3>
 					</a>
 					

@@ -88,6 +88,8 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:logout' => array('route' => 'SecureExample.Logout'),
 		
 	// Certificado
+	'GET:emitir-certificados' => array('route' => 'Certificado.EmitirCertificadosView'),
+	'GET:emitir-certificados/(:num)' => array('route' => 'Certificado.EmitirCertificadosView', 'params' => array('idPalestra' => 1)),
 	'GET:certificados' => array('route' => 'Certificado.ListView'),
 	'GET:certificado/(:num)' => array('route' => 'Certificado.SingleView', 'params' => array('idCertificado' => 1)),
 	'GET:api/certificados' => array('route' => 'Certificado.Query'),

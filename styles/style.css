@@ -8,6 +8,23 @@
 */
 
 
+/* FONTE DO GOOGLE LOCAL tem que ser no topo para não dar erro */ 
+@font-face {
+  font-family: 'Lato';
+  font-weight: 400;
+  font-style: normal;
+  src: url('fonts/Lato-regular/Lato-regular.eot');
+  src: url('fonts/Lato-regular/Lato-regular.eot?#iefix') format('embedded-opentype'),
+       local('Lato Regular'),
+       local('Lato-regular'),
+       url('fonts/Lato-regular/Lato-regular.woff2') format('woff2'),
+       url('fonts/Lato-regular/Lato-regular.woff') format('woff'),
+       url('fonts/Lato-regular/Lato-regular.ttf') format('truetype'),
+       url('fonts/Lato-regular/Lato-regular.svg#Lato') format('svg');
+}
+
+
+
 body {
 	padding-top: 90px;
 	padding-bottom: 20px;
@@ -232,12 +249,13 @@ span.buttonContainer {
 .navbar-inverse .nav .caret { margin-left:5px; }
 .sem-margin-right, .add-on [class^=icon-]  { margin-right:0; }
 .sem-margin-top { margin-top:0 }
+.sem-margin-bottom { margin-bottom:0!important; }
 
 .navbar .brand { text-decoration:none; background:url(../images/logo.png) no-repeat 0 center;
 background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
 
 .navbar.scroll .navbar-inner { height:48px }
-.navbar.scroll .nav>li>a { padding: 14px 15px 15px 15px; }
+.navbar.scroll .nav>li>a { padding: 14px 10px 15px 10px; }
 .navbar.scroll .brand {
 
 	transform:scale(0.8) translateZ(0);
@@ -460,6 +478,11 @@ input[type=password]
 	margin-bottom:20px;
 }
 
+.bootstrap-select.metade.form-control:not([class*="col-"]) {
+	width:48%;
+	margin:0 0 10px 0;
+}
+
 
 .frm-login {
 	max-width:500px;
@@ -485,6 +508,10 @@ h1, h2, h3 {
 	.hero-unit.small { margin-bottom:20px; }
 }
 @media screen and (max-width:768px){
+	.bootstrap-select.metade.form-control:not([class*="col-"]) {
+	width:100%;
+	margin-bottom:5px;
+	}
 	.navbar .brand { font-size:1.2em; }
 	.nav-breadcrumb { margin-top:0px; }
 	.hero-unit { padding:20px; }
@@ -493,7 +520,7 @@ h1, h2, h3 {
 @media screen and (max-width:468px) {
 	.vertical-align-super { vertical-align:super; }
 	span.loader { height:10px; margin:0!important; }
-	.hero-unit.small, h1 { font-size:0.9em; padding:5px; }
+	.hero-unit.small, .hero-unit.small h1 { font-size:0.9em; padding:5px; }
 	h3 { font-size:1.2em; }
 	.navbar .brand, .hero-unit { font-size:1em; }
 	.sem-margin-right-xxs { margin-right:0; }
@@ -510,6 +537,10 @@ h1, h2, h3 {
 	.navbar .brand span { visibility:hidden; }	
 	h1 { font-size:1.8em; margin-top:0; }
 	.searchContainer.pull-right  { float:none; clear:both; display:block; }
+	.row.margem-itens .item { margin-top:10px!important; }
+	.row.margem-itens.first { margin-top:10px; }
+	.row.margem-itens .item h3 { zoom:0.9; }
+	h1, h2, h3 { line-height: 25px; }
 }
 input#filter { padding:8px; }
 
@@ -1406,19 +1437,3 @@ Add a counter to the multi-steps indicator
     margin-left: 8.33333333%}
 .col-lg-offset-0 {
     margin-left: 0%}
-
-
-/* FONTE DO GOOGLE */
-@font-face {
-  font-family: 'Lato';
-  font-weight: 400;
-  font-style: normal;
-  src: url('fonts/Lato-regular/Lato-regular.eot');
-  src: url('fonts/Lato-regular/Lato-regular.eot?#iefix') format('embedded-opentype'),
-       local('Lato Regular'),
-       local('Lato-regular'),
-       url('fonts/Lato-regular/Lato-regular.woff2') format('woff2'),
-       url('fonts/Lato-regular/Lato-regular.woff') format('woff'),
-       url('fonts/Lato-regular/Lato-regular.ttf') format('truetype'),
-       url('fonts/Lato-regular/Lato-regular.svg#Lato') format('svg');
-}

@@ -243,9 +243,13 @@ class ModeloCertificadoController extends AppBaseController
 
 			$pk = $this->GetRouter()->GetUrlParam('idModeloCertificado');
 			$modelocertificado = $this->Phreezer->Get('ModeloCertificado',$pk);
-
-			$modelocertificado->Delete();
-
+			
+			if($modelocertificado->IdModeloCertificado == 1){
+				throw new Exception('O modelo padrão não pode ser excluido.');
+			} else {	
+				$modelocertificado->Delete();
+			}
+			
 			$output = new stdClass();
 
 			$this->RenderJSON($output, $this->JSONPCallback());

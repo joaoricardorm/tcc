@@ -18,8 +18,12 @@
 ## PHP FILE UPLOAD LIMITS
 php_value upload_max_filesize 5M
 php_value post_max_size 5M
-# php_value max_execution_time 200
+
+#php_value max_execution_time 200
+
 # php_value max_input_time 200
+
+#php_value_memory_limit 1024M
 
 <IfModule mod_rewrite.c>
 	Options +FollowSymLinks

@@ -294,7 +294,7 @@ class PalestranteController extends AppBaseController
 			$criteria = new PalestraPalestranteCriteria();
 	
 			$criteria->IdPalestrante_Equals = $pk;
-			$criteria->IdCertificado_NotEquals = 0;
+			$criteria->IdCertificado_NotEquals = 1;
 	
 			try {
 				$palestraPalestrante = $this->Phreezer->GetByCriteria("PalestraPalestrante", $criteria);	

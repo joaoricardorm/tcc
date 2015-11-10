@@ -37,6 +37,55 @@ class CertificadoController extends AppBaseController
 		//$this->RequerPermissao(Usuario::$PERMISSION_USER,'SecureExample.LoginForm');
 	}
 
+	
+	/**
+	 * Displays a list view of Certificado objects
+	 */
+	public function EmitirCertificadosView()
+	{
+		//$usuario = Controller::GetCurrentUser();
+		//$this->Assign('usuario',$usuario);		
+		
+		//Dados do evento
+		$this->Assign('Palestra',null);
+		$this->Assign('Evento',null);
+		$this->Assign('navegacao', 'emitir-certificados');
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if(isset($_GET['idPalestra']))
+			$pk = (int)$_GET['idPalestra'];
+		
+		if($pk){
+		
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+				$this->Assign('Evento',$evento);
+					
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe".$ex);
+			}
+		
+		} else {
+				require_once('Model/Evento.php');
+				$criteria = new EventoCriteria();
+				$listaEventos = $this->Phreezer->Query('Evento',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+
+				$this->Assign('ListaEventos',$listaEventos);
+				
+				/*$output->rows = $certificados->ToObjectArray(true,$this->SimpleObjectParams());
+				$output->totalResults = $certificados->TotalResults;
+				$output->totalPages = $certificados->TotalPages;
+				$output->pageSize = $certificados->PageSize;
+				$output->currentPage = $certificados->CurrentPage;*/
+		}
+		
+		$this->Render('EmitirCertificadosView.tpl');
+	}
+	
 	/**
 	 * Displays a list view of Certificado objects
 	 */
@@ -55,6 +104,8 @@ class CertificadoController extends AppBaseController
 		try
 		{
 			$criteria = new CertificadoCriteria();
+			
+			$criteria->IdCertificado_GreaterThan = 1; // para não lista o certificado "sem certificado"
 			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
@@ -251,8 +302,12 @@ class CertificadoController extends AppBaseController
 			$pk = $this->GetRouter()->GetUrlParam('idCertificado');
 			$certificado = $this->Phreezer->Get('Certificado',$pk);
 
-			$certificado->Delete();
-
+			if($certificado->IdCertificado == 1){
+				throw new Exception('O certificado não pode ser excluido. Erro x42CTF01');
+			} else {	
+				$certificado->Delete();
+			}
+			
 			$output = new stdClass();
 
 			$this->RenderJSON($output, $this->JSONPCallback());

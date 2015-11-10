@@ -26,6 +26,7 @@
 		<link href="bootstrap/css/datepicker.css" rel="stylesheet" />
 		<link href="bootstrap/css/timepicker.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-combobox.css" rel="stylesheet" />
+		<link href="bootstrap/css/bootstrap-select.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-multiselect.css" rel="stylesheet" />
 		<link href="bootstrap/css/bootstrap-modal.css" rel="stylesheet" />
 		
@@ -69,6 +70,7 @@
 				.script(base+"bootstrap/js/bootstrap-datepicker.pt-BR.js").wait()
 				.script(base+"bootstrap/js/bootstrap-timepicker.js")
 				.script(base+"bootstrap/js/bootstrap-combobox.js")
+				.script(base+"bootstrap/js/bootstrap-select.js")
 				.script(base+"bootstrap/js/bootstrap-multiselect.js")	
 				.script(base+"bootstrap/js/bootstrap-confirmation.js")
 				.script(base+"bootstrap/js/bootstrap-bootbox.min.js")
@@ -138,14 +140,14 @@
 									<li <?php if ($this->nav=='presenca') { echo 'class="active"'; } ?>><a tabindex="1" href="./presenca/"><i class="icon-group"></i> Presença</a></li>
 								</ul>
 								<ul class="nav">
-									<li class="dropdown">
+									<li class="dropdown <?php if ($this->nav=='certificados') echo 'active'; ?>">
 									<a tabindex="1" href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-certificate"></i> Certificados <b class="caret"></b></a>
 										<ul class="dropdown-menu">
 											<?php if($this->CURRENT_USER->TipoUsuario == Usuario::$P_ADMIN){ //menu completo disponível somente para administrador ?>
-												<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./emitir-certificados/"><i class="icon-certificate"></i>Emitir Certificados</a></li>
+												<li <?php if (isset($this->navegacao) && $this->navegacao=='emitir-certificados') { echo 'class="active"'; } ?>><a href="./emitir-certificados/"><i class="icon-certificate"></i>Emitir Certificados</a></li>
 											<?php } ?>
-											<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./validar-certificado/"><i class="icon-ok"></i>Validar Certificado</a></li>
-											<li <?php if ($this->nav=='certificados') { echo 'class="active"'; } ?>><a href="./obter-certificado/"><i class="icon-certificate"></i>Obter Certificado(s)</a></li>
+											<li <?php if (isset($this->navegacao) && $this->navegacao=='validar-certificado') { echo 'class="active"'; } ?>><a href="./validar-certificado/"><i class="icon-ok"></i>Validar Certificado</a></li>
+											<li <?php if (isset($this->navegacao) && $this->navegacao=='obter-certificados') { echo 'class="active"'; } ?>><a href="./obter-certificado/"><i class="icon-certificate"></i>Obter Certificado(s)</a></li>
 										</ul>
 									</li>
 								</ul>
