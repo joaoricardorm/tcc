@@ -188,6 +188,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'POST:api/participante' => array('route' => 'Participante.Create'),
 	//Salva todos os participantes da handsontable
 	'POST:api/participantes/updateall' => array('route' => 'Participante.UpdateAll'),
+	'GET:api/participantes/updateall' => array('route' => 'Participante.UpdateAll'),
 	'GET:api/participante/(:num)' => array('route' => 'Participante.Read', 'params' => array('idParticipante' => 2)),
 	'PUT:api/participante/(:num)' => array('route' => 'Participante.Update', 'params' => array('idParticipante' => 2)),
 	'DELETE:api/participante/(:num)' => array('route' => 'Participante.Delete', 'params' => array('idParticipante' => 2)),

@@ -253,9 +253,9 @@ span.buttonContainer {
 .footer .muted { margin-bottom:0; }
 
 .navbar a, .navbar a.btn-navbar, #conteudo {
-	transition: all 500ms ease-in-out;
-	-webkit-transition: all 500ms ease-in-out;
-	-moz-transition: all 500ms ease-in-out;
+	transition: all 70ms ease-in-out;
+	-webkit-transition: all 70ms ease-in-out;
+	-moz-transition: all 70ms ease-in-out;
 }
 
 [class^=icon-], table.collection tr th [class^="icon"] { margin-right:5px; text-decoration:none!important; }

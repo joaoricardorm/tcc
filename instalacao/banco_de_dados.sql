@@ -24,7 +24,7 @@ id_usuario int(11) NOT NULL
 
 ALTER TABLE Certificado ADD UNIQUE (livro, codigo);
 
-INSERT INTO Certificado(id_certificado, livro, folha, codigo, id_usuario) VALUES (1, 0, 0, 0, 1);
+INSERT INTO Certificado(id_certificado, livro, folha, codigo, id_usuario) VALUES (0, 0, 0, 0, 1); /* tem que aceitar id 0 */
 
 CREATE TABLE Palestra (
 id_palestra int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,

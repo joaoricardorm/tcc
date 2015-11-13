@@ -30,7 +30,7 @@ class PalestraPalestrante extends PalestraPalestranteDAO
 
 		
 		//Se não houver certificado, pois usa chave estrangeira
-		if (!$this->IdCertificado) $this->IdCertificado = 1;
+		if (!$this->IdCertificado) $this->IdCertificado = 0; //VER COMO COLOCAR ID 0 NO SQL DE INSTALAÇÃO
 	
 		return !$this->HasValidationErrors();
 

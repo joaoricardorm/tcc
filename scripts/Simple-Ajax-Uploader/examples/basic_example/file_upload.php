@@ -18,7 +18,7 @@ if ($_SERVER["REMOTE_ADDR"] == '127.0.0.1'){
 	$server_root = $pasta_upload; // vem do arquivo de configuracao do servidor
 }
 
-$upload_dir = $server_root . 'images/uploads/logos/';
+$upload_dir = $server_root . '/images/uploads/logos/';
 
 $uploader = new FileUpload('uploadfile');
 
