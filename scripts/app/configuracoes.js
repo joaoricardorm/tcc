@@ -116,8 +116,10 @@ function image_uploader() {
         onComplete: function(filename, response) {
             progressOuter.style.display = 'none'; // hide progress bar when upload is completed
 
+			console.log(filename, response);
+			
             if (!response) {
-				console.log(filename, response)
+				console.log(filename, response);
                 msgBox.innerHTML = 'Não foi possível enviar o arquivo';
                 return;
             }
@@ -145,12 +147,14 @@ function image_uploader() {
                 }
             }
         },
-        onError: function() {
+        onError: function(erro) {
 			uploader.removeCurrent();
             removePreviewImage();
 			erroImagem();
             progressOuter.style.display = 'none';
             msgBox.innerHTML = 'Não foi possível enviar o arquivo';
+			
+			console.log(erro);
         }
     });
 

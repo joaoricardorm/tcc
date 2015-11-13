@@ -70,7 +70,7 @@ class PalestraParticipanteReporter extends Reporter
 			$sql .= " group by `participante`.`id_participante` ";
 		
 		//$sql .= $criteria->GetWhere();
-		$sql .= $criteria->GetOrder();
+		//$sql .= $criteria->GetOrder();
 
 		return $sql;
 	}

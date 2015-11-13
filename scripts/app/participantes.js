@@ -647,9 +647,12 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	});
 	var queryResult = hot.search.query(page.SearchTableById);
 	
+	$('#search_field').val(page.SearchTableById);
+	
 	if(queryResult !== null & this.value !== ''){
     	hot.selectCell(queryResult[0].row, 1); //seleciona a coluna nome nome
 		hot.render();
+		$('#search_field').val('');
 	}
   });
   
