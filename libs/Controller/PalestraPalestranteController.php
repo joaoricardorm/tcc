@@ -65,6 +65,10 @@ class PalestraPalestranteController extends AppBaseController
 				$criteria->TemCertificado = RequestUtil::Get('temCertificado');
 			}
 			
+			if(RequestUtil::Get('naoTemCertificado')){
+				$criteria->NaoTemCertificado = RequestUtil::Get('naoTemCertificado');
+			}
+			
 			if(RequestUtil::Get('orderByNomePalestrante')){
 				$criteria->OrderByNomePalestrante = true;
 			}

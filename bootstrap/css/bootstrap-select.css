@@ -111,6 +111,7 @@
 }
 .bootstrap-select.btn-group .dropdown-menu li.disabled a {
   cursor: not-allowed;
+  background:transparent;
 }
 .bootstrap-select.btn-group .dropdown-menu li a {
   cursor: pointer;

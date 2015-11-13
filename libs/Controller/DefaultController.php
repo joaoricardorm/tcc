@@ -159,7 +159,7 @@ echo '
 function printPDF() 
 {
     var w = window.open("'.GlobalConfig::$ROOT_URL.$arquivo.'", "", "toolbar=no, scrollbars=no, resizable=yes, top=50, left=50, width="+(screen.width-100)+", height="+(screen.height-200)+"");
-    setTimeout(function(){ w.print(); },500);
+	setTimeout(function(){ w.print(); },500);
 }
 </script>
 

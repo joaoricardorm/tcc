@@ -22,6 +22,6 @@ A pastas /**tcc/images/uploads/** e **/tcc/certificados-gerados/** e subpastas p
 
 Deve-se criar um banco de dados no MySQL e executar dentro dele o comando SQL contido na pasta **/tcc/instalacao/banco\_de\_dados.sql** (é recomendável excluir a pasta **/tcc/instalacao/** do servidor após a instalação do sistema).
 
-Após a criação do banco de dados é necessário alterar as configurações de conexão com o banco de dados com o sistema em **/tcc/configuracao\_servidor.php**, esse arquivo também contém outras configurações importantes em relação ao servidor. Todas as configurações estão comentadas para facilitar o entendimento.
+Após a criação do banco de dados é necessário alterar as configurações de conexão do banco de dados com o sistema em **/tcc/configuracao\_servidor.php**, esse arquivo também contém outras configurações importantes em relação ao servidor. Todas as configurações estão comentadas para facilitar o entendimento.
 
 Por fim é possível acessar o sistema pela página inicial do site. Para acessar a área restrita o usuário e senha padrão é **admin** / **123**. Após a autenticação pela primeira vez deve-se acessar a página Configurações e inserir os dados da instituição que o utilizará.

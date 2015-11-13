@@ -64,6 +64,22 @@ class CertificadoController extends AppBaseController
 				
 				$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
 				$this->Assign('Evento',$evento);
+							
+			// require_once('verysimple/Phreeze/ObserveToBrowser.php');
+			
+			// $ob = new ObserveToBrowser();
+			// $this->Phreezer->DataAdapter->AttachObserver($ob);
+				
+				//RESGATA O ÚLTIMO CERTIFICADO PARA PREENCHER NA PARTE EMITIR CERTIFICADO
+				$criteria = new CertificadoCriteria();
+				$criteria->SetOrder('IdCertificado', '1');
+				$criteria->SetLimit(1);
+				
+				$ultimoElemento = $this->Phreezer->GetByCriteria('CertificadoReporter',$criteria);
+				
+				$ultimoElemento->Codigo += 1; 
+		
+				$this->Assign('UltimoElemento',$ultimoElemento);
 					
 			} catch(NotFoundException $ex){
 				throw new NotFoundException("A atividade #$pk não existe".$ex);
@@ -84,6 +100,120 @@ class CertificadoController extends AppBaseController
 		}
 		
 		$this->Render('EmitirCertificadosView.tpl');
+	}
+	
+	public function GerarCertificadoPalestrante(){		
+		
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$idPalestrante = $this->GetRouter()->GetUrlParam('idPalestrante');
+		
+		$livro = $this->GetRouter()->GetUrlParam('livro');
+		$folha = $this->GetRouter()->GetUrlParam('folha');		
+		$codigo = $this->GetRouter()->GetUrlParam('codigo');
+	
+		// VERIFICA SE PALESTRANTE JÁ POSSUI CERTIFICADO
+		try {
+			require_once('Model/PalestraPalestrante.php');
+			$criteria = new PalestraPalestranteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra;
+			$criteria->IdPalestrante_Equals = $idPalestrante;
+			$palestrapalestrante = $this->Phreezer->GetByCriteria('PalestraPalestrante',$criteria);
+			
+			//SE AINDA NÃO TIVER ELE CRIA O CERTIFICADO
+			if($palestrapalestrante->IdCertificado == 0){				
+				$certificado = new Certificado($this->Phreezer);
+				$certificado->DataEmissao = date('Y-m-d H:i:s');
+				$certificado->Livro = $livro;
+				$certificado->Folha = $folha;
+				$certificado->Codigo = $codigo;
+				$certificado->IdUsuario = $this->GetCurrentUser()->IdUsuario;
+				
+				
+				$certificado->Validate();
+				$errors = $certificado->GetValidationErrors();
+
+				if (count($errors) > 0)
+				{
+					$this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors);
+				}
+				else
+				{
+					$certificado->Save();
+					
+					//para fazer a associação do certificado na tabela palestra_palestrante
+					$palestrapalestrante->IdCertificado = $certificado->IdCertificado;
+					$palestrapalestrante->Save();
+					
+					$this->RenderJSON('Criou o certificado '.$certificado->IdCertificado.' e associou com palestrante '.$palestrapalestrante->IdPalestrante);
+
+				}
+		
+				
+			} else {
+			   //JÁ TEM CEFTIFICADO
+			}
+				
+		} catch(NotFoundException $ex){
+			throw new NotFoundException("Erro ao buscar associação do palestrante com a palestra".$ex);
+		}						
+							
+	}
+	
+	public function GerarCertificadoParticipante(){		
+		
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$idParticipante = $this->GetRouter()->GetUrlParam('idParticipante');
+		
+		$livro = $this->GetRouter()->GetUrlParam('livro');
+		$folha = $this->GetRouter()->GetUrlParam('folha');		
+		$codigo = $this->GetRouter()->GetUrlParam('codigo');
+	
+		// VERIFICA SE PARTICIPANTE JÁ POSSUI CERTIFICADO
+		try {
+			require_once('Model/PalestraParticipante.php');
+			$criteria = new PalestraParticipanteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra;
+			$criteria->IdParticipante_Equals = $idParticipante;
+			$palestraparticipante = $this->Phreezer->GetByCriteria('PalestraParticipante',$criteria);
+			
+			//SE AINDA NÃO TIVER ELE CRIA O CERTIFICADO
+			if($palestraparticipante->IdCertificado == 0){				
+				$certificado = new Certificado($this->Phreezer);
+				$certificado->DataEmissao = date('Y-m-d H:i:s');
+				$certificado->Livro = $livro;
+				$certificado->Folha = $folha;
+				$certificado->Codigo = $codigo;
+				$certificado->IdUsuario = $this->GetCurrentUser()->IdUsuario;
+				
+				
+				$certificado->Validate();
+				$errors = $certificado->GetValidationErrors();
+
+				if (count($errors) > 0)
+				{
+					$this->RenderErrorJSON('Verifique erros no preenchimento do formulário',$errors);
+				}
+				else
+				{
+					$certificado->Save();
+					
+					//para fazer a associação do certificado na tabela palestra_participante
+					$palestraparticipante->IdCertificado = $certificado->IdCertificado;
+					$palestraparticipante->Save();
+					
+					$this->RenderJSON('Criou o certificado '.$certificado->IdCertificado.' e associou com participante '.$palestraparticipante->IdParticipante);
+
+				}
+		
+				
+			} else {
+			   //JÁ TEM CEFTIFICADO
+			}
+				
+		} catch(NotFoundException $ex){
+			throw new NotFoundException("Erro ao buscar associação do participante com a palestra".$ex);
+		}						
+							
 	}
 	
 	/**

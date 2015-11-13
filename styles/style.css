@@ -51,6 +51,7 @@ a:hover, .a:hover { color:crimson; text-decoration:none; }
 a.btn.btn-default { color:#333; }
 a.btn.btn-danger { color:white; }
 .btn { text-decoration:none; }
+.btn.btn-large { padding-left:40px; padding-right:40px; }
 
 img.thumbnail.small {
 	max-width:250px;
@@ -77,6 +78,13 @@ img.thumbnail.small {
 
 h1.titulo { margin-top:0; float:left; }
 
+.alert.text-large { font-size:16px; }
+.bold { font-weight:bold;}
+
+.inline-block { float:none!important; display:inline-block; }
+
+.well.grey { background:#f6f6f6; }
+
 .show-on-single { display:none; }
 
 .overlay-big-message {
@@ -97,6 +105,14 @@ h1.titulo { margin-top:0; float:left; }
     font-size: 35px;
     opacity: 0.7;
 	z-index:3000;
+}
+
+.overlay-big-message.full {
+    background-color: white;
+    height: 100%;
+    line-height: 300px;
+    color: black;
+	z-index:1000;
 }
 
 .modal { 
@@ -236,10 +252,10 @@ span.buttonContainer {
 
 .footer .muted { margin-bottom:0; }
 
-.navbar a, .navbar a.btn-navbar {
-	transition: all 70ms ease-in-out;
-	-webkit-transition: all 70ms ease-in-out;
-	-moz-transition: all 70ms ease-in-out;
+.navbar a, .navbar a.btn-navbar, #conteudo {
+	transition: all 500ms ease-in-out;
+	-webkit-transition: all 500ms ease-in-out;
+	-moz-transition: all 500ms ease-in-out;
 }
 
 [class^=icon-], table.collection tr th [class^="icon"] { margin-right:5px; text-decoration:none!important; }
@@ -994,6 +1010,7 @@ Add a counter to the multi-steps indicator
 
 
 /* COLUNAS RESPONSIVAS DO BOOTSTRAP 3.0 */
+.row { margin-left:-15px!important; margin-right:-15px!important; }
 .container-fluid {
     margin-right: auto;
     margin-left: auto;
@@ -1130,7 +1147,7 @@ Add a counter to the multi-steps indicator
 .col-sm-7 {
     width: 58.33333333%}
 .col-sm-6 {
-    width: 50%}
+    width: 46%}
 .col-sm-5 {
     width: 41.66666667%}
 .col-sm-4 {
@@ -1346,11 +1363,11 @@ Add a counter to the multi-steps indicator
 .col-lg-7 {
     width: 58.33333333%}
 .col-lg-6 {
-    width: 50%}
+    width: 46%}
 .col-lg-5 {
     width: 41.66666667%}
 .col-lg-4 {
-    width: 33.33333333%}
+    width: 28.33333333%}
 .col-lg-3 {
     width: 25%}
 .col-lg-2 {

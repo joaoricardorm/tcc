@@ -49,6 +49,20 @@ class PalestraParticipanteController extends AppBaseController
 		{
 			$criteria = new PalestraParticipanteCriteria();
 			
+			
+			if(RequestUtil::Get('idParticipante')){
+				$criteria->IdParticipante_Equals = RequestUtil::Get('idPalestrante');
+			}
+			
+			if(RequestUtil::Get('temCertificado')){
+				$criteria->TemCertificado = RequestUtil::Get('temCertificado');
+			}
+			
+			if(RequestUtil::Get('naoTemCertificado')){
+				$criteria->NaoTemCertificado = RequestUtil::Get('naoTemCertificado');
+			}
+			
+			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
@@ -87,7 +101,7 @@ class PalestraParticipanteController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$palestraparticipantes = $this->Phreezer->Query('PalestraParticipante',$criteria)->GetDataPage($page, $pagesize);
+				$palestraparticipantes = $this->Phreezer->Query('PalestraParticipanteReporter',$criteria)->GetDataPage($page, $pagesize);
 				$output->rows = $palestraparticipantes->ToObjectArray(true,$this->SimpleObjectParams());
 				$output->totalResults = $palestraparticipantes->TotalResults;
 				$output->totalPages = $palestraparticipantes->TotalPages;
@@ -97,7 +111,7 @@ class PalestraParticipanteController extends AppBaseController
 			else
 			{
 				// return all results
-				$palestraparticipantes = $this->Phreezer->Query('PalestraParticipante',$criteria);
+				$palestraparticipantes = $this->Phreezer->Query('PalestraParticipanteReporter',$criteria);
 				$output->rows = $palestraparticipantes->ToObjectArray(true, $this->SimpleObjectParams());
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;

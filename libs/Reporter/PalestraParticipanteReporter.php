@@ -18,10 +18,6 @@ require_once("verysimple/Phreeze/Reporter.php");
 class PalestraParticipanteReporter extends Reporter
 {
 
-	// the properties in this class must match the columns returned by GetCustomQuery().
-	// 'CustomFieldExample' is an example that is not part of the `palestra_participante` table
-	public $CustomFieldExample;
-
 	public $Id;
 	public $Presenca;
 	public $IdParticipante;
@@ -39,17 +35,41 @@ class PalestraParticipanteReporter extends Reporter
 	static function GetCustomQuery($criteria)
 	{
 		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`palestra_participante`.`id` as Id
+			`palestra_participante`.`id` as Id
 			,`palestra_participante`.`presenca` as Presenca
 			,`palestra_participante`.`id_participante` as IdParticipante
 			,`palestra_participante`.`id_palestra` as IdPalestra
 			,`palestra_participante`.`id_certificado` as IdCertificado
-		from `palestra_participante`";
+		from `participante` ";
+		
+		if ($criteria->IdPalestra_Equals){
+		
+			$sql .= "inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante`
+			where `palestra_participante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
+			
+			if($criteria->IdParticipante_Equals)
+				$sql .= " AND `participante`.`id_participante` = '" . $criteria->Escape($criteria->IdParticipante_Equals) . "' ";
 
-		// the criteria can be used or you can write your own custom logic.
-		// be sure to escape any user input with $criteria->Escape()
-		$sql .= $criteria->GetWhere();
+		
+		} else {
+			
+			$sql .= "inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante`";
+		
+			if($criteria->IdParticipante_Equals)
+				$sql .= " WHERE `participante`.`id_participante` = '" . $criteria->Escape($criteria->IdParticipante_Equals) . "' ";			
+		
+		}
+
+		if($criteria->TemCertificado)
+			$sql .= " AND `palestra_participante`.`id_certificado` > 0 ";
+		else if ($criteria->NaoTemCertificado)
+			$sql .= " AND `palestra_participante`.`id_certificado` = 0 ";
+		
+		//Agrupa os participantes para não duplicar
+		if ($criteria->IdPalestra_Equals)
+			$sql .= " group by `participante`.`id_participante` ";
+		
+		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();
 
 		return $sql;

@@ -86,6 +86,8 @@ class PalestraPalestranteReporter extends Reporter
 		
 		if($criteria->TemCertificado)
 			$sql .= " AND `palestra_palestrante`.`id_certificado` > 0 ";
+		else if ($criteria->NaoTemCertificado)
+			$sql .= " AND `palestra_palestrante`.`id_certificado` = 0 ";
 		
 		//Agrupa os palestrantes para não duplicar
 		if ($criteria->IdPalestra_Equals)

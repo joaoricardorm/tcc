@@ -16,6 +16,48 @@ require_once("DAO/PalestraParticipanteCriteriaDAO.php");
 class PalestraParticipanteCriteria extends PalestraParticipanteCriteriaDAO
 {
 	
+	
+	
+	public $IdPalestra_Equals;
+	public $IdParticipante_Equals;
+	public $OuterJoinPalestras;
+	public $TemCertificado;
+	public $NaoTemCertificado;
+	public $OrderByNomeParticipante;
+	
+	/**
+	 * This is overridden so that we can instruct Phreezer what database field
+	 * is referred to by the property "BookId"
+	 * @see Criteria::GetFieldFromProp()
+	 */
+	public function GetFieldFromProp($propname)
+	{		
+		switch($propname){
+			case 'IdPalestra':
+				return 'id_palestra';
+			case 'IdParticipante':
+				return 'id_participante';
+			case 'OuterJoinPalestras':
+				return 'id_palestra';
+			case 'TemCertificado':
+				return 'id_certificado';
+			case 'NaoTemCertificado':
+				return 'id_certificado';	
+
+			case 'NomeParticipante':
+				return 'NomeParticipante';
+				
+			default:
+				return parent::GetFieldFromProp($propname);
+		}
+		
+		//throw new Exception("Unknown Property '$propname' specified.");
+	
+	}
+	
+	
+	
+	
 	/**
 	 * GetFieldFromProp returns the DB column for a given class property
 	 * 

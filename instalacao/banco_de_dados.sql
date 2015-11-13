@@ -22,6 +22,8 @@ codigo int(11) NOT NULL,
 id_usuario int(11) NOT NULL
 ) ENGINE=InnoDB;
 
+ALTER TABLE Certificado ADD UNIQUE (livro, codigo);
+
 INSERT INTO Certificado(id_certificado, livro, folha, codigo, id_usuario) VALUES (1, 0, 0, 0, 1);
 
 CREATE TABLE Palestra (

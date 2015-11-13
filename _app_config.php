@@ -92,6 +92,10 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:emitir-certificados/(:num)' => array('route' => 'Certificado.EmitirCertificadosView', 'params' => array('idPalestra' => 1)),
 	'GET:certificados' => array('route' => 'Certificado.ListView'),
 	'GET:certificado/(:num)' => array('route' => 'Certificado.SingleView', 'params' => array('idCertificado' => 1)),
+	//gerar certificados dos palestrantes
+	'GET:api/geracertificadopalestrante/(:num)' => array('route' => 'Certificado.GerarCertificadoPalestrante', 'params' => array('idPalestrante' => 2)),
+	//gerar certificados dos participantes
+	'GET:api/geracertificadoparticipante/(:num)' => array('route' => 'Certificado.GerarCertificadoParticipante', 'params' => array('idParticipante' => 2)),
 	'GET:api/certificados' => array('route' => 'Certificado.Query'),
 	'POST:api/certificado' => array('route' => 'Certificado.Create'),
 	'GET:api/certificado/(:num)' => array('route' => 'Certificado.Read', 'params' => array('idCertificado' => 2)),

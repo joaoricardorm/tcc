@@ -27,6 +27,8 @@ class Certificado extends CertificadoDAO
 		// $errors = $this->GetValidationErrors();
 		// if ($error == true) $this->AddValidationError('FieldName', 'Error Information');
 		// return !$this->HasValidationErrors();
+	
+		return !$this->HasValidationErrors();
 
 		return parent::Validate();
 	}
