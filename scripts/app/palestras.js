@@ -86,7 +86,7 @@ var page = {
 			
 			window.history.pushState('Object', 'Atividades', base+idEvento[0]+'/atividades/');
 		});
-
+		
 		// save the model when the save button is clicked
 		$("#savePalestraButton").click(function(e) {
 			e.preventDefault();
@@ -352,6 +352,11 @@ var page = {
 						$('.show-on-single').show();
 					}
 					
+					$("#palestraDetailDialog a").click(function(link) {
+						link.preventDefault();
+						page.updateModel($(this).attr('href'));
+					});
+		
 					
 					//Se existir pedido de exclusao
 					if(page.excluir === true){
@@ -561,7 +566,7 @@ var page = {
 							//Se for palestra nova ele nao seleciona
 							if((!page.palestra.isNew() || page.detalhes === true) && page.palestras.length > 0 && page.palestra.get('nome') !== '.'){
 								
-								c.forEach(function(pal,index) {
+								c.every(function(pal,index) {
 								
 									$('.multiselect-loading').show();
 										
@@ -737,7 +742,10 @@ var page = {
 	/**
 	 * update the model that is currently displayed in the dialog
 	 */
-	updateModel: function() {
+	updateModel: function(linkClicado) {
+		
+		linkClicado = typeof linkClicado !== 'undefined' ? linkClicado : false;
+		
 		// reset any previous errors
 		$('#modelAlert').html('');
 		$('.control-group').removeClass('error');
@@ -764,7 +772,11 @@ var page = {
 		}, {
 			wait: true,
 			success: function(){
-				$('#palestraDetailDialog').modal('hide');
+				if(linkClicado === false)
+					$('#palestraDetailDialog').modal('hide');
+				else {
+					document.location.href = linkClicado;
+				}
 				setTimeout("app.appendAlert('Palestra foi " + (isNew ? "inserida" : "editada") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
 				
