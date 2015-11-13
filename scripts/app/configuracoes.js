@@ -117,6 +117,7 @@ function image_uploader() {
             progressOuter.style.display = 'none'; // hide progress bar when upload is completed
 
             if (!response) {
+				console.log(filename, response)
                 msgBox.innerHTML = 'Não foi possível enviar o arquivo';
                 return;
             }
