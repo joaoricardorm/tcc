@@ -36,13 +36,9 @@ require_once($server_root . '/libs/Model/Miniatura.php');
 
 $pasta = $upload_dir;
 $img_name = $novo_nome;
-		
-//small
-miniatura('' ,$img_name, $pasta, $pasta.'small/', 'esticar', 320, 'auto');
-//medium
-miniatura('' ,$img_name, $pasta, $pasta.'medium/', 'esticar', 720, 'auto');
-//large
-miniatura('' ,$img_name, $pasta, $pasta.'large/', 'esticar', 1000, 'auto');
-		
+
+createthumb($pasta.$img_name, $pasta.'small/'.$img_name, 320,320,false, true, false);
+createthumb($pasta.$img_name, $pasta.'medium/'.$img_name, 720,720,false, true, false);
+createthumb($pasta.$img_name, $pasta.'large/'.$img_name, 1000,1000,false, true, false);
 
 echo json_encode(array('success' => true, 'img' => $uploader->newFileName));

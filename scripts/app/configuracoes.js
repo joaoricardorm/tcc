@@ -213,6 +213,11 @@ var page = {
         $('#configuracaoDetailDialog').on('hidden', function() {
             $('#modelAlert').html('');
             page.dialogIsOpen = false;
+			
+			//RECARREGA A PAGINA POR CAUSA DO upload
+			setTimeout(function(){
+				window.location.reload();
+			}, 1000);
         });
 		
         // save the model when the save button is clicked
