@@ -280,7 +280,7 @@ class PalestraController extends AppBaseController
 			
 			try {
 				$certificados = $this->Phreezer->GetByCriteria("PalestraPalestranteReporter", $criteria);	
-				throw new Exception('Não foi possível excluir a atividade, pois um dos palestrantes recebeu já certificado por ela');
+				throw new Exception('Não foi possível excluir a atividade, pois um dos palestrantes recebeu já certificado por ela'.print_r($certificados->TotalResults));
 			} catch(NotFoundException $nfex){
 				$palestra->Delete();
 			}

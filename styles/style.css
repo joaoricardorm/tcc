@@ -508,9 +508,8 @@ input[type=password]
 .formlogin input { 
 	width: 100%;
     box-sizing: border-box;
-	-moz-box-sizing:    border-box;
+	-moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    padding: 15px 10px;
 }
 .formlogin h2 { margin-top:0; }
 .control-group:last-child { margin-bottom:0; }
@@ -1010,7 +1009,7 @@ Add a counter to the multi-steps indicator
 
 
 /* COLUNAS RESPONSIVAS DO BOOTSTRAP 3.0 */
-.row { margin-left:-15px!important; margin-right:-15px!important; }
+/* .row { margin-left:-15px!important; margin-right:-15px!important; } */
 .container-fluid {
     margin-right: auto;
     margin-left: auto;

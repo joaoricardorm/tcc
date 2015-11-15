@@ -120,7 +120,7 @@ class DefaultController extends AppBaseController
 	/**
 	 * Display the home page for the application
 	 */
-	public function Home()
+	public function HomeGeraPDF()
 	{
 		
 $html = '
@@ -167,6 +167,14 @@ function printPDF()
 
 <embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$arquivo.'" width="885" height="628" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
 
+		$this->Render();
+	}
+	
+	/**
+	 * Display the home page for the application
+	 */
+	public function Home()
+	{
 		$this->Render();
 	}
 

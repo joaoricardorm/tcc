@@ -686,15 +686,18 @@ setTimeout(function(){
 		
 		//EXCLUI A RELAÇÃO COM PALESTRANTES ASSOCIADOS ANTES DE APAGAR A PALESTRA
 						
-			var palestranteCollection = new model.PalestraPalestranteCollection();	
+			var palestrapalestranteCollection = new model.PalestraPalestranteCollection();	
 				
-			palestranteCollection.fetch({
+			palestrapalestranteCollection.fetch({
 				data : {
 					'idPalestrante': page.palestrante.get('idPalestrante'),
+					'temCertificado': 'true'
 				},
 				success: function(c, response) {
 					
 					//VALIDA SE HÁ CERTIFICADO EMITIDO PARA O PALESTRANTE, SE HOUVER O SISTEMA NÃO DEIXA EXCLUIR
+					console.log(c.totalResults);
+					
 					var temCertificado = false;
 					c.some(function(pal){
 						if(parseInt(pal.get('idCertificado')) > 0){
@@ -706,7 +709,7 @@ setTimeout(function(){
 					
 					//REMOVE AS RELAÇÕES COM O PALESTRANTE, caso possua palestrantes, caso não possua certificado, senão joga um erro
 	
-					if(c.length > 0){
+					if(c.totalResults === 0){
 						var qtd = 1;
 						c.forEach(function(pal){
 							
@@ -720,7 +723,7 @@ setTimeout(function(){
 							}
 							
 							if(qtd === c.length){
-								console.log('Vai remover o palestrante');
+								console.log('Vai remover o palestrante sem certificado');
 								removerPalestrante();
 							}
 							qtd++;
@@ -757,6 +760,7 @@ setTimeout(function(){
 					}
 				},
 				error: function(model,response,scope) {
+					console.log('REX',response);
 					app.appendAlert(app.getErrorMessage(response), 'alert-error',0,'modelAlert');
 					app.hideProgress('modelLoader');
 					

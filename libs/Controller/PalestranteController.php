@@ -297,7 +297,7 @@ class PalestranteController extends AppBaseController
 			$criteria->IdCertificado_NotEquals = 1;
 	
 			try {
-				$palestraPalestrante = $this->Phreezer->GetByCriteria("PalestraPalestrante", $criteria);	
+				$palestraPalestrante = $this->Phreezer->Query("PalestraPalestrante", $criteria)->ToObjectArray(true,$this->SimpleObjectParams());	;	
 				
 				throw new Exception('Não é possível esse palestrante do do sistema, pois ele já possui certificado por alguma palestra');
 			} catch(NotFoundException $nfex){

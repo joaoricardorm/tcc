@@ -40,16 +40,6 @@
 			
 			<div class="row margem-itens first">
 				<?php if($this->CURRENT_USER){ //menu disponível apenas para usuários logados ?>
-				<div class="item span3">
-					
-					<a class="btn btn-block btn-primary" data-toggle="modal" href-usar-para-modal="#getStartedDialog" href="./presenca/">
-					  <h3 class="white-text">
-						<i class="icon-group"></i>
-						<span class="block-md">Gerenciar presença de participantes</span>
-					  </h3>
-					</a>
-				
-				</div>
 				
 				<?php if($this->CURRENT_USER->TipoUsuario == Usuario::$P_ADMIN){ //menu disponível somente para usuário administrador ?>
 				<div class="item span3">
@@ -83,6 +73,17 @@
 					
 				</div>
 				<?php } ?>
+				
+				<div class="item span3">
+					
+					<a class="btn btn-block btn-primary" data-toggle="modal" href-usar-para-modal="#getStartedDialog" href="./presenca/">
+					  <h3 class="white-text">
+						<i class="icon-group"></i>
+						<span class="block-md">Gerenciar presença de participantes</span>
+					  </h3>
+					</a>
+				
+				</div>
 				
 				<?php } ?>
 			</div>

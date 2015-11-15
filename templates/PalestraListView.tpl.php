@@ -19,10 +19,9 @@
 	});
 </script>
 
-
 <nav class="container hero-unit small">
 		<ol class="cd-multi-steps text-top">
-			<li class="visited"><a href="eventos"><i class="icon-tag"></i>Eventos</a></span></li> <!-- Classe "visited" -->
+			<li class="visited"><a href="evento/<?php $this->eprint($this->Evento->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome)); ?>/"><i class="icon-tag"></i><?php $this->eprint($this->Evento->Nome); ?></a></span></li> <!-- Classe "visited" -->
 			<li class="current"><span><span class="remove-on-single"><i class="icon-tags"></i>Atividades</span><span class="show-on-single"><i class="icon-tag"></i>Detalhes do evento</span></span></li>
 			<li>	
 				<span class="hidden show-on-single">
@@ -248,7 +247,7 @@
 						<span class="help-inline"></span>
 					</div>
 				</div>
-				<div id="idModeloCertificadoInputContainer" class="control-group">
+				<div id="idModeloCertificadoInputContainer" class="hide control-group">
 					<label class="control-label" for="idModeloCertificado">Modelo do certificado</label>
 					<div class="controls inline-inputs">
 						<select id="idModeloCertificado" name="idModeloCertificado">
@@ -329,7 +328,7 @@
 					<i class="icon-arrow-left"></i>Voltar
 				</a>
 			<?php } ?>		
-			<button id="savePalestraButton" class="btn btn-primary block-sm"><span>Salvar</span><i class="icon-arrow-right icon-margin-left"></i></button>
+			<button id="savePalestraButton" class="btn btn-primary block-sm"><span>Salvar</span></button>
 			<button id="cancelarSavePalestraButton" class="btn block-sm" data-dismiss="modal">Cancelar</button>
 		</div>
 	</div>
