@@ -352,7 +352,7 @@ var page = {
 						$('.show-on-single').show();
 					}
 					
-					$("#palestraDetailDialog a").click(function(link) {
+					$("#palestraDetailDialog a").not('.close, #cancelSavePalestraButton, #savePalestraButton').click(function(link) {
 						link.preventDefault();
 						page.updateModel($(this).attr('href'));
 					});
@@ -761,9 +761,15 @@ var page = {
 		}
 
 		app.showProgress('modelLoader');
-
+		
+		console.log('LLOOOOOO',page.palestra.get('nomeEvento'));
+		
+		var nomePalestra = page.palestra.get('nomeEvento');
+		if(parseInt(page.proprioEvento) === 0)//se não for proprio Evento
+			nomePalestra = $('input#nome').val();
+		
 		page.palestra.save({
-			'nome': $('input#nome').val(),
+			'nome': nomePalestra,
 			'data': $('input#data').val(),
 			'cargaHoraria': cargaHorariaVal,
 			'proprioEvento': $('input#proprioEvento').val(),

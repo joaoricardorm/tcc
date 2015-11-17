@@ -190,7 +190,7 @@ $(document).ready(function(){
 							
 							if(qtd===todosPalestrantes.totalResults){
 								setTimeout(function(){
-									$('#progresso').addClass('animated fadeOutUp').delay(450).queue(function(){ $(this).removeClass('animated fadeOutUp').addClass('hide'); });
+									$('#progresso').addClass('animated fadeOutLeft').delay(450).queue(function(){ $(this).removeClass('animated fadeOutLeft fadeInUp').addClass('hide'); });
 								}, 450);
 								emitirCertificadosParticipantes(codigo); //puxa o último codigo gerado do palestrante
 							}
@@ -224,7 +224,7 @@ $(document).ready(function(){
 			
 				if(todosParticipantes.totalResults > 0){
 					
-					$('#progresso').removeClass('hide').addClass('animated fadeIn');
+					$('#progresso').removeClass('hide').addClass('animated fadeInRight');
 					$('#progresso .acao').text('Preparando certificados dos participantes');
 				
 					//LOOP NOS PALESTRANTES

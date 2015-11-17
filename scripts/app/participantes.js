@@ -35,8 +35,9 @@ var page = {
 		
 		
 		//RETORNA A PALESTRA ATUAL VIA URL
-		idPalestra = window.location.pathname.match(/atividade\/([0-9]+)/);
+		idPalestra = window.location.pathname.match(/atividades?\/([0-9]+)/); //? para atividade ou atividades
 		
+		console.log(idPalestra);
 		
 
 		// make the new button clickable

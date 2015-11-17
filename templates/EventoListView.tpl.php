@@ -158,8 +158,8 @@
 						<a href="evento/<%= _.escape(item.get('idEvento')) %>/atividades/" id="atividadesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-tags icon-white"></i> <span class="remove-on-single">Atividades</span><span class="show-on-single">Detalhes</span></a>
 						
 						<span class="show-on-single">
-							<button id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</button>
-							<button id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</button>
+							<a id="palestrantesButton" class="btn btn-primary margin-right-bigger-sm block-sm"><i class="icon-microphone icon-white"></i> Palestrantes</a>
+							<a id="participantesButton" class="btn btn-primary block-sm"><i class="icon-group icon-white"></i> Participantes</a>
 						</span>
 						
 					</div>

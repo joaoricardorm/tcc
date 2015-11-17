@@ -77,6 +77,7 @@ class CertificadoController extends AppBaseController
 				
 				$ultimoElemento = $this->Phreezer->GetByCriteria('CertificadoReporter',$criteria);
 				
+				if($ultimoElemento->Folha == 0) $ultimoElemento->Livro = 1;
 				$ultimoElemento->Folha += 1; 
 				$ultimoElemento->Codigo += 1; 
 		

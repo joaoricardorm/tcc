@@ -21,6 +21,7 @@ var page = {
 	dialogIsOpen: false,
 	
 	proprioEvento: 0,
+	idDetalhesEvento: null,
 	
 	temCertificado: false,
 	excluir: null,
@@ -307,6 +308,12 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					window.history.pushState('Object', 'Evento '+evento.get('nome'), base+'evento/'+evento.id+'/'+app.parseURL(evento.get('nome'))+'/');
 					
 					
+					$("#eventoDetailDialog a").not('.close, #cancelSaveEventoButton, #saveEventoButton').click(function(link) {
+						link.preventDefault();
+						page.updateModel($(this).attr('href'));
+					});
+					
+					
 					//Se existir pedido de exclusao
 					if(page.excluir === true){
 						app.appendAlert('Excluindo evento...', 'alert-error',0,'modelAlert');
@@ -326,7 +333,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 						success: function(palestras) {	
 							if(palestras.length > 0){
-								page.proprioEvento = palestras.first().attributes.proprioEvento;								
+								page.proprioEvento = palestras.first().attributes.proprioEvento;
+								page.idDetalhesEvento = palestras.first().attributes.idPalestra;
 							} else {
 								page.proprioEvento = 0;
 							}
@@ -337,6 +345,14 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 									$('.remove-on-single').remove();
 									$('.show-on-single').show();
 								}
+								
+								//INSERE LINK DO PALESTRANTES E PARTICIPANTES NO BREADCRUMB QUANDO HAVER APENAS UMA PALESTRA OU SEJA O PROPRIO EVENTO
+								$('#link-palestrantes-breadcrumb, #palestrantesButton').attr('href','atividade/'+page.idDetalhesEvento+'/atividade/palestrantes/').parent().removeClass('hidden');
+								$('#link-participantes-breadcrumb, #participantesButton').attr('href','atividade/'+page.idDetalhesEvento+'/atividade/participantes/').parent().removeClass('hidden');
+									
+								
+								console.log(page.idDetalhesEvento);
+								
 							
 							
 						},
@@ -413,7 +429,10 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 	/**
 	 * update the model that is currently displayed in the dialog
 	 */
-	updateModel: function() {
+	updateModel: function(linkClicado) {
+		
+		linkClicado = typeof linkClicado !== 'undefined' ? linkClicado : false;
+		
 		// reset any previous errors
 		$('#modelAlert').html('');
 		$('.control-group').removeClass('error');
@@ -433,6 +452,13 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 		}, {
 			wait: true,
 			success: function(){
+				
+				if(linkClicado === false)
+					$('#eventoDetailDialog').modal('hide');
+				else {
+					document.location.href = linkClicado;
+				}
+				
 				//$('#eventoDetailDialog').modal('hide');
 				setTimeout("app.appendAlert('Evento foi " + (isNew ? "inserido" : "editado") + " com sucesso','alert-success',3000,'collectionAlert')",500);
 				app.hideProgress('modelLoader');
