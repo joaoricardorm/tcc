@@ -72,7 +72,7 @@ class CertificadoController extends AppBaseController
 				
 				//RESGATA O ÚLTIMO CERTIFICADO PARA PREENCHER NA PARTE EMITIR CERTIFICADO
 				$criteria = new CertificadoCriteria();
-				$criteria->SetOrder('IdCertificado', '1');
+				$criteria->SetOrder('Codigo', '1'); //PARA PEGAR PELO ULTIMO CODIGO E NÃO ID
 				$criteria->SetLimit(1);
 				
 				$ultimoElemento = $this->Phreezer->GetByCriteria('CertificadoReporter',$criteria);

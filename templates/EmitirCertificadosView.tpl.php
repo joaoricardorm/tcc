@@ -60,7 +60,7 @@
 	
 	<p>
 		<select id="selectEventos" class="form-control metade">
-			<option value="" selected disabled>Selecione um evento/atividade</option>
+			<option selected disabled>Selecione um evento/atividade</option>
 			<?php 
 				foreach($this->ListaEventos as $evento){
 					echo '<option value="'.$evento->idEvento.'">'.$evento->nome.'</option>';
