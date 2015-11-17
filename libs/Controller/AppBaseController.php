@@ -19,6 +19,36 @@ class AppBaseController extends Controller
 
 	static $DEFAULT_PAGE_SIZE = 10;
 	
+	/* GERA ARQUIVO EM PDF */
+	public function geraPDF($arquivo, $caminho, $html, $papel='a4', $orientacao='landscape'){
+		// Incluímos a biblioteca DOMPDF
+		require_once("./vendor/dompdf/dompdf_config.inc.php");
+		// Instanciamos a classe
+		$dompdf = new DOMPDF();
+		// Passamos o conteúdo que será convertido para PDF
+		$dompdf->load_html($html);
+		// Definimos o tamanho do papel e
+		// sua orientação (retrato ou paisagem)
+		$dompdf->set_paper($papel,$orientacao);
+		// O arquivo é convertido
+		$dompdf->render();
+		//CRIA A PASTA SE NÃO EXISTIR
+		if (!file_exists($caminho)) {
+		   mkdir($caminho, 0777, true);
+		}
+		// Salvo no diretório do sistema
+		file_put_contents($caminho.$arquivo, $dompdf->output());
+	}
+	
+	//Esta função manda o arquivo para download
+	public function downloadArquivo($arquivo, $nome_download)
+	{
+		$ext = pathinfo($arquivo, PATHINFO_EXTENSION);
+		header('Content-type: application/'.$ext);
+		header('Content-Disposition: attachment; filename="'.$nome_download.'.'.$ext.'"');
+		readfile($arquivo); 
+	}
+	
 	/**
 	 * Init is called by the base controller before the action method
 	 * is called.  This provided an oportunity to hook into the system

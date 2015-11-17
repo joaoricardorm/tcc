@@ -96,6 +96,10 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/geracertificadopalestrante/(:num)' => array('route' => 'Certificado.GerarCertificadoPalestrante', 'params' => array('idPalestrante' => 2)),
 	//gerar certificados dos participantes
 	'GET:api/geracertificadoparticipante/(:num)' => array('route' => 'Certificado.GerarCertificadoParticipante', 'params' => array('idParticipante' => 2)),
+	//gerar ata de certificados da palestra
+	'GET:api/gerarata/(:num)' => array('route' => 'Certificado.GerarAta', 'params' => array('idPalestra' => 2)),
+	//download ata da palestra
+	'GET:api/downloadata/(:num)' => array('route' => 'Certificado.DownloadAta', 'params' => array('idPalestra' => 2)),
 	'GET:api/certificados' => array('route' => 'Certificado.Query'),
 	'POST:api/certificado' => array('route' => 'Certificado.Create'),
 	'GET:api/certificado/(:num)' => array('route' => 'Certificado.Read', 'params' => array('idCertificado' => 2)),

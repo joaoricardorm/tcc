@@ -148,7 +148,7 @@
 					<th id="header_Data"><i class="icon icon-calendar"></i>Data<% if (page.orderBy == 'Data') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 				<% } %>
 				<th id="header_CargaHoraria"><i class="icon icon-time"></i>Carga horária<% if (page.orderBy == 'CargaHoraria') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
-				<th><i class="icon icon-certificate"></i>Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
+				<!--<th><i class="icon icon-certificate"></i>Modelo do certificado<% if (page.orderBy == 'NomeModeloCertificado') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>-->
 				<th><i class="icon icon-user"></i>Palestrantes<% if (page.orderBy == 'Palestrantes') { %> <i class='icon-arrow-<%= page.orderDesc ? 'up' : 'down' %>' /><% } %></th>
 			</tr>
 		</thead>
@@ -169,7 +169,7 @@
 						<%= tempo %>
 					<% } else { %>Sem carga horária<% } %>
 				</td>
-				<td><%= _.escape(item.get('nomeModeloCertificado') || '') %></td>
+				<!--<td><%= _.escape(item.get('nomeModeloCertificado') || '') %></td>-->
 				<td class="lista-palestrantes"><span class="muted">Nenhum palestrante</span></td>
 			</tr>
 		<% }); %>

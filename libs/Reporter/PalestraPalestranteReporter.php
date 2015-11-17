@@ -29,6 +29,11 @@ class PalestraPalestranteReporter extends Reporter
 	
 	public $NomePalestrante;
 	public $CpfPalestrante;	
+	
+	public $DataEmissao;
+	public $Livro;
+	public $Folha;	
+	public $Codigo;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -57,19 +62,33 @@ class PalestraPalestranteReporter extends Reporter
 		
 		//if (!$criteria->IdPalestra_Equals && !$criteria->IdPalestrante_Equals) throw new Exception('IdPalestra_Equals ou IdPalestrante_Equals é obrigatório!');
 		
-		$sql = "select
+	$sql = "select
 			`palestra_palestrante`.`id` as Id  
 			,`palestrante`.`id_palestrante` as IdPalestrante
 			,`palestrante`.`nome` as NomePalestrante
 			,`palestrante`.`cpf` as CpfPalestrante
 			, `palestra_palestrante`.`id_palestra` as IdPalestra
-			,`palestra_palestrante`.`id_certificado` as IdCertificado
-		from `palestrante` ";
+			,`palestra_palestrante`.`id_certificado` as IdCertificado ";
+	
+if($criteria->InnerJoinCertificado){	
+    $sql .=",`certificado`.`data_emissao` as DataEmissao
+			,`certificado`.`livro` as Livro
+			,`certificado`.`folha` as Folha
+			,`certificado`.`codigo` as Codigo ";
+}
+	
+	$sql .=	" from `palestrante` ";
 		
 		if ($criteria->IdPalestra_Equals){
 		
-			$sql .= "inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`
-			where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
+			$sql .= "inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`";
+			
+			
+			if($criteria->InnerJoinCertificado)
+				$sql .= " inner join certificado on `palestra_palestrante`.`id_certificado` = `certificado`.`id_certificado` ";
+			
+			
+			$sql .= "where `palestra_palestrante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
 			
 			if($criteria->IdPalestrante_Equals)
 				$sql .= " AND `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";

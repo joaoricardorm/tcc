@@ -266,6 +266,7 @@ span.buttonContainer {
 .sem-margin-right, .add-on [class^=icon-]  { margin-right:0; }
 .sem-margin-top { margin-top:0 }
 .sem-margin-bottom { margin-bottom:0!important; }
+.margin-bottom-5px { margin-bottom:5px; }
 
 .navbar .brand { text-decoration:none; background:url(../images/logo.png) no-repeat 0 center;
 background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
@@ -295,6 +296,7 @@ background-size:fit; margin-top:0px; margin-bottom:0px; text-shadow:none; }
 	-o-transform-style:preserve-3d; 
 }
 
+h1 { font-size:30px }
 
 @media 
 (-webkit-min-device-pixel-ratio: 1.25), 
@@ -713,24 +715,32 @@ Triangle breadcrumb
     position: relative;
     padding: 0;
     margin: 4px 4px 4px 0;
+	/* margin-top:0; margin-bottom:0; anula */
   }
   .cd-breadcrumb.triangle li:last-of-type {
     margin-right: 0;
   }
   .cd-breadcrumb.triangle li > * {
     position: relative;
-    padding: 1em .8em 1em 2.5em;
+    padding: 0.6em .8em 0.7em 2.5em;
     color: #2c3f4c;
     background-color: #edeff0;
     /* the border color is used to style its ::after pseudo-element */
     border-color: #edeff0;
   }
+  .cd-breadcrumb.triangle li > a:hover {
+    color: slateblue;
+  }
+   .cd-breadcrumb.triangle li > .muted {
+	   color:#999;
+   }
   .cd-breadcrumb.triangle li.current > * {
     /* selected step */
-    color: #ffffff;
+    color: #ffffff!important;
     background-color: #96c03d;
     border-color: #96c03d;
   }
+  
   .cd-breadcrumb.triangle li:first-of-type > * {
     padding-left: 1.6em;
     border-radius: .25em 0 0 .25em;
@@ -758,7 +768,7 @@ Triangle breadcrumb
     height: 0;
     width: 0;
     /* 48px is the height of the <a> element */
-    border: 24px solid transparent;
+    border: 20px solid transparent;
     border-right-width: 0;
     border-left-width: 20px;
   }

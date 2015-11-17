@@ -23,6 +23,9 @@ class PalestraParticipanteReporter extends Reporter
 	public $IdParticipante;
 	public $IdPalestra;
 	public $IdCertificado;
+	
+	public $NomePalestrante;
+	public $CpfPalestrante;	
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -38,14 +41,28 @@ class PalestraParticipanteReporter extends Reporter
 			`palestra_participante`.`id` as Id
 			,`palestra_participante`.`presenca` as Presenca
 			,`palestra_participante`.`id_participante` as IdParticipante
+			,`participante`.`nome` as NomeParticipante
+			,`participante`.`cpf` as CpfParticipante
 			,`palestra_participante`.`id_palestra` as IdPalestra
-			,`palestra_participante`.`id_certificado` as IdCertificado
-		from `participante` ";
+			,`palestra_participante`.`id_certificado` as IdCertificado ";
+	
+	if($criteria->InnerJoinCertificado){	
+		$sql .=",`certificado`.`data_emissao` as DataEmissao
+				,`certificado`.`livro` as Livro
+				,`certificado`.`folha` as Folha
+				,`certificado`.`codigo` as Codigo ";
+	}
+		
+		$sql .=	" from `participante` ";
 		
 		if ($criteria->IdPalestra_Equals){
 		
-			$sql .= "inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante`
-			where `palestra_participante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
+			$sql .= " inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante` ";
+			
+			if($criteria->InnerJoinCertificado)
+				$sql .= " inner join certificado on `palestra_participante`.`id_certificado` = `certificado`.`id_certificado` ";
+			
+			$sql .= " where `palestra_participante`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "'";
 			
 			if($criteria->IdParticipante_Equals)
 				$sql .= " AND `participante`.`id_participante` = '" . $criteria->Escape($criteria->IdParticipante_Equals) . "' ";

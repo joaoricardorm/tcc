@@ -58,6 +58,10 @@ class PalestraParticipanteController extends AppBaseController
 				$criteria->TemCertificado = RequestUtil::Get('temCertificado');
 			}
 			
+			if(RequestUtil::Get('innerJoinCertificado')){
+				$criteria->InnerJoinCertificado = RequestUtil::Get('innerJoinCertificado');
+			}
+			
 			if(RequestUtil::Get('naoTemCertificado')){
 				$criteria->NaoTemCertificado = RequestUtil::Get('naoTemCertificado');
 			}

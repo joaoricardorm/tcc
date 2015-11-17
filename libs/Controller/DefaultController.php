@@ -76,14 +76,6 @@ class DefaultController extends AppBaseController
 			return false;
 		}
 	}
-
-	//Esta função manda o arquivo para download
-	public function send_download($file)
-	{
-		header('Content-type: application/zip');
-		header('Content-Disposition: attachment; filename="'.$file.'"');
-		readfile($file); 
-	}
 	
 	//Compacta arquivos
 	public function compactar($arquivos, $nomefinal){
@@ -99,22 +91,6 @@ class DefaultController extends AppBaseController
 		$arq = './'.$zipname;
 		
 		///////////////////////////////////////////$this->send_download($arq);
-	}
-	
-	private function geraPDF($arquivo, $html){
-		// Incluímos a biblioteca DOMPDF
-		require_once("./vendor/dompdf/dompdf_config.inc.php");
-		// Instanciamos a classe
-		$dompdf = new DOMPDF();
-		// Passamos o conteúdo que será convertido para PDF
-		$dompdf->load_html($html);
-		// Definimos o tamanho do papel e
-		// sua orientação (retrato ou paisagem)
-		$dompdf->set_paper('a4','landscape');
-		// O arquivo é convertido
-		$dompdf->render();
-		// Salvo no diretório do sistema
-		file_put_contents($arquivo, $dompdf->output());
 	}
 	
 	/**
@@ -149,7 +125,8 @@ $html .= '
 ';
 
 $arquivo = 'arquivo-em-pdf-22.pdf';
-$this->geraPDF($arquivo, $html);
+$caminho = GlobalConfig::$APP_ROOT.'/certificados-gerados/';
+$this->geraPDF($arquivo, $caminho, $html);
 $this->compactar($arquivo,$arquivo);
 
 //echo '<iframe src="http://docs.google.com/gview?url='.GlobalConfig::$ROOT_URL.$arquivo.'&embedded=true" style="width:718px; height:700px;" frameborder="0"></iframe>';

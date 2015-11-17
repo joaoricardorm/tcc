@@ -247,6 +247,8 @@
 .bs-searchbox .form-control {
   margin-bottom: 0;
   width: 100%;
+  box-sizing:border-box;
+  height:30px;
 }
 select.bs-select-hidden,
 select.selectpicker {

@@ -18,7 +18,7 @@ $(document).ready(function(){
 	$('#selectEventos, #selectAtividades').change(function(){ $(this).selectpicker('setStyle', 'btn-primary btn-large'); });
 	
 	$('#selectAtividades').change(function(){
-		$('#btnContinuar').show();
+		$('#btnContinuar').removeClass('hide').addClass('animated fadeInDown').delay(900).queue(function(){ $(this).removeClass('animated'); });
 	});
 	
 	$('#selectEventos').change(function(){
@@ -32,11 +32,11 @@ $(document).ready(function(){
 			$.each( todasAtividades.rows , function(key, value) {
 				$('#selectAtividades').append('<option value="'+value.idPalestra+'">'+value.nome+'</option>');				
 				if(value.proprioEvento === '1'){
-					$('#listaAtividades').hide();	 
+					$('#listaAtividades').addClass('hide');	 
 					$('#selectAtividades').val(value.idPalestra).show();
-					$('#btnContinuar').show();
+					$('#btnContinuar').removeClass('hide').addClass('animated fadeInDown');
 				 } else {
-					$('#listaAtividades').show();
+					$('#listaAtividades').removeClass('hide').addClass('animated fadeInDown');
 				 }
 				 
 			});	
@@ -54,6 +54,9 @@ $(document).ready(function(){
 	
 	if(typeof app.getUrlParameter('idPalestra') !== 'undefined'){ 
 		$('#conteudo').css('position','relative').prepend('<div id="avisoRedirecionamento" class="overlay-big-message full"><span class="icon-refresh icon-spin icon-big" style="margin-left:5px;"></span>Aguarde um momento...</div>');
+		
+		//TIRAR
+		//emitirAta();
 	}
 	
 	palestrantes.success(function(todosPalestrantes){
@@ -62,7 +65,23 @@ $(document).ready(function(){
 		//PARA PREVER EM QUAL PÁGINA CAIRÁ O CÓDIGO FINAL DOS CERTIFICADOS 
 		var totalCertificados =  todosPalestrantes.totalResults + todosParticipantes.totalResults;
 
+		var totalFolhas = Math.ceil(totalCertificados / 35); //CALCULA O TOTAL DE FOLHAS, A CADA 35 REGISTROS AUMENTA 1	
+		
+		$('#folhaInputContainer .help-inline').text('até '+(parseInt($('#folha').val()) + totalFolhas-1));
+		
 		$('#codigoInputContainer .help-inline').text('até '+(parseInt($('#codigo').val()) + totalCertificados-1));
+		
+		$('#folha').keyup(function(){
+			val = $(this).val();
+			if(!isNaN(parseFloat(val)) && isFinite(val)){
+				t = totalFolhas-1 + parseInt($(this).val());
+				$('#folhaInputContainer .help-inline').text('até '+t);
+				$('#folhaInputContainer').removeClass('error');
+			} else {
+				$('#folhaInputContainer .help-inline').text('Isso não é um número!')
+				$('#folhaInputContainer').addClass('error');
+			}
+		});
 		
 		$('#codigo').keyup(function(){
 			val = $(this).val();
@@ -228,7 +247,7 @@ $(document).ready(function(){
 							
 							if(qtd===todosParticipantes.totalResults){ //settimeout pois é o penultimo ainda
 								setTimeout(function(){
-									redirecionaCertificadosEmitidos();
+									emitirAta(); //SÓ DEPOIS QUE HOUVER PARTICIPANTES
 									console.log('Terminou a emissao dos certificados dos participantes');
 								}, 300);
 							}
@@ -244,10 +263,46 @@ $(document).ready(function(){
 					});				
 			
 				} else {
-					redirecionaCertificadosEmitidos();
+					emitirAta();
+					//redirecionaCertificadosEmitidos();
 					console.log('QUANDO NÃO TEM PARTICIPANTE');
 				}	
 				
+			});	
+			
+	}
+	
+	function emitirAta(){
+		
+		$('#progresso').removeClass('hide').addClass('animated fadeIn');
+		$('#progresso .acao').text('Preparando a ata');
+		$('.progress-bar').addClass('active').removeClass('bar-success').css('width', '100%').attr('aria-valuenow', 100).text('');
+		
+		//GERA ATA DA ATIVIDADE
+		var ata = $.getJSON(base+'api/gerarata/'+dados.idPalestra); //SUBSTITUIR POR dados.idPalestra
+			
+			ata.done(function(ataEmitida){
+				$('.progress-bar').addClass('bar-success');
+				console.log('feito',ataEmitida);
+			});
+			
+			ata.fail(function(ataEmitida){
+				$('.progress-bar').addClass('bar-success');
+				console.log('falhou',ataEmitida);
+			});
+			
+			ata.success(function(ataEmitida){
+				$('.progress-bar').addClass('bar-success');
+				
+				//BAIXA A ATA
+				if(ataEmitida.success){
+					document.location.href = base+'api/downloadata/'+dados.idPalestra;
+					
+					$('#alertaDownloadAta').removeClass('hide').addClass('animated rubberBand');
+					$('#progresso').removeClass('fadeIn').addClass('hide animated fadeOutUp').delay(900).queue(function(){ 
+						$(this).hide();					
+					});
+				}
 			});	
 			
 	}

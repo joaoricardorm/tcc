@@ -81,6 +81,8 @@ class PalestraController extends AppBaseController
 				new CriteriaFilter('IdPalestra,Nome,Data,CargaHoraria,ProprioEvento,IdEvento,IdModeloCertificado'
 				, '%'.$filter.'%')
 			);
+			
+			$criteria->Nome_NotEquals = '.'; //PARA NÃO LISTAR AS PALESTRAS COM NOME . QUE SÃO CRIADAS AUTOMATICAMENTE PARA CONTROLE
 
 			// TODO: this is generic query filtering based only on criteria properties
 			foreach (array_keys($_REQUEST) as $prop)

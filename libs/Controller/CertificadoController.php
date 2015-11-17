@@ -77,6 +77,7 @@ class CertificadoController extends AppBaseController
 				
 				$ultimoElemento = $this->Phreezer->GetByCriteria('CertificadoReporter',$criteria);
 				
+				$ultimoElemento->Folha += 1; 
 				$ultimoElemento->Codigo += 1; 
 		
 				$this->Assign('UltimoElemento',$ultimoElemento);
@@ -214,6 +215,194 @@ class CertificadoController extends AppBaseController
 			throw new NotFoundException("Erro ao buscar associação do participante com a palestra".$ex);
 		}						
 							
+	}
+	
+	public function GerarAta(){		
+		
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+	
+		// VERIFICA SE PALESTRA EXISTE
+		try {
+			require_once('Model/PalestraPalestrante.php');
+				
+			require_once('Model/Palestra.php');
+			
+			$criteria = new PalestraCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra;
+
+			$palestra = $this->Phreezer->GetByCriteria('PalestraReporter',$criteria);
+			
+			//OBTEM TODOS CERTIFICADOS DA PALESTRA
+			try {
+				require_once('Model/PalestraPalestrante.php');
+				$criteria = new PalestraPalestranteCriteria();
+				$criteria->IdPalestra_Equals = $idPalestra;
+				$criteria->IdCertificado_GreaterThan = 1; //só quem já tem certificado
+				$criteria->InnerJoinCertificado = true; //só quem já tem certificado
+				$palestrantesCertificados = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+				
+				require_once('Model/PalestraParticipante.php');
+				$criteria = new PalestraParticipanteCriteria();
+				$criteria->IdPalestra_Equals = $idPalestra;
+				$criteria->IdCertificado_GreaterThan = 1; //só quem já tem certificado
+				$criteria->InnerJoinCertificado = true; //só quem já tem certificado
+				$participantesCertificados = $this->Phreezer->Query('PalestraParticipanteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+				
+				//JUNTA PALESTRANTES E PARTICIPANTES
+				$registros = array_merge($palestrantesCertificados, $participantesCertificados);
+				
+				$html = '
+				<html>
+				<head>
+				<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+				<meta charset="utf8"/>
+				<style>
+				
+				@page, html { margin: 25mm; }
+				.page-break { page-break-after: always; }
+				.page-break:last-child { page-break-after: initial; }
+				
+				body { font-family:Arial, helvetica, sans-serif; }
+				
+				#tblAta { border-collapse:collapse; max-width:100%; }
+				#tblAta th, #tblAta td {	
+					vertical-align:top; 
+					font-size:8.5px; 
+					padding:2px; 
+					border:1px #000 solid; 
+					border-right-width:0; 
+				}
+				#tblAta th:last-child, #tblAta td:last-child { border-right-width:1px; }
+
+				</style>
+				</head>
+
+				<body>
+				
+				<!--EXIBE O NÚMERO DA PÁGINA NO TOPO-->
+				<script type="text/php">				  
+				  if ( isset($pdf) ) { 
+					
+					$folha = $PAGE_NUM-1+'. $registros[0]->folha .';
+					
+					$font = Font_Metrics::get_font("sans-serif", "bold");
+					$size = 15;
+					$color = array(0.5,0.5,0.5);
+					$y = 17;
+					$x = $pdf->get_width() - 60 - Font_Metrics::get_text_width("1/1", $font, $size);
+					//$pdf->page_text($x, $y, "{PAGE_NUM}", $font, $size, $color);
+					$pdf->page_text($x, $y, "$folha", $font, $size, $color);
+				  } 
+				</script>
+				
+				<table class="page-break" id="tblAta" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<thead>
+						<tr>
+							<th>Participante</th>
+							<th style="padding:2px 5px;">Assinatura</th>
+							<th>Título da atividade</th>
+							<th>Evento</th>
+							<th>Data</th>
+							<th>CH</th>
+							<th colspan="2">Nº de registro</th>
+							<th>Folha</th>
+							<th>Livro</th>
+						</tr>
+					</thead>
+					<tbody>
+				';
+				
+				$i=1;
+				foreach($registros as $palestranteCertificado){
+					
+					$nomePalestra = null;
+					if($palestra->ProprioEvento != 1) 
+						$nomePalestra = $palestra->Nome;
+					
+					$html .= '
+					<tr>
+						<td>'.@$palestranteCertificado->nomePalestrante . @$palestranteCertificado->nomeParticipante.'</td>
+						<td></td>
+						<td>'.$nomePalestra.'</td>
+						<td>'.$palestra->NomeEvento.'</td>
+						<td>'.date('d/m/Y',strtotime($palestra->Data)).'</td>
+						<td>'.date('H:i',strtotime($palestra->CargaHoraria)).'</td>
+						<td>'.$palestranteCertificado->codigo.'</td>
+						<td>/'.date('y',strtotime($palestra->Data)).'</td>
+						<td>'.$palestranteCertificado->folha.'</td>
+						<td>'.$palestranteCertificado->livro.'</td>
+					</tr>';
+					
+					if($i % 35 == 0){
+						$html .= '
+						</tbody>
+						</table>
+						
+						<table id="tblAta" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<thead>
+							<tr>
+								<th>Palestrante</th>
+								<th style="padding:2px 20px;">Assinatura</th>
+								<th>Título da atividade</th>
+								<th>Evento</th>
+								<th>Data</th>
+								<th>CH</th>
+								<th colspan="2">Nº de registro</th>
+								<th>Folha</th>
+								<th>Livro</th>
+							</tr>
+						</thead>
+						<tbody>';
+					}
+				$i++;
+				}
+				
+				$html .= '
+				</tbody>
+				</table>
+				</body>
+				</html>';
+				
+				$arquivo = 'ata.pdf';
+				$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+				
+				AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4','portrait');
+				
+				//AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
+				
+				//echo $html;
+				
+				// echo '<pre>';
+				// print_r($registros);
+				// echo '</pre>';
+				
+				//echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="885" height="628" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
+				
+				$json['success'] = true;
+				$this->RenderJSON($json);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("Erro ao emitir ata: a atividade não possui nenhum certificado. ".$ex);
+			}
+				
+		} catch(NotFoundException $ex){
+			throw new NotFoundException("Erro ao buscar palestra".$ex);
+		}						
+							
+	}
+	
+	/**
+	 * Displays a list view of Certificado objects
+	 */
+	public function DownloadAta()
+	{
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		$arquivo = 'ata.pdf';
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
 	}
 	
 	/**
