@@ -18,10 +18,8 @@ require_once("verysimple/Phreeze/Reporter.php");
 class ModeloCertificadoReporter extends Reporter
 {
 
-	// the properties in this class must match the columns returned by GetCustomQuery().
-	// 'CustomFieldExample' is an example that is not part of the `modelo_certificado` table
-	public $CustomFieldExample;
-
+	public $IdPalestra;
+	
 	public $IdModeloCertificado;
 	public $Nome;
 	public $TextoParticipante;
@@ -39,19 +37,31 @@ class ModeloCertificadoReporter extends Reporter
 	*/
 	static function GetCustomQuery($criteria)
 	{
-		$sql = "select
-			'custom value here...' as CustomFieldExample
-			,`modelo_certificado`.`id_modelo_certificado` as IdModeloCertificado
+		$sql = "select ";
+		
+	if ($criteria->IdPalestra_Equals){	
+		$sql.= " `palestra`.`id_palestra` as IdPalestra, ";
+	}
+	
+	$sql.=" `modelo_certificado`.`id_modelo_certificado` as IdModeloCertificado
 			,`modelo_certificado`.`nome` as Nome
 			,`modelo_certificado`.`texto_participante` as TextoParticipante
 			,`modelo_certificado`.`texto_palestrante` as TextoPalestrante
 			,`modelo_certificado`.`arquivo_css` as ArquivoCss
 			,`modelo_certificado`.`elementos` as Elementos
 		from `modelo_certificado`";
+		
+		if ($criteria->IdPalestra_Equals){
+		
+			$sql .= " inner join palestra on `palestra`.`id_modelo_certificado` = `modelo_certificado`.`id_modelo_certificado` ";
+			
+			$sql .= " where `palestra`.`id_palestra` = '" . $criteria->Escape($criteria->IdPalestra_Equals) . "' ";
+		
+		}
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
-		$sql .= $criteria->GetWhere();
+		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();
 
 		return $sql;
@@ -72,7 +82,7 @@ class ModeloCertificadoReporter extends Reporter
 
 		// the criteria can be used or you can write your own custom logic.
 		// be sure to escape any user input with $criteria->Escape()
-		$sql .= $criteria->GetWhere();
+		//$sql .= $criteria->GetWhere();
 
 		return $sql;
 	}

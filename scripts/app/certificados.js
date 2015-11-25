@@ -190,7 +190,12 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 				success: function() {
 					// data returned from the server.  render the model view
 					page.renderModelView(true);
-$('.modal .modal-footer .btn:first').focus();
+
+					if(!isMobile){ 	
+						setTimeout(function(){
+							$('.modal .modal-body input[type=text]').first().click().focus();
+						}, 500); 
+					}
 				},
 
 				error: function(m, r) {

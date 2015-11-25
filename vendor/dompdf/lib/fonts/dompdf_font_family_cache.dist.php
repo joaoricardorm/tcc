@@ -108,4 +108,15 @@
     'italic' => DOMPDF_FONT_DIR . 'DejaVuSerifCondensed-Italic',
     'normal' => DOMPDF_FONT_DIR . 'DejaVuSerifCondensed',
   ),
+  'lato' => 
+  array (
+    'normal' => DOMPDF_FONT_DIR . 'b6fbc1885a832d782d4a0e7a88346e3c',
+  ),
+  'rochester' => 
+  array (
+    'normal' => DOMPDF_FONT_DIR . 'Rochester-regular',
+    'bold' => DOMPDF_FONT_DIR . 'Rochester-regular',
+    'italic' => DOMPDF_FONT_DIR . 'Rochester-regular',
+    'bold_italic' => DOMPDF_FONT_DIR . 'Rochester-regular',
+  ),
 ) ?>

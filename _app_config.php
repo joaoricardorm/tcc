@@ -90,16 +90,35 @@ GlobalConfig::$ROUTE_MAP = array(
 	// Certificado
 	'GET:emitir-certificados' => array('route' => 'Certificado.EmitirCertificadosView'),
 	'GET:emitir-certificados/(:num)' => array('route' => 'Certificado.EmitirCertificadosView', 'params' => array('idPalestra' => 1)),
+	'GET:emitir-certificados/modelo/(:num)' => array('route' => 'Certificado.EmitirModeloCertificadosView', 'params' => array('idPalestra' => 2)),
+	'POST:emitir-certificados/modelo/(:num)' => array('route' => 'Certificado.EmitirModeloCertificadosView', 'params' => array('idPalestra' => 2)),
+	//SIMPLES
+	'GET:emitir-certificados/modelo-simples/(:num)' => array('route' => 'Certificado.EmitirModeloCertificadosViewSimples', 'params' => array('idPalestra' => 2)),
+	//SIMPLES
+	'GET:emitir-certificados/participantes/(:num)' => array('route' => 'Participante.ListViewReceberCertificado', 'params' => array('idPalestra' => 2)),
+	
+	'GET:emitir-certificados/obter/(:num)' => array('route' => 'Certificado.ObterCertificadosEmitidosView', 'params' => array('idPalestra' => 2)),
+	
+	'GET:validar-certificado' => array('route' => 'Certificado.ValidarCertificadoView'),
+	
+	
 	'GET:certificados' => array('route' => 'Certificado.ListView'),
 	'GET:certificado/(:num)' => array('route' => 'Certificado.SingleView', 'params' => array('idCertificado' => 1)),
 	//gerar certificados dos palestrantes
 	'GET:api/geracertificadopalestrante/(:num)' => array('route' => 'Certificado.GerarCertificadoPalestrante', 'params' => array('idPalestrante' => 2)),
 	//gerar certificados dos participantes
 	'GET:api/geracertificadoparticipante/(:num)' => array('route' => 'Certificado.GerarCertificadoParticipante', 'params' => array('idParticipante' => 2)),
+	//Certificado modelo
+	'POST:api/geracertteste/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestra', 'params' => array('idPalestra' => 2)),
+	'POST:api/geracertteste/(:num)/(:any)' => array('route' => 'Certificado.GeraCertificadosPalestra', 'params' => array('idPalestra' => 2, 'orientacao' => 3)),
+	'GET:api/downloadcertteste/(:num)' => array('route' => 'Certificado.DownloadCertificadoModelo', 'params' => array('idPalestra' => 2)),
+	'GET:api/downloadcertificado/(:num)' => array('route' => 'Certificado.DownloadCertificado', 'params' => array('idCertificado' => 2)),
+	
 	//gerar ata de certificados da palestra
 	'GET:api/gerarata/(:num)' => array('route' => 'Certificado.GerarAta', 'params' => array('idPalestra' => 2)),
 	//download ata da palestra
 	'GET:api/downloadata/(:num)' => array('route' => 'Certificado.DownloadAta', 'params' => array('idPalestra' => 2)),
+	'GET:emitir-certificados/baixar-ata/(:num)' => array('route' => 'Certificado.DownloadAta', 'params' => array('idPalestra' => 2)),
 	'GET:api/certificados' => array('route' => 'Certificado.Query'),
 	'POST:api/certificado' => array('route' => 'Certificado.Create'),
 	'GET:api/certificado/(:num)' => array('route' => 'Certificado.Read', 'params' => array('idCertificado' => 2)),
@@ -135,6 +154,16 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:evento/(:num)/atividades/(:num)/(:any)/palestrantes' => array('route' => 'Palestrante.ListView', 'params' => array('idPalestra' => 3)),
 	// URL PARTICIPANTES ALTERNATIVA
 	'GET:evento/(:num)/atividades/(:num)/(:any)/participantes' => array('route' => 'Participante.ListView', 'params' => array('idPalestra' => 3)),
+	
+	//PRESENCA PARTICIPANTES
+	'GET:presenca/participantes' => array('route' => 'Participante.ListViewPresenca'),
+	'GET:presenca/participantes/(:num)' => array('route' => 'Participante.ListViewPresenca', 'params' => array('idPalestra' => 2)),
+	
+	//OBTER CERTIFICADO
+	'GET:obter-certificado' => array('route' => 'Certificado.ObterCertificadoView'),
+	'GET:obter-certificado/(:any)' => array('route' => 'Certificado.ObterCertificadoView', 'params' => array('cpf' => 1)),
+	
+	
 	
 	'GET:evento/(:num)/atividades/(:num)/(:any)' => array('route' => 'Palestra.ListView', 'params' => array('idEvento' => 1, 'idPalestra' => 2)),
 	//para excluir atividade

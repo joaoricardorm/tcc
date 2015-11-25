@@ -195,6 +195,7 @@ var page = {
 				if (page.participantes.collectionHasChanged) {
 					// TODO: add any logic necessary if the collection has changed
 					// the sync event will trigger the view to re-render
+					
 				}
 
 				app.hideProgress('loader');
@@ -269,9 +270,11 @@ var page = {
 	 */
 	renderModelView: function(showDeleteButton)	{
 		page.modelView.render();
-setTimeout(function(){
-	$('.modal .modal-body input[type=text]').first().click().focus();
-}, 500);
+		if(!isMobile){ 	
+			setTimeout(function(){
+				$('.modal .modal-body input[type=text]').first().click().focus();
+			}, 500); 
+		}
 
 		app.hideProgress('modelLoader');	
 		app.hideProgress('savingFloat');		
@@ -670,6 +673,11 @@ var customRenderer = function (instance, td, row, col, prop, value) {
   setTimeout(function(){
 		if(page.SearchTableById !== ''){
 			$('#search_field').blur().dblclick().focus();
+				
+			if(!isMobile){ 	
+					$('#search_field').focus();
+			}
+			
 			$('td.htDimmed.htSearchResult').parent().find('td').addClass('currentRow');
 		}
   }, 500);

@@ -153,7 +153,7 @@ $(document).ready(function(){
 	});
 	
 	function redirecionaCertificadosEmitidos(){
-		document.location.href = base+'certificados-emitidos/';
+		document.location.href = base+'emitir-certificados/participantes/'+app.getUrlParameter('idPalestra')+'?idPalestra='+app.getUrlParameter('idPalestra');
 	}
 	
 	function emitirCertificadosPalestrantes(){

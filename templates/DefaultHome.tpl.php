@@ -64,7 +64,7 @@
 				</div>
 				<div class="item span3">
 					
-					<a class="btn btn-block btn-primary" href="./eventos/">
+					<a class="btn btn-block btn-primary fixed-height-btn-big" href="./eventos/">
 					  <h3 class="white-text">
 						<i class="icon-calendar"></i>
 						<span class="block-md">Gerenciar eventos</span>
@@ -76,7 +76,7 @@
 				
 				<div class="item span3">
 					
-					<a class="btn btn-block btn-primary" data-toggle="modal" href-usar-para-modal="#getStartedDialog" href="./presenca/">
+					<a class="btn btn-block btn-primary" data-toggle="modal" href-usar-para-modal="#getStartedDialog" href="./presenca/participantes/">
 					  <h3 class="white-text">
 						<i class="icon-group"></i>
 						<span class="block-md">Gerenciar presença de participantes</span>

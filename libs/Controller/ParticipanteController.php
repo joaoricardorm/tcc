@@ -61,6 +61,88 @@ class ParticipanteController extends AppBaseController
 		
 		$this->Render();
 	}
+	
+	
+	/**
+	 * Listview Para seleção para emissão dos certificados
+	 */
+	public function ListViewReceberCertificado()
+	{
+		//Dados da palestra
+		$this->Assign('Palestra',null);
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if($pk){
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$pkEvento = $palestra->IdEvento;
+				
+				$evento = $this->Phreezer->Get('Evento',$pkEvento);
+				$this->Assign('Evento',$evento);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe");
+			}
+		
+		}
+		
+		
+		$this->Render('ParticipanteListViewReceberCertificado');
+	}
+	
+	
+	
+	/**
+	 * Listview Para presenca dos participantes
+	 */
+	public function ListViewPresenca()
+	{
+		
+		/*$this->RequirePermission(Usuario::$P_USUARIO,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		*/
+		
+		
+		//Dados da palestra
+		$this->Assign('Palestra',null);
+		$this->Assign('Selecao',false);
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if($pk){
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$pkEvento = $palestra->IdEvento;
+				
+				$evento = $this->Phreezer->Get('Evento',$pkEvento);
+				$this->Assign('Evento',$evento);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe");
+			}
+		
+		} else {
+			$this->Assign('Selecao',true);
+			
+			require_once('Model/Evento.php');
+			$criteria = new EventoCriteria();
+			$listaEventos = $this->Phreezer->Query('Evento',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+
+			$this->Assign('ListaEventos',$listaEventos);
+		}
+		
+		
+		$this->Render('ParticipanteListViewPresenca');
+	}
+	
+	
 
 	/**
 	 * API Method queries for Participante records and render as JSON

@@ -137,7 +137,7 @@
 									<li <?php if ($this->nav=='usuarios') { echo 'class="active"'; } ?>><a tabindex="1" href="./usuarios/"><i class="icon-user"></i> Usuários</a></li>
 									<li <?php if ($this->nav=='eventos') { echo 'class="active"'; } ?>><a tabindex="1" href="./eventos/"><i class="icon-calendar"></i> Eventos</a></li>
 								<?php } ?>
-									<li <?php if ($this->nav=='presenca') { echo 'class="active"'; } ?>><a tabindex="1" href="./presenca/"><i class="icon-group"></i> Presença</a></li>
+									<li <?php if ($this->nav=='presenca') { echo 'class="active"'; } ?>><a tabindex="1" href="./presenca/participantes/"><i class="icon-group"></i> Presença</a></li>
 								</ul>
 								<ul class="nav">
 									<li class="dropdown <?php if ($this->nav=='certificados') echo 'active'; ?>">

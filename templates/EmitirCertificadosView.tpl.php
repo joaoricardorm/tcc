@@ -6,7 +6,7 @@
 ?>
 
 <script type="text/javascript">
-	$LAB.script(base+"scripts/app/emitir-certificados.js");
+	$LAB.script(base+"scripts/app/emitir-certificados.js?"+Math.floor((Math.random() * 1000) + 1));
 </script>
 
 <?php if($this->Palestra){ ?>
@@ -25,7 +25,8 @@
 		<ol class="cd-breadcrumb triangle sem-margem-bottom inline-block" style="width:auto;">		
 			<li class="visited"><a href="emitir-certificados/"><i class="icon-tags"></i>Selecionar outro evento/atividade</a></li> <!-- Classe "visited" -->
 			<li class="current"><span><i class="icon-book"></i>Informações da ata</span></li>
-			<li class="visited"><span class="muted"><i class="icon-group"></i>Selecionar palestrantes/participantes</a></span></li>
+			<li class="visited"><span class="muted"><i class="icon-group"></i>Participantes</a></span></li>
+			<li class="visited"><span class="muted"><i class="icon-certificate"></i>Formatação</a></span></li>
 			<li class="visited"><span class="muted"><i class="icon-certificate"></i>Obter certificados</a></span></li>
 		</ol>
 </nav>	
@@ -36,7 +37,10 @@
 		<ol class="cd-breadcrumb triangle sem-margem-bottom inline-block" style="width:auto;">		
 			<li class="current"><span><i class="icon-tags"></i>Selecionar evento/atividade</span></li> <!-- Classe "visited" -->
 			<li><span class="muted"><i class="icon-certificate"></i>Informações da ata</span></li>
-			<li class="visited"><span class="muted"><i class="icon-group"></i>Selecionar palestrantes/participantes</a></span></li>
+			
+			<li class="visited"><span class="muted"><i class="icon-group"></i>Participantes</a></span></li>
+			<li class="visited"><span class="muted"><i class="icon-certificate"></i>Formatação</a></span></li>
+			
 			<li class="visited"><span class="muted"><i class="icon-certificate"></i>Obter certificados</a></span></li>
 		</ol>
 </nav>	
@@ -44,13 +48,15 @@
 <?php } ?>
 
 <div id="conteudo" class="container hero-unit">
-
-<h1>
-	<i class="icon-certificate"></i> Emitir Certificados
+	
+<?php 
+echo ($this->Palestra) ? '<h3 class="sem-margin-top">Emitir Certificados da atividade '.$this->Palestra->Nome : '<h1><i class="icon-certificate"></i> Emitir Certificados'; 
+?>
 	
 	<span id="loader" class="<?php if(!$this->Palestra) echo 'hidden'; ?> loader progress progress-striped active"><span class="bar"></span></span>
-	<?php echo ($this->Palestra) ? '<h3>Informações da ata para a atividade '.$this->Palestra->Nome.'</h3>' : ''; ?>
-</h1>
+	<?php echo ($this->Palestra) ? '<h1><i class="icon icon-book"></i> Informações da ata para a atividade '.$this->Palestra->Nome.'</h1>' : ''; ?>
+	
+<?php echo ($this->Palestra) ? '</h3>' : '</h1>'; ?>
 
 <?php if(!$this->Palestra){ ?>
 
@@ -145,7 +151,7 @@
 	
 	O documento da ata foi criado e baixado para o seu dispositivo.
 
-	<a href="./certificados-emitidos/" class="btn btn-primary btn-large" style="margin-left:8px;">
+	<a href="./emitir-certificados/participantes/<?php $this->eprint( $this->Palestra->IdPalestra); ?>?idPalestra=<?php $this->eprint( $this->Palestra->IdPalestra); ?>" class="btn btn-primary btn-large" style="margin-left:8px;">
 		Continuar <i class="icon-arrow-right icon-margin-left"></i>
 	</a>
 	

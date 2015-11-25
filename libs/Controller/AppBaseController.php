@@ -18,6 +18,8 @@ class AppBaseController extends Controller
 {
 
 	static $DEFAULT_PAGE_SIZE = 10;
+
+	public $Configuracao;
 	
 	/* GERA ARQUIVO EM PDF */
 	public function geraPDF($arquivo, $caminho, $html, $papel='a4', $orientacao='landscape'){
@@ -32,6 +34,7 @@ class AppBaseController extends Controller
 		$dompdf->set_paper($papel,$orientacao);
 		// O arquivo é convertido
 		$dompdf->render();
+		
 		//CRIA A PASTA SE NÃO EXISTIR
 		if (!file_exists($caminho)) {
 		   mkdir($caminho, 0777, true);
@@ -72,6 +75,7 @@ class AppBaseController extends Controller
 		try {
 			$configuracao = $this->Phreezer->Get('Configuracao',1);
 			$this->Assign('Configuracao',$configuracao);
+			$this->Configuracao = $configuracao;
 			
 		} catch(Exception $ex){
 			$c = new Configuracao($this->Phreezer);

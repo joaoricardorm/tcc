@@ -266,7 +266,7 @@
 						</select> 
 						<span class="help-inline"></span>
 						
-						<a class="vertical-align-super" title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-microphone"></i>Cadastrar novo palestrante</a>
+						<a class="vertical-align-super block-xs" title="Cadastrar novo palestrante para esta atividade" href="atividade/<%= item.get('idPalestra') %>/<%= app.parseURL(item.get('nome')) %>/palestrantes/novo/"><i class="icon-microphone"></i>Cadastrar novo palestrante</a>
 					</div>
 				</div>
 				

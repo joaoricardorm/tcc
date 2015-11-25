@@ -20,6 +20,7 @@ class PalestraParticipanteCriteria extends PalestraParticipanteCriteriaDAO
 	
 	public $IdPalestra_Equals;
 	public $IdParticipante_Equals;
+	public $CpfParticipante_Equals;
 	public $OuterJoinPalestras;
 	public $InnerJoinCertificado;
 	public $TemCertificado;
@@ -38,6 +39,8 @@ class PalestraParticipanteCriteria extends PalestraParticipanteCriteriaDAO
 				return 'id_palestra';
 			case 'IdParticipante':
 				return 'id_participante';
+			case 'CpfParticipante':
+				return 'cpf';
 			case 'OuterJoinPalestras':
 				return 'id_palestra';
 			case 'InnerJoinCertificado':

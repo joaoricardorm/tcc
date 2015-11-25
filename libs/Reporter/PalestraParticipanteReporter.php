@@ -73,7 +73,10 @@ class PalestraParticipanteReporter extends Reporter
 			$sql .= "inner join palestra_participante on `palestra_participante`.`id_participante` = `participante`.`id_participante`";
 		
 			if($criteria->IdParticipante_Equals)
-				$sql .= " WHERE `participante`.`id_participante` = '" . $criteria->Escape($criteria->IdParticipante_Equals) . "' ";			
+				$sql .= " WHERE `participante`.`id_participante` = '" . $criteria->Escape($criteria->IdParticipante_Equals) . "' ";
+			else if($criteria->CpfParticipante_Equals){
+				$sql .= " WHERE `participante`.`cpf` = '" . $criteria->Escape($criteria->CpfParticipante_Equals) . "' ";				
+			}				
 		
 		}
 

@@ -104,6 +104,112 @@ class CertificadoController extends AppBaseController
 		$this->Render('EmitirCertificadosView.tpl');
 	}
 	
+	public function EmitirModeloCertificadosView(){
+		//Dados do evento
+		$this->Assign('Palestra',null);
+		$this->Assign('Evento',null);
+		$this->Assign('ModeloCertificado',null);
+		
+		$this->Assign('navegacao', 'emitir-certificados');
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		$certificadoPalestrante = $this->GetRouter()->GetUrlParam('palestrante');
+		
+		if(isset($_GET['idPalestra']))
+			$pk = (int)$_GET['idPalestra'];
+		
+		if($pk){
+		
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+				$this->Assign('Evento',$evento);
+				
+				$modeloCertificado = $this->Phreezer->Get('ModeloCertificado',$palestra->IdModeloCertificado);
+				
+				//RETIRA CAMPO PARA ASSINATURA DO PARTICIPANTE SE FOR CERTIFICADO DE PALESTRANTE
+				if($certificadoPalestrante){
+					$regex = '/(class=\"hide-palestrante)/';
+					$modeloCertificado->Elementos = preg_replace($regex, '$1 hide', $modeloCertificado->Elementos);
+				}
+				
+				// echo '<pre>';
+				// print_r($modeloCertificado);
+				// echo '</pre>';
+				
+				$this->Assign('ModeloCertificado',$modeloCertificado);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe".$ex);
+			}
+		}
+		
+		$this->Render('EmitirModeloCertificadosView.tpl');
+	}
+	
+	
+	
+	
+	
+	
+	
+	public function EmitirModeloCertificadosViewSimples(){
+		//Dados do evento
+		$this->Assign('Palestra',null);
+		$this->Assign('Evento',null);
+		$this->Assign('ModeloCertificado',null);
+		
+		$this->Assign('navegacao', 'emitir-certificados');
+		
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		$certificadoPalestrante = $this->GetRouter()->GetUrlParam('palestrante');
+		
+		if(isset($_GET['idPalestra']))
+			$pk = (int)$_GET['idPalestra'];
+		
+		if($pk){
+		
+			try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+				$this->Assign('Evento',$evento);
+				
+				$modeloCertificado = $this->Phreezer->Get('ModeloCertificado',$palestra->IdModeloCertificado);
+				
+				//RETIRA CAMPO PARA ASSINATURA DO PARTICIPANTE SE FOR CERTIFICADO DE PALESTRANTE
+				if($certificadoPalestrante){
+					$regex = '/(class=\"hide-palestrante)/';
+					$modeloCertificado->Elementos = preg_replace($regex, '$1 hide', $modeloCertificado->Elementos);
+				}
+				
+				// echo '<pre>';
+				// print_r($modeloCertificado);
+				// echo '</pre>';
+				
+				$this->Assign('ModeloCertificado',$modeloCertificado);
+				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe".$ex);
+			}
+		}
+		
+		$this->Render('EmitirModeloCertificadosView.tpl');
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public function GerarCertificadoPalestrante(){		
 		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
@@ -392,18 +498,293 @@ class CertificadoController extends AppBaseController
 							
 	}
 	
-	/**
-	 * Displays a list view of Certificado objects
-	 */
-	public function DownloadAta()
+	public function GeraCertificadosPalestra(){
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$orientacao = $this->GetRouter()->GetUrlParam('orientacao');
+		$htmlPreviewCertificado = $this->GetRouter()->GetUrlParam('html');
+		
+		
+		$json = json_decode(RequestUtil::GetBody());
+		
+		//$json = $_GET['data'];
+
+		if (!$json)
+		{
+			throw new Exception('The request body does not contain valid JSON');
+		}
+
+		$dadosModeloCertificado = $this->SafeGetVal($json, 'data');		
+		
+		
+		// VERIFICA SE PALESTRA EXISTE
+		try {
+			require_once('Model/PalestraPalestrante.php');
+				
+			require_once('Model/Palestra.php');
+			
+			$criteria = new PalestraCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra;
+
+			$palestra = $this->Phreezer->GetByCriteria('PalestraReporter',$criteria);					
+		} catch(NotFoundException $ex){
+			throw new NotFoundException("Erro ao buscar palestra".$ex);
+		}		
+		
+		$nomeArquivoModeloCertificado = 'padrao.css';
+		
+		$bgOrientacao = null;
+		if($orientacao === 'portrait')
+			$bgOrientacao = '-portrait'; 
+		
+		$html = '
+				<html>
+				<head>
+				<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+				<meta charset="utf8"/>
+				
+				<style>
+				
+				html { margin:0; }
+				
+				.page-break { page-break-after: always; }
+				.page-break:last-child { page-break-after: initial; }
+			
+				.fixed-pdf { 
+					position:fixed!important;
+				}
+				
+				/* Fundo em modo retrato */
+				.containerCertificado {
+					background:url('.GlobalConfig::$ROOT_URL.'styles/certificados/images/moldura-padrao'.$bgOrientacao.'.png); 
+				}
+			
+				</style>
+				
+				<link rel="stylesheet" type="text/css" media="screen,print" href="'. GlobalConfig::$ROOT_URL. '/styles/certificados/'.$nomeArquivoModeloCertificado.'" />
+				
+				</head>
+
+				<body class="pdf">	
+					<div class="containerCertificado">					
+				    '.$dadosModeloCertificado.'							
+					</div>
+				</body>
+				</html>';
+				
+				$arquivo = 'palestra.pdf';
+				$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+				
+				AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
+
+				echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
+				
+				//$this->DownloadAta(223);
+				
+				//$this->RenderJSON($html);
+	}
+	
+	public function DownloadAta($paramIdPalestra=null)
 	{
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if($paramIdPalestra) $idPalestra = $paramIdPalestra;
+		
 		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
 		
 		$arquivo = 'ata.pdf';
 		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 		
 		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
+	}
+	
+	/**
+	 * Displays a list view of Certificado objects
+	 */
+	public function DownloadCertificadoModelo($paramIdPalestra=null)
+	{
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		if($paramIdPalestra) $idPalestra = $paramIdPalestra;
+		
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		$arquivo = 'palestra.pdf';
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
+	}	
+	
+	/**
+	 * Pagina para obtenção dos certificados emitidos
+	 */
+	public function ObterCertificadosEmitidosView()
+	{
+		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
+		
+		try {
+				$palestra = $this->Phreezer->Get('Palestra',$pk);
+				$this->Assign('Palestra',$palestra);
+				
+				$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+				$this->Assign('Evento',$evento);				
+			} catch(NotFoundException $ex){
+				throw new NotFoundException("A atividade #$pk não existe".$ex);
+			}
+			
+		//$usuario = Controller::GetCurrentUser();
+		//$this->Assign('usuario',$usuario);
+		$this->Render('ObterCertificadosEmitidosView');
+	}
+	
+	/**
+	 * Pagina para validação de certificado
+	 */
+	public function ValidarCertificadoView()
+	{
+		$livro = $this->GetRouter()->GetUrlParam('livro');
+		$folha = $this->GetRouter()->GetUrlParam('folha');		
+		$codigo = $this->GetRouter()->GetUrlParam('codigo');
+		
+		try {
+			
+			if($livro && $folha && $codigo){
+			
+					//Certificado
+					require_once('Model/Certificado.php');
+					$criteria = new CertificadoCriteria();
+					$criteria->Livro_Equals = $livro;
+					$criteria->Folha_Equals = $folha;
+					$criteria->Codigo_Equals = explode('/',$codigo)[0]; //pois lá gera com registro/ano
+					
+					$certificado = $this->Phreezer->GetByCriteria('Certificado',$criteria);
+					$this->Assign('Certificado',$certificado);
+					
+					//PalestraParticipante
+					require_once('Model/PalestraParticipante.php');
+					$criteria = new PalestraParticipanteCriteria();
+					$criteria->IdCertificado_Equals = $certificado->IdCertificado;
+					
+					$palestraparticipante = $this->Phreezer->GetByCriteria('PalestraParticipante',$criteria);
+					
+					
+					
+					//Elementos
+					$participante = $this->Phreezer->Get('Participante',$palestraparticipante->IdParticipante);
+					$this->Assign('Participante',$participante);
+					
+					$palestra = $this->Phreezer->Get('Palestra',$palestraparticipante->IdPalestra);
+					$this->Assign('Palestra',$palestra);
+					
+					$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+					$this->Assign('Evento',$evento);
+					
+					$this->Assign('CertificadoValido',true);
+					$this->Assign('FaltaParametros',false);
+				
+				} else {
+					$this->Assign('FaltaParametros',true);
+					$this->Assign('CertificadoValido',false);
+				}
+							
+			} catch(NotFoundException $ex){
+				//throw new NotFoundException("A atividade #$ex não existe".$ex);
+				$this->Assign('CertificadoValido',false);
+			}
+			
+			$this->Render('ValidarCertificadoView');
+	}
+	
+	
+	/**
+	 * Pagina para validação de certificado
+	 */
+	public function ObterCertificadoView()
+	{
+		$cpf = $this->GetRouter()->GetUrlParam('cpf');
+		$this->Assign('Participante',null);
+		$this->Assign('ArrPalestraParticipantes', null);
+			
+			if($cpf){
+			
+					
+					try {
+					
+					//Participante
+					require_once('Model/Participante.php');
+					$criteria = new ParticipanteCriteria();
+					$criteria->Cpf_Equals = $cpf;
+					
+					$participante = $this->Phreezer->GetByCriteria('Participante',$criteria);
+					
+					$this->Assign('Participante',$participante);
+					
+					
+					//PalestraParticipante
+					require_once('Model/PalestraParticipante.php');
+					$criteria = new PalestraParticipanteCriteria();
+					$criteria->CpfParticipante_Equals = $cpf;
+					$criteria->TemCertificado = true;
+					$criteria->Presenca_Equals = 1; //Só pode obter se tiver participado
+
+					$listaPalestraParticipante = $this->Phreezer->Query('PalestraParticipanteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+
+					$this->Assign('ListaCertificados', $listaPalestraParticipante);
+					
+					//print_r($listaCertificados);
+					
+					//ESTRANHAMENTE O $CERTIFICADO NÃO SÃO MAISCULOS NO INICIO
+					
+					$arrPalestraParticipantes = array();
+					
+					$i=0;
+					foreach($listaPalestraParticipante as $palestraParticipante){
+						$arrPalestraParticipantes[$i]['PalestraParticipante'] = $palestraParticipante;
+						
+						$arrPalestraParticipantes[$i]['Certificado'] = $this->Phreezer->Get('Certificado',$palestraParticipante->idCertificado);
+						$arrPalestraParticipantes[$i]['Palestra'] = $this->Phreezer->Get('Palestra',$palestraParticipante->idPalestra);
+					$i++;
+					}
+					
+				
+					$this->Assign('ArrPalestraParticipantes', $arrPalestraParticipantes);
+
+					
+					/*
+					$certificado = $this->Phreezer->Get('Certificado',$listaCertificados[0]->IdCertificado);
+					$this->Assign('Certificado',$certificado);
+					
+					$certificado = $this->Phreezer->GetByCriteria('Certificado',$criteria);
+					$this->Assign('Certificado',$certificado);
+					*/
+					
+					} catch(NotFoundException $ex){
+						throw new NotFoundException("Participante com CPF #$ex não existe".$ex);
+						$this->Assign('CertificadoValido',false);
+					}
+					
+					
+					
+					
+					
+					
+					//Elementos
+					//$participante = $this->Phreezer->Get('Participante',$listaCertificados[1]->IdParticipante);
+					//
+					
+					
+					
+					
+					$this->Assign('CertificadoValido',true);
+					$this->Assign('FaltaParametros',false);
+				
+				} else {
+					$this->Assign('FaltaParametros',true);
+					$this->Assign('CertificadoValido',false);
+				}
+							
+			
+			
+			$this->Render('ObterCertificadoView');
 	}
 	
 	/**

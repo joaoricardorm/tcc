@@ -393,9 +393,11 @@ var page = {
 	 */
 	renderModelView: function(showDeleteButton)	{
 		page.modelView.render();
-setTimeout(function(){
-	$('.modal .modal-body input[type=text]').first().click().focus();
-}, 500);
+		if(!isMobile){ 	
+			setTimeout(function(){
+				$('.modal .modal-body input[type=text]').first().click().focus();
+			}, 500); 
+		}
 
 		app.hideProgress('modelLoader');
 
@@ -609,6 +611,12 @@ var page = {
 					));
 				});
 				
+				//LARGURA DO MULTISELECT NO MOBILE
+				larguraBtnMultiselect = 'auto';
+				if($(window).width() <= 468){
+					larguraBtnMultiselect = $(window).width()-40;
+				}
+				
 				if (!app.browserSucks()) {
 						//Gera o multiselect com as opções e suas ações quando checkadas ou não
 						dd.multiselect({
@@ -616,6 +624,7 @@ var page = {
 							enableFiltering: true,
 							enableCaseInsensitiveFiltering: true,
 							includeSelectAllOption: false,
+							buttonWidth: larguraBtnMultiselect,
 							disableIfEmpty: true,
 							maxHeight: 200,
 							numberDisplayed: 5,

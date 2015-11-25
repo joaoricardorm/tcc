@@ -231,9 +231,11 @@ var page = {
 	 */
 	renderModelView: function(showDeleteButton)	{
 		page.modelView.render();
-		setTimeout(function(){
-	$('.modal .modal-body input[type=text]').first().click().focus();
-}, 500);	
+				if(!isMobile){ 	
+			setTimeout(function(){
+				$('.modal .modal-body input[type=text]').first().click().focus();
+			}, 500); 
+		}
 
 		app.hideProgress('modelLoader');
 

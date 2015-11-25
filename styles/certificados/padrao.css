@@ -1,0 +1,111 @@
+
+@font-face {
+  font-family: 'Rochester';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../fonts/Rochester-regular/Rochester-regular.eot');
+  src: url('../fonts/Rochester-regular/Rochester-regular.eot?#iefix') format('embedded-opentype'),
+       local('Rochester'),
+       local('Rochester-regular'),
+       url('../fonts/Rochester-regular/Rochester-regular.woff2') format('woff2'),
+       url('../fonts/Rochester-regular/Rochester-regular.woff') format('woff'),
+       url('../fonts/Rochester-regular/Rochester-regular.ttf') format('truetype'),
+       url('../fonts/Rochester-regular/Rochester-regular.svg#Rochester') format('svg');
+}
+
+
+/* CLASSES DE FORMATAÇÃO */
+.bold { font-weight:bold; }
+.italic { font-style:italic; }
+.underline { text-decoration:underline; }
+.justifyleft { text-align:left; }
+.justifycenter { text-align:center; }
+.justifyright { text-align:right; }
+.justifyfull { text-align:justify; }
+.center-block { text-align:center; display:block; margin:auto; }
+.metade { width:48%; }
+tr.metade { width:100%!important; }
+tr.metade td { vertical-align:top; width:1%; }
+.fontSizeBig { font-size:26px; }
+.fontSizeNormal { font-size:20px; }
+.fontSizeSmall { font-size:14px; }
+.pull-right { float:right; }
+.pull-left { float:left; }
+.hide { display:none!important; } /* usa no hide-palestrante para vir do php e esconder se necessario */
+
+table {
+	border:none;
+	border-colappse:collapse;
+	border-spacing:0;
+}
+.reset-css {
+	font-weight:normal; 
+	font-style:normal;
+	text-decoration:none!important;
+}
+.containerCertificado, .containerA4preview {
+	background:white;
+}
+.containerA4preview .containerCertificado {
+	position:relative;
+}
+.pdf .containerCertificado {
+	position:fixed;
+}
+.containerCertificado {
+	padding:30mm;
+	background:url(images/moldura-padrao.png); 
+	background-size:cover;
+	font-size:20px;
+	line-height:2em;
+	font-family:Arial, Helvetica, Sans-Serif;
+}
+.containerCertificado.A4portrait {
+	background:url(images/moldura-padrao-portrait.png); 
+}
+.containerCertificado .dbItemCertificado,
+.containerCertificado .rodapeCertificado .siteCertificado { color:rgb(234, 89, 19); }
+.containerCertificado #ImagemLogo { height:20mm; margin-bottom:10px; }
+.containerCertificado #TituloCertificado { line-height:normal; color: rgb(234, 89, 19); font-size:70px; margin-bottom:15px; font-family:'Rochester'!important; text-decoration:none!important; font-weight:normal; }
+.containerCertificado #TituloMarcador { line-height:normal;  margin-bottom:15px; width:60mm; height:6.224mm; }
+.containerCertificado .nomeParticipante.center-block, .containerCertificado .nomePalestrante.center-block { font-size:26px; margin:10px; }
+.containerCertificado .rodapeCertificado { color:#555; position: absolute; font-size:10px; line-height:normal; }
+
+.containerCertificado .assinaturas  { width:100%; text-align:center; line-height:normal; margin-top:30px; }
+.containerCertificado .assinaturas td { color:#333; vertical-align: top; padding:0 5mm; width:50%; } 
+
+.containerCertificado .assinaturas.palestrante { width:120mm!important; margin-left:auto; margin-right:auto; }
+.containerCertificado .assinaturas.palestrante td { width:100%; }
+
+.containerCertificado .assinatura { 
+	height:60px; 
+	-webkit-filter: grayscale(100%);
+	filter: gray;
+	filter: grayscale(100%);
+	filter: url(desaturate.svg#greyscale); 
+}
+.containerCertificado .assinaturas hr { height:1px; border:1px; min-width:40mm; width:100%; background:#333; }
+
+.bottom {  left:20mm; right:20mm; bottom:25mm!important; }
+.bottom-left {  left:20mm; width:70mm; bottom:25mm; }
+.bottom-right { right:20mm;  width:60mm; bottom:25mm; }
+
+
+/* FOLHA RETRATO */
+.A4portrait #containerDinamico { margin-top:90px; }
+.A4portrait .nomeParticipante.center-block, .A4portrait .nomePalestrante.center-block { margin:30px 0; }
+.assinaturas.A4portrait { margin-top:90px!important; }
+
+
+@page {
+	.containerCertificado, .bottom, .bottom-left, .bottom-right {
+		position:fixed;
+	}
+	.containerCertificado #ImagemLogo, .containerCertificado #TituloMarcador { 
+		position:absolute; left:50%; 
+	}
+	
+	.bottom { bottom:20mm!important; }
+	.bottom-left {  left:20mm; bottom:200mm!important; }
+	.bottom-right { right:20mm; bottom:50mm!important; }
+}

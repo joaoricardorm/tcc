@@ -106,6 +106,18 @@ var app = {
 	},
 	
 	/**
+	 * 	//EXIBIR ALERTA ANIMADO AO CLICAR EM BOTÃO
+	 */
+	alertaAnimado: function(origem, evento, destino,duracao){
+		$(origem).bind(evento, function(){
+			$(destino).removeClass('hide').addClass('animated fadeInUp').delay(duracao).queue(function(){ 
+					$(destino).addClass('fadeOutUp').removeClass('fadeInUp'); $(this).dequeue();
+					setTimeout(function(){ $(destino).removeClass('fadeOutUp').addClass('hide'); },550);
+			});
+		});
+	},
+	
+	/**
 	 * obtém um parametro da URL
 	 * @param parametro procurado
 	 * @returns parametro encontrado string

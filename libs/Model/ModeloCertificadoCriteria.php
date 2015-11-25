@@ -16,6 +16,21 @@ require_once("DAO/ModeloCertificadoCriteriaDAO.php");
 class ModeloCertificadoCriteria extends ModeloCertificadoCriteriaDAO
 {
 	
+	public $IdPalestra_Equals;
+	
+	public function GetFieldFromProp($propname)
+	{		
+		switch($propname){
+			case 'IdPalestra':
+				return 'id_palestra';				
+			default:
+				return parent::GetFieldFromProp($propname);
+		}
+		
+		//throw new Exception("Unknown Property '$propname' specified.");
+	
+	}
+	
 	/**
 	 * GetFieldFromProp returns the DB column for a given class property
 	 * 

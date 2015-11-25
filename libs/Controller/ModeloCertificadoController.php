@@ -49,6 +49,10 @@ class ModeloCertificadoController extends AppBaseController
 		{
 			$criteria = new ModeloCertificadoCriteria();
 			
+			if(RequestUtil::Get('idPalestra')){
+				$criteria->IdPalestra_Equals = RequestUtil::Get('idPalestra');
+			}
+			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(
@@ -87,8 +91,10 @@ class ModeloCertificadoController extends AppBaseController
 				// if page is specified, use this instead (at the expense of one extra count query)
 				$pagesize = $this->GetDefaultPageSize();
 
-				$modelocertificados = $this->Phreezer->Query('ModeloCertificado',$criteria)->GetDataPage($page, $pagesize);
-				$output->rows = $modelocertificados->ToObjectArray(true,$this->SimpleObjectParams());
+				$modelocertificados = $this->Phreezer->Query('ModeloCertificadoReporter',$criteria)->GetDataPage($page, $pagesize);
+				
+				$output->rows = $modelocertificados->ToObjectArray(true,$this->SimpleObjectParams());				
+				
 				$output->totalResults = $modelocertificados->TotalResults;
 				$output->totalPages = $modelocertificados->TotalPages;
 				$output->pageSize = $modelocertificados->PageSize;
@@ -97,8 +103,16 @@ class ModeloCertificadoController extends AppBaseController
 			else
 			{
 				// return all results
-				$modelocertificados = $this->Phreezer->Query('ModeloCertificado',$criteria);
+				$modelocertificados = $this->Phreezer->Query('ModeloCertificadoReporter',$criteria);
 				$output->rows = $modelocertificados->ToObjectArray(true, $this->SimpleObjectParams());
+				
+				//RETIRA CAMPO PARA ASSINATURA DO PARTICIPANTE SE FOR CERTIFICADO DE PALESTRANTE
+				if(RequestUtil::Get('palestrante')){
+					$regex = '/(class=\"hide-palestrante)/';
+					$output->rows[0]->elementos = preg_replace($regex, '$1 hide', $output->rows[0]->elementos);
+				}			
+				
+				
 				$output->totalResults = count($output->rows);
 				$output->totalPages = 1;
 				$output->pageSize = $output->totalResults;
