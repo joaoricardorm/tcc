@@ -645,7 +645,7 @@ class CertificadoController extends AppBaseController
 		$folha = $this->GetRouter()->GetUrlParam('folha');		
 		$codigo = $this->GetRouter()->GetUrlParam('codigo');
 		
-		$codigoBanco = preg_replace('([0-9])/','$1',$codigo); //pois lá gera com registro/ano
+		$codigoBanco = preg_replace('@([0-9])\/[0-9]@','$1',$codigo); //pois lá gera com registro/ano
 		
 		echo $codigoBanco;
 		
