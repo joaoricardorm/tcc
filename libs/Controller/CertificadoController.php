@@ -654,7 +654,8 @@ class CertificadoController extends AppBaseController
 					$criteria = new CertificadoCriteria();
 					$criteria->Livro_Equals = $livro;
 					$criteria->Folha_Equals = $folha;
-					$criteria->Codigo_Equals = explode('/',$codigo)[0]; //pois lá gera com registro/ano
+					if($codigo != '')
+						$criteria->Codigo_Equals = explode('/',$codigo)[0]; //pois lá gera com registro/ano
 					
 					$certificado = $this->Phreezer->GetByCriteria('Certificado',$criteria);
 					$this->Assign('Certificado',$certificado);
