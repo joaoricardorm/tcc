@@ -645,6 +645,10 @@ class CertificadoController extends AppBaseController
 		$folha = $this->GetRouter()->GetUrlParam('folha');		
 		$codigo = $this->GetRouter()->GetUrlParam('codigo');
 		
+		$codigoBanco = explode('/',$codigo)[0]; //pois lá gera com registro/ano
+		
+		echo $codigoBanco;
+		
 		try {
 			
 			if($livro && $folha && $codigo){
@@ -654,8 +658,7 @@ class CertificadoController extends AppBaseController
 					$criteria = new CertificadoCriteria();
 					$criteria->Livro_Equals = $livro;
 					$criteria->Folha_Equals = $folha;
-					if($codigo != '')
-						$criteria->Codigo_Equals = explode('/',$codigo)[0]; //pois lá gera com registro/ano
+					$criteria->Codigo_Equals = $codigoBanco; //pois lá gera com registro/ano
 					
 					$certificado = $this->Phreezer->GetByCriteria('Certificado',$criteria);
 					$this->Assign('Certificado',$certificado);
