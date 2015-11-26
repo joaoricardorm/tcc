@@ -32,3 +32,4 @@ bootstrap/editor-textos/
 certificados-gerados/
 styles/certificados/images/4-molduras-inclusive-a-atual.zip
 styles/fonts/fertigo/Fertigo_PRO-webfont.woff2
+vendor/dompdf/lib/fonts/*.htm

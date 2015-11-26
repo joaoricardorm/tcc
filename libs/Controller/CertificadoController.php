@@ -647,8 +647,6 @@ class CertificadoController extends AppBaseController
 		
 		$codigoBanco = preg_replace('@([0-9])\/[0-9]@','$1',$codigo); //pois lá gera com registro/ano
 		
-		echo $codigoBanco;
-		
 		try {
 			
 			if($livro && $folha && $codigo){
@@ -704,7 +702,7 @@ class CertificadoController extends AppBaseController
 	 */
 	public function ObterCertificadoView()
 	{
-		$cpf = $this->GetRouter()->GetUrlParam('cpf');
+		$cpf = trim($this->GetRouter()->GetUrlParam('cpf'));
 		$this->Assign('Participante',null);
 		$this->Assign('ArrPalestraParticipantes', null);
 			

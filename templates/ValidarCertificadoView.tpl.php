@@ -42,6 +42,7 @@
 	<p>
 	<ul>
 		<li>Você pode ter digitado alguma coisa errada. Confira no formulário abaixo;</li>
+		<li>O certificado informado pode ser muito antigo e, portanto, não está disponível no sistema;</li>
 		<li>Se você acha que o certificado informado é realmente válido, por favor entre em contato conosco:<br>
 			<strong><?php echo $this->Configuracao->NomeInstituicao; ?></strong><br>
 			<i class="icon icon-phone"></i> <?php echo $this->Configuracao->Telefone; ?>

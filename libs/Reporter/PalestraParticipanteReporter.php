@@ -75,7 +75,10 @@ class PalestraParticipanteReporter extends Reporter
 			if($criteria->IdParticipante_Equals)
 				$sql .= " WHERE `participante`.`id_participante` = '" . $criteria->Escape($criteria->IdParticipante_Equals) . "' ";
 			else if($criteria->CpfParticipante_Equals){
-				$sql .= " WHERE `participante`.`cpf` = '" . $criteria->Escape($criteria->CpfParticipante_Equals) . "' ";				
+				$sql .= " WHERE `participante`.`cpf` = '" . $criteria->Escape($criteria->CpfParticipante_Equals) . "' ";		
+				if($criteria->Presenca_Equals){
+					$sql .= " AND `palestra_participante`.`presenca` = '" . $criteria->Escape($criteria->Presenca_Equals) . "' ";	
+				}
 			}				
 		
 		}
