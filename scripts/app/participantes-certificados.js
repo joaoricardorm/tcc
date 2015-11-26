@@ -91,11 +91,16 @@ var page = {
 			
 			//Marca checkboxes ao 
 			$('table.collection tbody tr').click(function(e) {
-				var cbx = $('#cbParticipante'+this.id);
-				if(cbx.prop('checked') === true)
-					cbx.prop('checked',false);
-				else
-					cbx.prop('checked',true);
+				var sel = getSelection().toString();
+				
+				if(sel.length === 0){
+					
+					var cbx = $('#cbParticipante'+this.id);
+					if(cbx.prop('checked') === true)
+						cbx.prop('checked',false);
+					else
+						cbx.prop('checked',true);
+				}
 			});
 			
 			function selecionarTudo(){
@@ -159,6 +164,10 @@ var page = {
 			
 			$('table.collection tbody tr').click(function(e) {
 				
+			var sel = getSelection().toString();
+				
+			if(sel.length === 0){	
+				
 				var presencaBackbone = new model.PalestraParticipanteCollection();
 
 					//presencaBackbone.fetch({idParticipante: this.id});
@@ -215,6 +224,9 @@ var page = {
 						}
 
 					});
+					
+			}	
+					
 			});
 			
            

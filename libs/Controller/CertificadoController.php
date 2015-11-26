@@ -705,7 +705,8 @@ class CertificadoController extends AppBaseController
 		$cpf = trim($this->GetRouter()->GetUrlParam('cpf'));
 		$this->Assign('Participante',null);
 		$this->Assign('ArrPalestraParticipantes', null);
-			
+		$this->Assign('CPFValido',false);
+		
 			if($cpf){
 			
 					
@@ -751,17 +752,9 @@ class CertificadoController extends AppBaseController
 					$this->Assign('ArrPalestraParticipantes', $arrPalestraParticipantes);
 
 					
-					/*
-					$certificado = $this->Phreezer->Get('Certificado',$listaCertificados[0]->IdCertificado);
-					$this->Assign('Certificado',$certificado);
-					
-					$certificado = $this->Phreezer->GetByCriteria('Certificado',$criteria);
-					$this->Assign('Certificado',$certificado);
-					*/
-					
 					} catch(NotFoundException $ex){
-						throw new NotFoundException("Participante com CPF #$ex não existe".$ex);
-						$this->Assign('CertificadoValido',false);
+						//throw new NotFoundException("Participante com CPF {$_GET['cpf']} não está cadastrado no sistema");
+						$this->Assign('CPFValido',false);
 					}
 					
 					

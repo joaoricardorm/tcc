@@ -20,7 +20,7 @@
 		<h3><i class="icon icon-user"></i> Informe o CPF do palestrante ou participante a qual o certificado pertence</h3>
 	<?php } ?>
 
-<?php if($this->CertificadoValido){ ?>
+<?php if(isset($this->ArrPalestraParticipantes)){ ?>
 
 
 <h1 class="text-success"><i class="icon icon-ok"></i> Aqui está a lista de certificados dos eventos/atividades que essa pessoa participou</h1>
@@ -28,7 +28,25 @@
 <p>Participante: <strong><?php echo $this->Participante->Nome; ?></strong><br>
    CPF: <strong><?php echo $this->Participante->Cpf; ?></strong></p>
 
-<?php foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
+<?php if(sizeof($this->ArrPalestraParticipantes) === 0){ ?>
+
+<h1 class="text-warning">Esse participante não possui nenhum certificado disponível para obtenção</h1>
+
+	<p>
+	<ul>
+		<li>A presença dele pode não ter sido confirmada no evento/atidade, logo o certificado não está disponível para obtenção;</li>
+		<li>Se você acha que a pessoa com o CPF informado participou de um evento ou atividade, por favor entre em contato conosco:<br>
+			<strong><?php echo $this->Configuracao->NomeInstituicao; ?></strong><br>
+			<i class="icon icon-phone"></i> <?php echo $this->Configuracao->Telefone; ?>
+		</li>
+	</ul>
+	</p>
+
+<?php
+
+} else {
+
+foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 
 	<hr style="height:1px; border:none; background:#ccc;">
 	
@@ -53,29 +71,29 @@
 	</a>
 	
 	</p>
-<?php } //foreach ?>
+<?php 
+} //foreach 
+} //sizeofarray
+?>
 
+<?php } else if(isset($_GET['cpf']) && $this->CPFValido == false){ ?>
+
+	<h1 class="text-error"><i class="icon icon-remove"></i> Não foi possível encontrar no sistema certificados para a pessoa com o CPF informado</h1>
 	
-<?php } ?>
-
-<?php if(isset($_GET['codigo']) && !isset($this->FaltaParametros)){ ?>
-
-	<h1 class="text-error"><i class="icon icon-remove"></i> Não foi possível encontrar no sistema o certificado com os dados informados</h1>
-	
-	<p>Dados informados: <strong>Registro nº <?php echo $_GET['codigo']; ?> Folha <?php echo $_GET['folha']; ?> do livro nº <?php echo $_GET['livro']; ?></strong></p>
+	<p>CPF informado: <strong> <?php echo $_GET['cpf']; ?></strong></p>
 	
 	<p>O que fazer?</p>
 	<p>
 	<ul>
-		<li>Você pode ter digitado alguma coisa errada. Confira no formulário abaixo;</li>
-		<li>Se você acha que o certificado informado é realmente válido, por favor entre em contato conosco:<br>
+		<li>Você pode ter digitado errado. Confira no formulário abaixo;</li>
+		<li>A presença dele pode não ter sido confirmada no evento/atidade, logo o certificado não está disponível para obtenção;</li>
+		<li>Se você acha que a pessoa com o CPF informado participou de um evento ou atividade, por favor entre em contato conosco:<br>
 			<strong><?php echo $this->Configuracao->NomeInstituicao; ?></strong><br>
 			<i class="icon icon-phone"></i> <?php echo $this->Configuracao->Telefone; ?>
 		</li>
 	</ul>
 	</p>
-	
-<?php } else if ((isset($_GET['livro']) or isset($_GET['folha']) or isset($_GET['codigo'])) && $this->FaltaParametros == true){ echo '<h3 class="text-warning">Faltou preencher algum campo. Verifique.</h3>'; } ?>
+<?php } ?>
 
 <form id="dadosCertificado" class="form-horizontal" method="get">
 	<fieldset>
