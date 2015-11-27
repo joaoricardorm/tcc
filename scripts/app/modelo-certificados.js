@@ -96,9 +96,10 @@ $(document).ready(function(){
 						console.log('ALOHA',corDinamicaRGB[1]); */
 					
 				
-					
+					//remove as classes adicionais para ficar no Id
+					var idDbItem = $(this).attr('class').replace(/(dbitem|tagit-choice|ui-sortable-handle|\ )/g,'');
 					if($(this).hasClass('dbitem'))
-						item = '<span class="dbItemCertificado '+$(this).attr('class')+'" style="color: '+corTextoDinamico+'">'+item+'</span>';
+						item = '<span id="'+idDbItem+'" class="dbItemCertificado '+$(this).attr('class')+'" style="color: '+corTextoDinamico+'">'+item+'</span>';
 					
 					listaTags = listaTags + join + item;
 				});
@@ -295,7 +296,7 @@ $(document).ready(function(){
 			
 			
 			
-			var json = JSON.parse(textoTags);			
+			var json = JSON.parse(textoTags);				
 			
 			$('#sortable1').tagit({
 			focusInputOnLoad: true,
@@ -474,12 +475,19 @@ $(document).ready(function(){
 							console.log('Atualizou ou o modelo na palestra',p);
 							
 							
-							//REDIRECIONA PARA O CERTIFICADO DO PALESTRANTE, SE ESTIVER NO DO PARTICIPANTE, OU PARA A PAGINA OBTER CERTIFICADOS
-							if(ehPalestrante === ''){
-								document.location.href = document.location.href+'&palestrante=true'; 
-							} else {
-								document.location.href = base+'emitir-certificados/obter/'+app.getUrlParameter('idPalestra')+'?idPalestra='+app.getUrlParameter('idPalestra'); 
-							}
+							// REDIRECIONA PARA O CERTIFICADO DO PALESTRANTE, SE ESTIVER NO DO PARTICIPANTE, OU PARA A PAGINA OBTER CERTIFICADOS
+							// if(ehPalestrante === ''){
+								// document.location.href = document.location.href+'&palestrante=true'; 
+							// } else {
+								// document.location.href = base+'emitir-certificados/obter/'+app.getUrlParameter('idPalestra')+'?idPalestra='+app.getUrlParameter('idPalestra');
+
+								// $('#frmRedirPalestrante').each('input',function(){
+									// console.log($(this).val());
+								// });
+								// $('#frmRedirComParticipantes').submit();
+							// }
+							
+							$('#frmRedirComParticipantes').submit();
 							
 							
 					},

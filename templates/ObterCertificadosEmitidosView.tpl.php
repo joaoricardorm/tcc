@@ -12,6 +12,9 @@
 
 <?php if($this->Palestra){ ?>
 
+<!--Lista de participantes que receberão os certificados-->
+<textarea name="listaParticipantes" id="listaParticipantes"><?php if(isset($_POST['cbParticipante'])) echo json_encode($_POST['cbParticipante']); ?></textarea>
+
 <nav class="container hero-unit small small margin-bottom-5px">
 		<ol class="cd-multi-steps text-top">		
 			<li class="visited"><a href="evento/<?php $this->eprint( $this->Palestra->IdEvento . '/'. AppBaseController::parseURL($this->Evento->Nome ) . '/' ); ?>"><i class="icon-tags"></i><?php $this->eprint($this->Evento->Nome); ?></a></li> <!-- Classe "visited" -->
@@ -73,7 +76,7 @@
 						<span class="block-md">	
 						Imprimir
 						<div class="margin-top-10px">
-							<input id="cbkImprimir" class="checkbox-custom" name="checkbox-3" type="checkbox">
+							<input checked id="cbkImprimir" class="checkbox-custom" name="checkbox-3" type="checkbox">
 							<label for="cbkImprimir"class="checkbox-custom-label"></label>   
 						</div>
 						</span>

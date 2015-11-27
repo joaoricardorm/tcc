@@ -21,17 +21,39 @@
 <script type="text/javascript">
 	$LAB
 		.script(base+"scripts/app/modelo-certificados.js?"+Math.floor((Math.random() * 1000) + 1))
-		.script(base+"scripts/jquery-ui/jquery-ui.min.js")
-		.script(base+"scripts/jquery-ui/jquery.ui.touch-punch.min.js")
-		.script(base+"scripts/tagit.js")
 		;
+	//removi o tagit e jquery ui daqui e coloquei no header	
 </script>
 
 <link href="bootstrap/editor-textos/index.css" rel="stylesheet" />
 
 <link href="scripts/tagit-dark-grey.css" rel="stylesheet" />
 
-<?php //print_r($_POST); ?>
+<?php print_r($_POST); ?>
+	
+
+<?php
+	//REDIRECIONA PARA O CERTIFICADO DO PALESTRANTE, SE ESTIVER NO DO PARTICIPANTE, OU PARA A PAGINA OBTER CERTIFICADOS
+	if(isset($_GET['palestrante']))
+		$action = '/obter/'.$this->Palestra->IdPalestra.'?idPalestra='.$this->Palestra->IdPalestra;
+	else
+		$action = '/modelo/'.$this->Palestra->IdPalestra.'?idPalestra='.$this->Palestra->IdPalestra.'&palestrante=true';
+?>
+
+<form id="frmRedirComParticipantes" name="frmRedirComParticipantes" method="post" action="<?php echo $this->ROOT_URL.'emitir-certificados'.$action ?>">
+	<input type="hidden" id="idPalestra" name="idPalestra" value="<?php $this->eprint($this->Palestra->IdPalestra); ?>"/>
+	<input type="hidden" id="idUsuario" name="idUsuario" value="<?php $this->eprint($this->CURRENT_USER->IdUsuario); ?>"/>
+	
+	<?php
+	//ENCAMINHA POST DE PARTICIPANTES
+	if(isset($_POST['cbParticipante'])){
+		foreach($_POST['cbParticipante'] as $key => $value)
+		{
+		  echo '<input type="hidden" name="cbParticipante[]" value="'. $key. '">';
+		}
+	}
+	?>
+<form>
 
 <nav class="container hero-unit small margin-bottom-5px">
 		<ol class="cd-multi-steps text-top">		
@@ -100,12 +122,12 @@
 <div class="accordion" id="accordeonTextos">
   <div class="accordion-group">
     <div class="accordion-heading">
-      <a class="accordion-toggle alert alert-dark" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+      <a class="accordion-toggle alert alert-dark" onclick="$('.accordion-body').toggleClass('collapse in')" data-toggle="collapse" data-parent="#accordeonTextos" href="#collapseOne">
         <!--<i class="icon-edit"></i> Clique para alterar a formatação e o conteúdo do certificado dos <?php echo !isset($_GET['palestrante']) ? 'PARTICIPANTES' : 'PALESTRANTES'; ?>-->
 		<i class="icon-edit"></i> Alterar a formatação do conteúdo do certificado dos <?php echo !isset($_GET['palestrante']) ? 'PARTICIPANTES' : 'PALESTRANTES'; ?>
       </a>
     </div>
-    <div id="collapseOne" class="accordion-body collapse in">
+    <div id="collapseOne" class="accordion-body collapse animated">
       <div class="accordion-inner">
         
 		<!--REMOVER ESSE O HIDE SE CONSEGUIR FAZER FUNCIONAR-->
@@ -291,9 +313,6 @@
 		</div>	
 		
 	</fieldset>
-	
-	<input type="hidden" id="idPalestra" name="idPalestra" value="<?php $this->eprint($this->Palestra->IdPalestra); ?>"/>
-	<input type="hidden" id="idUsuario" name="idUsuario" value="<?php $this->eprint($this->CURRENT_USER->IdUsuario); ?>"/>
 	
 </form>
 	

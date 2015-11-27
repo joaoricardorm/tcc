@@ -64,7 +64,10 @@
 		<script type="text/javascript" src="scripts/libs/LAB.min.js"></script>
 		<script type="text/javascript">
 			var base = '<?php $this->eprint($this->ROOT_URL); ?>';
-			$LAB.script(base+"scripts/jquery-1.8.2.min.js").wait()				
+			$LAB.script(base+"scripts/jquery-1.8.2.min.js").wait()	
+				.script(base+"scripts/jquery-ui/jquery-ui.min.js")
+				.script(base+"scripts/jquery-ui/jquery.ui.touch-punch.min.js")
+				.script(base+"scripts/tagit.js")
 				.script(base+"bootstrap/js/bootstrap.min.js")
 				.script(base+"bootstrap/js/bootstrap-datepicker.js")
 				.script(base+"bootstrap/js/bootstrap-datepicker.pt-BR.js").wait()

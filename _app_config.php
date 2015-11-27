@@ -98,6 +98,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:emitir-certificados/participantes/(:num)' => array('route' => 'Participante.ListViewReceberCertificado', 'params' => array('idPalestra' => 2)),
 	
 	'GET:emitir-certificados/obter/(:num)' => array('route' => 'Certificado.ObterCertificadosEmitidosView', 'params' => array('idPalestra' => 2)),
+	'POST:emitir-certificados/obter/(:num)' => array('route' => 'Certificado.ObterCertificadosEmitidosView', 'params' => array('idPalestra' => 2)),
 	
 	'GET:validar-certificado' => array('route' => 'Certificado.ValidarCertificadoView'),
 	
@@ -109,10 +110,20 @@ GlobalConfig::$ROUTE_MAP = array(
 	//gerar certificados dos participantes
 	'GET:api/geracertificadoparticipante/(:num)' => array('route' => 'Certificado.GerarCertificadoParticipante', 'params' => array('idParticipante' => 2)),
 	//Certificado modelo
-	'POST:api/geracertteste/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestra', 'params' => array('idPalestra' => 2)),
-	'POST:api/geracertteste/(:num)/(:any)' => array('route' => 'Certificado.GeraCertificadosPalestra', 'params' => array('idPalestra' => 2, 'orientacao' => 3)),
+	'POST:api/geracertteste/(:num)' => array('route' => 'Certificado.GeraCertificadoModelo', 'params' => array('idPalestra' => 2)),
+	'POST:api/geracertteste/(:num)/(:any)' => array('route' => 'Certificado.GeraCertificadoModelo', 'params' => array('idPalestra' => 2, 'orientacao' => 3)),
+	//imprimir certificados
+	'GET:api/imprimircertificados/palestra/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraImprimir', 'params' => array('idPalestra' => 3)),
+	
+	'POST:api/imprimircertificados/palestra/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraImprimir', 'params' => array('idPalestra' => 3)),
+
 	'GET:api/downloadcertteste/(:num)' => array('route' => 'Certificado.DownloadCertificadoModelo', 'params' => array('idPalestra' => 2)),
 	'GET:api/downloadcertificado/(:num)' => array('route' => 'Certificado.DownloadCertificado', 'params' => array('idCertificado' => 2)),
+	
+	'GET:api/downloadcertificadoparticipante/(:num)/(:num)' => array('route' => 'Certificado.DownloadCertificadoParticipante', 'params' => array('idPalestra' => 2, 'idParticipante' => 3)),
+	
+	
+	
 	
 	//gerar ata de certificados da palestra
 	'GET:api/gerarata/(:num)' => array('route' => 'Certificado.GerarAta', 'params' => array('idPalestra' => 2)),

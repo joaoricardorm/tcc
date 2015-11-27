@@ -498,7 +498,7 @@ class CertificadoController extends AppBaseController
 							
 	}
 	
-	public function GeraCertificadosPalestra(){
+	public function GeraCertificadoModelo(){
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$orientacao = $this->GetRouter()->GetUrlParam('orientacao');
 		$htmlPreviewCertificado = $this->GetRouter()->GetUrlParam('html');
@@ -583,6 +583,160 @@ class CertificadoController extends AppBaseController
 				//$this->RenderJSON($html);
 	}
 	
+	
+	
+	
+	
+	
+	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
+	public function GeraCertificadoParticipante($idParticipante, $idPalestra){				
+		
+		//Palestra
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		//Evento
+		$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+		
+		//PalestraPalestrante
+		require_once('Model/PalestraPalestrante.php');
+		$criteria = new PalestraPalestranteCriteria();
+		$criteria->IdPalestra_Equals = $idPalestra; 
+
+		$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+		
+		//PalestraParticipante
+		require_once('Model/PalestraParticipante.php');
+		$criteria = new PalestraParticipanteCriteria();
+		$criteria->IdPalestra_Equals = $idPalestra; 
+		$criteria->IdParticipante_Equals = $idParticipante; 	
+
+		$participante = $this->Phreezer->GetByCriteria('PalestraParticipanteReporter',$criteria);
+		
+		//Certificado
+		$certificado = $this->Phreezer->Get('Certificado',$participante->IdCertificado);		
+		
+		//Modelo Certificado
+		$modeloCertificado = $this->Phreezer->Get('ModeloCertificado',$palestra->IdModeloCertificado);		
+		
+		$dadosModeloCertificado = $modeloCertificado->Elementos;
+		
+		$textoParticipante = json_decode($modeloCertificado->TextoParticipante);
+		
+		//print_r( $textoParticipante);
+		
+		//Carrega HTML
+		// $obj = new DOMDocument();
+		// $obj->loadHTML($dadosModeloCertificado);
+		// $obj->preserveWhiteSpace = false;
+		//echo $obj->saveHTML();
+		
+		
+		//Orientacao
+		$orientacao = preg_match("/A4portrait/", $dadosModeloCertificado, $matches);
+		if($orientacao) $orientacao = 'portrait'; else $orientacao = 'landscape';
+			
+			
+		$antigo = array(
+			'Nome do Participante',
+			'Nome da Atividade',
+			'Local da Atividade',
+			'Data da Atividade',
+			'Duração do Evento',
+			'Carga Horária',
+			'validar-certificado/',
+			'Registro nº 9081/15 folha 86 do livro nº 2'
+		);
+		$novo = array(
+			$participante->NomeParticipante,
+			$palestra->Nome,
+			$evento->Local,
+			date('d/m/Y',strtotime($palestra->Data)),
+			$evento->Duracao,
+			date('H:i',strtotime($palestra->CargaHoraria)),
+			'validar-certificado/'.$participante->IdParticipante.'/',
+			'Registro nº '.$certificado->Codigo.'/'
+		);
+		
+		$dadosModeloCertificado = str_replace($antigo,$novo,$dadosModeloCertificado);
+
+		
+	
+		
+		//echo preg_replace('@nomeAtividade@','RICARDO',htmlentities($dadosModeloCertificado));
+		
+				
+		$nomeArquivoModeloCertificado = 'padrao.css';
+		
+		$bgOrientacao = null;
+		if($orientacao === 'portrait')
+			$bgOrientacao = '-portrait'; 
+		
+		$html = '
+				<html>
+				<head>
+				<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+				<meta charset="utf8"/>
+				
+				<style>
+				
+				html { margin:0; }
+				
+				.page-break { page-break-after: always; }
+				.page-break:last-child { page-break-after: initial; }
+			
+				.fixed-pdf { 
+					position:fixed!important;
+				}
+				
+				
+				.containerCertificado {
+					background:url('.GlobalConfig::$ROOT_URL.'styles/certificados/images/moldura-padrao'.$bgOrientacao.'.png); 
+				}
+			
+				</style>
+				
+				<link rel="stylesheet" type="text/css" media="screen,print" href="'. GlobalConfig::$ROOT_URL. '/styles/certificados/'.$nomeArquivoModeloCertificado.'" />
+				
+				</head>
+
+				<body class="pdf">	
+					<div class="containerCertificado">					
+				    '.$dadosModeloCertificado.'							
+					</div>
+				</body>
+				</html>';
+				
+				$arquivo = 'palestra'.$participante->IdParticipante.'.pdf';
+				$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+				
+				AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
+
+				echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
+				
+				//$this->DownloadCertificadoParticipante($palestra->IdPalestra, $participante->IdParticipante);
+				
+				//$this->RenderJSON($html);
+				
+	}
+	
+	
+	
+	
+	
+	
+	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
+	
+	public function GeraCertificadosPalestraImprimir(){
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+	
+		foreach($participantes as $participante){
+			$this->GeraCertificadoParticipante($participante, $idPalestra);
+		}
+	}
+
+	
+	
 	public function DownloadAta($paramIdPalestra=null)
 	{
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
@@ -612,6 +766,23 @@ class CertificadoController extends AppBaseController
 		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 		
 		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
+	}	
+	
+	public function DownloadCertificadoParticipante($paramIdPalestra=null,$paramIdParticipante=null)
+	{
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$idParticipante = $this->GetRouter()->GetUrlParam('idParticipante');
+		
+		if($paramIdPalestra) $idPalestra = $paramIdPalestra;
+		if($paramIdParticipante) $idParticipante = $paramIdParticipante;
+		
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		$participante = $this->Phreezer->Get('Participante',$idParticipante);
+		
+		$arquivo = 'palestra'.$idParticipante.'.pdf';
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Certificado de '.$participante->Nome.' em '.$palestra->Nome);
 	}	
 	
 	/**
