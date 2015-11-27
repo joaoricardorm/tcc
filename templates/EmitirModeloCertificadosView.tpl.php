@@ -49,7 +49,7 @@
 	if(isset($_POST['cbParticipante'])){
 		foreach($_POST['cbParticipante'] as $key => $value)
 		{
-		  echo '<input type="hidden" name="cbParticipante[]" value="'. $key. '">';
+		  echo '<input type="hidden" name="cbParticipante[]" value="'. $value. '">';
 		}
 	}
 	?>
@@ -107,8 +107,6 @@
 		</button>
 	</p>
 	
-	
-
 <div class="clearfix"></div>
 
 	<fieldset>
@@ -122,7 +120,7 @@
 <div class="accordion" id="accordeonTextos">
   <div class="accordion-group">
     <div class="accordion-heading">
-      <a class="accordion-toggle alert alert-dark" onclick="$('.accordion-body').toggleClass('collapse in')" data-toggle="collapse" data-parent="#accordeonTextos" href="#collapseOne">
+      <a class="accordion-toggle alert alert-dark not-selectable" onclick="$('.accordion-body').toggleClass('in')">
         <!--<i class="icon-edit"></i> Clique para alterar a formatação e o conteúdo do certificado dos <?php echo !isset($_GET['palestrante']) ? 'PARTICIPANTES' : 'PALESTRANTES'; ?>-->
 		<i class="icon-edit"></i> Alterar a formatação do conteúdo do certificado dos <?php echo !isset($_GET['palestrante']) ? 'PARTICIPANTES' : 'PALESTRANTES'; ?>
       </a>

@@ -21,6 +21,15 @@ class AppBaseController extends Controller
 
 	public $Configuracao;
 	
+	//Esta função manda o arquivo para download
+	public function send_download($file, $new_filename = false)
+	{
+		if(!$new_filename) $new_filename = $file;
+		header('Content-type: application/zip');
+		header('Content-Disposition: attachment; filename="'.$new_filename.'"');
+		readfile($file); 
+	}
+	
 	/* GERA ARQUIVO EM PDF */
 	public function geraPDF($arquivo, $caminho, $html, $papel='a4', $orientacao='landscape'){
 		// Incluímos a biblioteca DOMPDF
@@ -51,6 +60,72 @@ class AppBaseController extends Controller
 		header('Content-Disposition: attachment; filename="'.$nome_download.'.'.$ext.'"');
 		readfile($arquivo); 
 	}
+	
+	
+	//Gera arquivo compactado em zip com os arquivos selecionados
+	public function create_zip($files = array(),$destination = '',$overwrite = false) {
+		//if the zip file already exists and overwrite is false, return false
+		if(file_exists($destination) && !$overwrite) { return false; }
+		//vars
+		$valid_files = array();
+		//if files were passed in...
+		if(is_array($files)) {
+			//cycle through each file
+			foreach($files as $file) {
+				//make sure the file exists
+				if(file_exists($file)) {
+					$valid_files[] = $file;
+				}
+			}
+		}
+		//if we have good files...
+		if(count($valid_files)) {
+			//create the archive
+			$zip = new ZipArchive();
+			if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+				return false;
+			}
+			//add the files
+			foreach($valid_files as $file) {
+				$zip->addFile($file,$file);
+			}
+			//debug
+			//echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
+			
+			//close the zip -- done!
+			$zip->close();
+			
+			//check to make sure the file exists
+			return file_exists($destination);
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	//Compacta arquivos
+	public function compactar($arquivos, $destino = './', $nomefinal){
+		$files = $arquivos;
+		
+		$zipname = $destino.$nomefinal.'.zip';
+		$zipname=iconv("UTF-8", "ISO-8859-1//TRANSLIT", $zipname);
+		
+		$zip = new ZipArchive;
+		$zip->open($zipname, ZipArchive::CREATE);
+		foreach ($files as $file) {
+			echo  $file ;
+			$new_filename = substr($file,strrpos($file,'/') + 1);
+			$zip->addFile($file,$new_filename);
+		 // $zip->addFile($file);
+		}
+		$zip->close();
+
+		return $zipname;
+		
+		///////////////////////////////////////////$this->send_download($arq);
+	}
+	
 	
 	/**
 	 * Init is called by the base controller before the action method

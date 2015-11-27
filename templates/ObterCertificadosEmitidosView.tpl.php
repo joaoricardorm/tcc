@@ -13,7 +13,12 @@
 <?php if($this->Palestra){ ?>
 
 <!--Lista de participantes que receberão os certificados-->
-<textarea name="listaParticipantes" id="listaParticipantes"><?php if(isset($_POST['cbParticipante'])) echo json_encode($_POST['cbParticipante']); ?></textarea>
+
+<!--["111","112","113","115","116","117","118"]-->
+
+<textarea name="listaParticipantes" id="listaParticipantes">
+["119","117"]
+<?php if(isset($_POST['cbParticipante'])) echo json_encode($_POST['cbParticipante']); ?></textarea>
 
 <nav class="container hero-unit small small margin-bottom-5px">
 		<ol class="cd-multi-steps text-top">		
@@ -127,7 +132,8 @@
 			<div class="clearfix"></div>
 			
 			<button id="btnObterCertificados" type="submit" class="hide btn btn-primary pull-left btn-large margin-top-30px">
-				<i class="icon margin-right-10px icon-certificate"></i> OBTER CERTIFICADOS
+				<i class="icon margin-right-10px icon-certificate"></i>OBTER CERTIFICADOS
+				<i class="icon-spin icon-margin-left hidden icon-refresh center inline-block"></i>
 			</button>
 			
 			<div class="margin-top-20px pull-right block-sm" style="font-size:16px; margin-left:30px; line-height:normal; padding-top:10px; max-width:500px; text-align:right;">
@@ -135,6 +141,20 @@
 			</div>
 			
 			<div class="clearfix"></div>
+			
+			
+			
+			<div class="row text-center">
+			<div id="progresso" class="hidden span6 block text-center center inline-block" style="display:block;">
+				<h3 class="acao"></h3>
+				<div class="progress progress-striped active">
+				  <div class="progress-bar bar-success bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+					0%
+				  </div>
+				</div>
+			</div>
+			</div>
+			
 			
 		</div>
 

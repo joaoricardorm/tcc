@@ -200,13 +200,7 @@ class CertificadoController extends AppBaseController
 		}
 		
 		$this->Render('EmitirModeloCertificadosView.tpl');
-	}
-	
-	
-	
-	
-	
-	
+	}	
 	
 	
 	
@@ -589,7 +583,7 @@ class CertificadoController extends AppBaseController
 	
 	
 	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
-	public function GeraCertificadoParticipante($idParticipante, $idPalestra){				
+	public function GeraCertificadoParticipante($idParticipante, $idPalestra,$replace=false){				
 		
 		//Palestra
 		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
@@ -654,15 +648,10 @@ class CertificadoController extends AppBaseController
 			$evento->Duracao,
 			date('H:i',strtotime($palestra->CargaHoraria)),
 			'validar-certificado/'.$participante->IdParticipante.'/',
-			'Registro nº '.$certificado->Codigo.'/'
+			'Registro nº '.$certificado->Codigo.'/'.date('y',strtotime($certificado->DataEmissao)).' folha '.$certificado->Folha.' do livro nº '.$certificado->Livro
 		);
 		
 		$dadosModeloCertificado = str_replace($antigo,$novo,$dadosModeloCertificado);
-
-		
-	
-		
-		//echo preg_replace('@nomeAtividade@','RICARDO',htmlentities($dadosModeloCertificado));
 		
 				
 		$nomeArquivoModeloCertificado = 'padrao.css';
@@ -709,13 +698,15 @@ class CertificadoController extends AppBaseController
 				$arquivo = 'palestra'.$participante->IdParticipante.'.pdf';
 				$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 				
-				AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
+				if($replace or !file_exists(GlobalConfig::$APP_ROOT.$caminho.$arquivo)){
+					AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
+				}
 
-				echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
+				//echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
 				
 				//$this->DownloadCertificadoParticipante($palestra->IdPalestra, $participante->IdParticipante);
 				
-				//$this->RenderJSON($html);
+				$this->RenderJSON(array('success'=>true));
 				
 	}
 	
@@ -729,12 +720,48 @@ class CertificadoController extends AppBaseController
 	public function GeraCertificadosPalestraImprimir(){
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
-	
+		
 		foreach($participantes as $participante){
-			$this->GeraCertificadoParticipante($participante, $idPalestra);
+			$this->GeraCertificadoParticipante($participante, $idPalestra,true); //false=substitui os certificados existentes
+		}
+		
+		foreach($participantes as $participante){
+			echo 'Pegou '.$idPalestra.' participantes '.$participante; 
+			//$this->DownloadCertificadoParticipante($idPalestra, $participante);
 		}
 	}
 
+	
+	public function CompactarCertificadosParticipante(){
+	
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+		
+		//Palestra
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		$arquivos = array();
+		$caminho = GlobalConfig::$APP_ROOT.'/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		foreach($participantes as $idParticipante){			
+			$arquivos[] = $caminho.'palestra'.$idParticipante.'.pdf'; 
+			//$arquivos[] = './certificados-gerados/workshop-tecnicas-avancadas-de-pog-128/palestra113.pdf';
+		}
+		
+		print_r( $arquivos );
+		//print_r($nomeFinal);
+	
+		// $arquivo = 'arquivo-em-pdf-22.pdf';
+		
+		// $this->geraPDF($arquivo, $caminho, $html);
+		$zip = $this->compactar($arquivos, $caminho, 'certificados-'.mt_rand());
+		
+		$eventoOuPalestra = ($palestra->ProprioEvento) ? ' do evento ' : ' da atividade ';
+		$novo_nome = 'Certificados '.$eventoOuPalestra.$palestra->Nome.'.zip';
+		
+		AppBaseController::send_download($zip, $novo_nome);
+		
+	}
 	
 	
 	public function DownloadAta($paramIdPalestra=null)
