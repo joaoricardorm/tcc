@@ -78,9 +78,12 @@ $(document).ready(function(){
 				
 					
 					var corTextoDinamico = $('.containerPDF .dbitem').css('color');	
-
-					$('.ToolBarDbItem input[type=color]').val(rgb2hex(corTextoDinamico));
-					$('.ToolBarGeral input[type=color]').val(rgb2hex($('.containerPDF').css('color')));
+					
+					if(typeof corTextoDinamico !== 'undefined')
+						$('.ToolBarDbItem input[type=color]').val(rgb2hex(corTextoDinamico));
+					
+					if($('.containerPDF').css('color').length > 0)
+						$('.ToolBarGeral input[type=color]').val(rgb2hex($('.containerPDF').css('color')));
 					
 			
 				tags.find('.tagit-choice').each(function(i, el){
@@ -113,7 +116,7 @@ $(document).ready(function(){
 				var alinhamento = '';
 				alinhamento = $('.containerPDF').attr('class').match(/.*?justify([a-z]+)/i);
 				
-				if(typeof alinhamento !== 'undefined')
+				if(typeof alinhamento !== 'undefined' && alinhamento !== null)
 					$('a[data-edit="justify'+alinhamento[1]+'"]').click();
 				
 				
@@ -289,9 +292,19 @@ $(document).ready(function(){
 			
 			function previewCertificado(){
 					preview = getTags($('#sortable1'));
-					$('#previewCertificado #containerDinamico').html(preview);
-		
+					$('#previewCertificado #containerDinamico').html(preview);		
 					updateToolBar();
+					
+					//ATUALIZA TAGS
+					if(ehPalestrante != ''){
+				      textoPalestranteBD = getTagsAsJSON($('#sortable1'));
+					} else {	
+					  textoParticipanteBD = getTagsAsJSON($('#sortable1'));
+					}
+					
+					
+					
+					console.log('RRRRRRRRRRRRRRRRRRRRRRRRRR',textoParticipanteBD);
 			}
 			
 			
@@ -487,6 +500,12 @@ $(document).ready(function(){
 								// $('#frmRedirComParticipantes').submit();
 							// }
 							
+							
+							
+							
+							
+							
+							
 							$('#frmRedirComParticipantes').submit();
 							
 							
@@ -547,7 +566,7 @@ $(document).ready(function(){
 		connectWith: ".connectedSortable",
 		placeholder : "highlight",
 		items: "li:not(.tagit-input)",
-		stop: function(event, ui) { previewCertificado(); console.log('TEXTAOTAGAO',textoTags); },
+		stop: function(event, ui) { previewCertificado(); },
 		start: function(e, ui ){
 			 ui.placeholder.width(ui.helper.outerWidth());
 		},

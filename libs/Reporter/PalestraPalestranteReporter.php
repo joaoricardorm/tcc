@@ -28,7 +28,9 @@ class PalestraPalestranteReporter extends Reporter
 	public $IdCertificado;
 	
 	public $NomePalestrante;
-	public $CpfPalestrante;	
+	public $CpfPalestrante;
+	public $ImagemAssinatura;
+	public $CargoPalestrante;	
 	
 	public $DataEmissao;
 	public $Livro;
@@ -67,6 +69,8 @@ class PalestraPalestranteReporter extends Reporter
 			,`palestrante`.`id_palestrante` as IdPalestrante
 			,`palestrante`.`nome` as NomePalestrante
 			,`palestrante`.`cpf` as CpfPalestrante
+			,`palestrante`.`imagem_assinatura` as ImagemAssinatura
+			,`palestrante`.`cargo` as CargoPalestrante
 			, `palestra_palestrante`.`id_palestra` as IdPalestra
 			,`palestra_palestrante`.`id_certificado` as IdCertificado ";
 	
@@ -114,6 +118,9 @@ if($criteria->InnerJoinCertificado){
 		
 		//$sql .= $criteria->GetWhere();
 		$sql .= $criteria->GetOrder();
+		
+		if($criteria->Limite)
+			$sql .= 'limit '. $criteria->Escape($criteria->Limite);
 
 		return $sql;
 	}

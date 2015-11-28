@@ -1,7 +1,6 @@
 <?php
 	$this->assign('title','Emitir Certificados - Participantes - Certifica-μ');
-	$this->assign('nav','certificados');
-	$this->assign('navegacao','emitir-certificados');
+	$this->assign('nav','presenca');
 
 	$this->display('_Header.tpl.php');
 ?>

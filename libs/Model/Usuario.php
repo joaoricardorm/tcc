@@ -56,6 +56,7 @@ class Usuario extends UsuarioDAO implements IAuthenticatable
 		
 		// IF THE PERMISSION BEING REQUESTED IS SOMETHING THAT THIS USER'S ROLE HAS, THEN THEY ARE AUTHORIZED
 		if ($permission == self::$P_USUARIO && $this->TipoUsuario == 0) return true;
+		if ($permission == self::$P_USUARIO && $this->TipoUsuario == 1) return true; //se for administrador
 		if ($permission == self::$P_ADMIN && $this->TipoUsuario == 1) return true;
 		
 		// IF THERE WERE NO MATCHES THEN THAT MEANS THIS USER DOESNT' HAVE THE REQUESTED PERMISSION

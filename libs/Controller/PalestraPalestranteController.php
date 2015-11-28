@@ -77,6 +77,10 @@ class PalestraPalestranteController extends AppBaseController
 				$criteria->OrderByNomePalestrante = true;
 			}
 			
+			if(RequestUtil::Get('limite')){
+				$criteria->Limite = RequestUtil::Get('limite');
+			}
+			
 			// TODO: this will limit results based on all properties included in the filter list 
 			$filter = RequestUtil::Get('filter');
 			if ($filter) $criteria->AddFilter(

@@ -101,11 +101,10 @@ class ParticipanteController extends AppBaseController
 	public function ListViewPresenca()
 	{
 		
-		/*$this->RequirePermission(Usuario::$P_USUARIO,
+		$this->RequirePermission(Usuario::$P_USUARIO,
 				'SecureExample.LoginForm',
 				'Autentique-se para acessar esta página',
 				'Você não possui permissão para acessar essa página ou sua sessão expirou');
-		*/
 		
 		
 		//Dados da palestra
@@ -149,6 +148,12 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function Query()
 	{
+		
+		$this->RequirePermission(Usuario::$P_USUARIO,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 			$criteria = new ParticipanteCriteria();
@@ -248,6 +253,12 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function Create()
 	{
+		
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 						
@@ -294,6 +305,12 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function Update()
 	{
+		
+		$this->RequirePermission(Usuario::$P_USUARIO,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 						
@@ -344,6 +361,12 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function Delete()
 	{
+		
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 						
@@ -390,6 +413,11 @@ class ParticipanteController extends AppBaseController
 	 */
 	public function UpdateAll()
 	{
+		
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 		
 		//$someJSON = $_GET['dados']; 
 		

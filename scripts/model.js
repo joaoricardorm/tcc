@@ -236,7 +236,7 @@ model.ModeloCertificadoModel = Backbone.Model.extend({
 		'textoParticipante': '',
 		'textoPalestrante': '',
 		'arquivoCss': '',
-		'elementos': ''
+		'elementos': '',
 	}
 });
 

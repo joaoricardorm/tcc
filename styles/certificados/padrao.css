@@ -26,6 +26,7 @@
 .metade { width:48%; }
 tr.metade { width:100%!important; }
 tr.metade td { vertical-align:top; width:1%; }
+small { font-size:15px; }
 .fontSizeBig { font-size:26px; }
 .fontSizeNormal { font-size:20px; }
 .fontSizeSmall { font-size:14px; }
@@ -74,7 +75,7 @@ table {
 .containerCertificado .assinaturas  { width:100%; text-align:center; line-height:normal; margin-top:30px; }
 .containerCertificado .assinaturas td { color:#333; vertical-align: top; padding:0 5mm; width:50%; } 
 
-.containerCertificado .assinaturas.palestrante { width:120mm!important; margin-left:auto; margin-right:auto; }
+.containerCertificado .assinaturas.palestrante { width:60mm!important; margin-left:auto; margin-right:auto; }
 .containerCertificado .assinaturas.palestrante td { width:100%; }
 
 .containerCertificado .assinatura { 
@@ -84,7 +85,7 @@ table {
 	filter: grayscale(100%);
 	filter: url(desaturate.svg#greyscale); 
 }
-.containerCertificado .assinaturas hr { height:1px; border:1px; min-width:40mm; width:100%; background:#333; }
+.containerCertificado .assinaturas hr { height:1px; border:1px; min-width:40mm; width:100%; background:#333; border-color:#777; }
 
 .bottom {  left:20mm; right:20mm; bottom:25mm!important; }
 .bottom-left {  left:20mm; width:70mm; bottom:25mm; }

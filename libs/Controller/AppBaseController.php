@@ -105,19 +105,26 @@ class AppBaseController extends Controller
 	}
 	
 	//Compacta arquivos
-	public function compactar($arquivos, $destino = './', $nomefinal){
+	public function compactar($arquivos, $novosNomes = false, $destino = './', $nomefinal,$overwrite=false){
 		$files = $arquivos;
 		
 		$zipname = $destino.$nomefinal.'.zip';
 		$zipname=iconv("UTF-8", "ISO-8859-1//TRANSLIT", $zipname);
 		
 		$zip = new ZipArchive;
-		$zip->open($zipname, ZipArchive::CREATE);
+		$zip->open($zipname, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE);
+		
+		$i=0;
 		foreach ($files as $file) {
 			echo  $file ;
-			$new_filename = substr($file,strrpos($file,'/') + 1);
+			if($novosNomes)
+				$new_filename = $novosNomes[$i];
+			else
+				$new_filename = substr($file,strrpos($file,'/') + 1);
+			
 			$zip->addFile($file,$new_filename);
 		 // $zip->addFile($file);
+		 $i++;
 		}
 		$zip->close();
 

@@ -27,12 +27,6 @@ class CertificadoController extends AppBaseController
 		parent::Init();
 
 		// TODO: add controller-wide bootstrap code
-
-		// Requer permissão de acesso
-		$this->RequirePermission(Usuario::$P_ADMIN,
-				'SecureExample.LoginForm',
-				'Autentique-se para acessar esta página',
-				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 		
 		//$this->RequerPermissao(Usuario::$PERMISSION_USER,'SecureExample.LoginForm');
 	}
@@ -43,6 +37,15 @@ class CertificadoController extends AppBaseController
 	 */
 	public function EmitirCertificadosView()
 	{
+		
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
+		
 		//$usuario = Controller::GetCurrentUser();
 		//$this->Assign('usuario',$usuario);		
 		
@@ -105,6 +108,17 @@ class CertificadoController extends AppBaseController
 	}
 	
 	public function EmitirModeloCertificadosView(){
+		
+		
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+				
+		
+		
 		//Dados do evento
 		$this->Assign('Palestra',null);
 		$this->Assign('Evento',null);
@@ -157,6 +171,14 @@ class CertificadoController extends AppBaseController
 	
 	
 	public function EmitirModeloCertificadosViewSimples(){
+		
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		//Dados do evento
 		$this->Assign('Palestra',null);
 		$this->Assign('Evento',null);
@@ -204,7 +226,15 @@ class CertificadoController extends AppBaseController
 	
 	
 	
-	public function GerarCertificadoPalestrante(){		
+	public function GerarCertificadoPalestrante(){	
+
+
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$idPalestrante = $this->GetRouter()->GetUrlParam('idPalestrante');
@@ -261,7 +291,13 @@ class CertificadoController extends AppBaseController
 							
 	}
 	
-	public function GerarCertificadoParticipante(){		
+	public function GerarCertificadoParticipante(){	
+
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');	
 		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$idParticipante = $this->GetRouter()->GetUrlParam('idParticipante');
@@ -318,7 +354,15 @@ class CertificadoController extends AppBaseController
 							
 	}
 	
-	public function GerarAta(){		
+	public function GerarAta(){	
+
+
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+				
 		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 	
@@ -493,6 +537,15 @@ class CertificadoController extends AppBaseController
 	}
 	
 	public function GeraCertificadoModelo(){
+		
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
+		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$orientacao = $this->GetRouter()->GetUrlParam('orientacao');
 		$htmlPreviewCertificado = $this->GetRouter()->GetUrlParam('html');
@@ -585,6 +638,14 @@ class CertificadoController extends AppBaseController
 	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
 	public function GeraCertificadoParticipante($idParticipante, $idPalestra,$replace=false){				
 		
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+				
+		
 		//Palestra
 		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
 		
@@ -597,6 +658,9 @@ class CertificadoController extends AppBaseController
 		$criteria->IdPalestra_Equals = $idPalestra; 
 
 		$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+		
+		//só pegar os 4 primeiros palestrantes
+		$palestrantes = array_slice($palestrantes, 0, 3);
 		
 		//PalestraParticipante
 		require_once('Model/PalestraParticipante.php');
@@ -630,6 +694,103 @@ class CertificadoController extends AppBaseController
 		if($orientacao) $orientacao = 'portrait'; else $orientacao = 'landscape';
 			
 			
+		//exibe assinatura do particcipante removendo o hide
+		$dadosModeloCertificado = preg_replace('/hide-palestrante(\ hide)?/i', '', $dadosModeloCertificado);
+		
+		///REMOVER ISSO!!!
+		echo '<link rel="stylesheet" type="text/css" media="screen,print" href="'. GlobalConfig::$ROOT_URL. '/styles/certificados/padrao.css" />';
+		
+		$htmlAssinaturas = '';
+		//REMOVE ASSINATURAS ESTÁTICAS E COLOCA DINÂMICAS
+		$htmlAssinaturas .=
+		'<table class="assinaturas dinamico justifyleft" style="width:100%;">
+			<tbody><tr>';
+				
+				$totalPalestrantes = sizeof($palestrantes);
+				
+				foreach($palestrantes as $palestrante){	
+					$htmlAssinaturas .= '<td align="center" valign="bottom" style="width:'.(100/($totalPalestrantes+1)).'%!important; margin:0px 10mm; vertical-align:bottom;">';
+					if($palestrante->imagemAssinatura){
+						$htmlAssinaturas .= '<img style="width:40mm; height:auto;" id="AssinaturaPalestrante" class="assinatura" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'.$palestrante->imagemAssinatura.'">';
+					}
+					$htmlAssinaturas .= '</td>';
+				}
+		
+		$htmlAssinaturas .=
+				'<td style="height:20mm; vertical-align:bottom;"></td>
+			</tr>
+			<tr>';
+			
+				
+				foreach($palestrantes as $palestrante){	
+					$htmlAssinaturas .= '<td style="width:'.(100/($totalPalestrantes+1)).'%!important;"><hr style="0 margin:20px!important;"></td>';
+				}
+				
+		$htmlAssinaturas .= '
+				<td valign="bottom"><hr></td>
+			</tr>
+			<tr>';
+		
+		foreach($palestrantes as $palestrante){	
+			$htmlAssinaturas .= 
+				'<td align="center" valign="top"><small><strong>'.$palestrante->nomePalestrante.'</strong><br>'.$palestrante->cargoPalestrante.'</small></td>';
+		}
+		
+		$htmlAssinaturas .=
+			'<td align="center" valign="top"><small><strong>'.$participante->NomeParticipante.'</strong><br>Participante</small></td>
+			</tr>
+		</tbody></table>';
+		
+		$dadosModeloCertificado = preg_replace('/<table class="assinaturas justifyleft"(.*?)>(.*?)<\\/table>/s', $htmlAssinaturas, $dadosModeloCertificado);
+		
+		
+		//$dadosModeloCertificado = preg_replace('/\<[\/]?(table|tr|td)([^\>]*)\>/i', '', $dadosModeloCertificado);
+		
+		
+		//preg_match_all('/(<table[^>]*>(?:.|\n)*(?=<\/table>))/',
+		
+		echo '--------------------------------------';
+		print_r($dadosModeloCertificado);
+		echo '--------------------------------------';		
+		
+		
+		
+		
+		//SUBSTITUI PELO TEXTO DO PARTICIPANTE
+		$tagsFinal = '';		
+		foreach($textoParticipante as $tag){
+			$join = ' ';
+					
+			if(is_string($tag)){
+				$tag = trim($tag);
+				
+				if(preg_match('/(,|\.|;|\?)(\ |^$)/i',$tag))
+					$join = '';
+			
+			} else {
+				
+				if(preg_match('/(,|\.|;|\?)(\ |^$)/i',$tag->label))
+					$join = '';
+				
+				$cor = preg_match('/style="color:\ (.*?)"/',$dadosModeloCertificado,$corArr);
+				$corValue = $cor ? $corArr[1] : '';
+	
+				$tag = '<span class="dbItemCertificado '.$tag->class.'" style="color: '.$corValue.'">'.$tag->label.'</span>';
+			
+			}
+			
+			$tagsFinal .= $join.$tag;
+		}		
+		
+		print_r($tagsFinal);
+		
+		$novoTexto = print_r($textoParticipante);
+		
+		//substitui texto dinamico
+		$dadosModeloCertificado = preg_replace('/<div id="containerDinamico">(.+?)<\/div>/i', '<div id="containerDinamico">'.$tagsFinal.'</div>', $dadosModeloCertificado);	
+			
+			
+			
 		$antigo = array(
 			'Nome do Participante',
 			'Nome da Atividade',
@@ -652,6 +813,8 @@ class CertificadoController extends AppBaseController
 		);
 		
 		$dadosModeloCertificado = str_replace($antigo,$novo,$dadosModeloCertificado);
+
+
 		
 				
 		$nomeArquivoModeloCertificado = 'padrao.css';
@@ -695,6 +858,9 @@ class CertificadoController extends AppBaseController
 				</body>
 				</html>';
 				
+				
+				//echo $html;
+				
 				$arquivo = 'palestra'.$participante->IdParticipante.'.pdf';
 				$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 				
@@ -702,11 +868,16 @@ class CertificadoController extends AppBaseController
 					AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
 				}
 
-				//echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
+				echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
 				
 				//$this->DownloadCertificadoParticipante($palestra->IdPalestra, $participante->IdParticipante);
 				
-				$this->RenderJSON(array('success'=>true));
+				
+				
+				
+				//----->RENDER JSON !IMPORTANTE
+				
+			//	$this->RenderJSON(array('success'=>true));
 				
 	}
 	
@@ -718,6 +889,14 @@ class CertificadoController extends AppBaseController
 	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
 	
 	public function GeraCertificadosPalestraImprimir(){
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
+		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
 		
@@ -733,6 +912,12 @@ class CertificadoController extends AppBaseController
 
 	
 	public function CompactarCertificadosParticipante(){
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 	
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
@@ -740,11 +925,17 @@ class CertificadoController extends AppBaseController
 		//Palestra
 		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
 		
-		$arquivos = array();
+		$arquivos = array(); $novosNomes = array();
+		
 		$caminho = GlobalConfig::$APP_ROOT.'/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 		
-		foreach($participantes as $idParticipante){			
+		foreach($participantes as $idParticipante){	
+
+			//Palestra
+			$participante = $this->Phreezer->Get('Participante',$idParticipante);
+			
 			$arquivos[] = $caminho.'palestra'.$idParticipante.'.pdf'; 
+			$novosNomes[] = AppBaseController::parseURL($participante->Nome).'.pdf';
 			//$arquivos[] = './certificados-gerados/workshop-tecnicas-avancadas-de-pog-128/palestra113.pdf';
 		}
 		
@@ -754,7 +945,10 @@ class CertificadoController extends AppBaseController
 		// $arquivo = 'arquivo-em-pdf-22.pdf';
 		
 		// $this->geraPDF($arquivo, $caminho, $html);
-		$zip = $this->compactar($arquivos, $caminho, 'certificados-'.mt_rand());
+		
+		$nomeAleatorio = 'certificados-'.mt_rand();
+		
+		$zip = $this->compactar($arquivos, $novosNomes, $caminho, 'certificados',true); //true=sobrescreve arquivo temporario
 		
 		$eventoOuPalestra = ($palestra->ProprioEvento) ? ' do evento ' : ' da atividade ';
 		$novo_nome = 'Certificados '.$eventoOuPalestra.$palestra->Nome.'.zip';
@@ -766,6 +960,13 @@ class CertificadoController extends AppBaseController
 	
 	public function DownloadAta($paramIdPalestra=null)
 	{
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		
 		if($paramIdPalestra) $idPalestra = $paramIdPalestra;
@@ -783,6 +984,15 @@ class CertificadoController extends AppBaseController
 	 */
 	public function DownloadCertificadoModelo($paramIdPalestra=null)
 	{
+		
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+				
+		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		
 		if($paramIdPalestra) $idPalestra = $paramIdPalestra;
@@ -817,6 +1027,13 @@ class CertificadoController extends AppBaseController
 	 */
 	public function ObterCertificadosEmitidosView()
 	{
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		$pk = $this->GetRouter()->GetUrlParam('idPalestra');
 		
 		try {
@@ -985,6 +1202,13 @@ class CertificadoController extends AppBaseController
 	 */
 	public function ListView()
 	{
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		//$usuario = Controller::GetCurrentUser();
 		//$this->Assign('usuario',$usuario);
 		$this->Render();
@@ -1088,6 +1312,13 @@ class CertificadoController extends AppBaseController
 	 */
 	public function Create()
 	{
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 						
@@ -1136,6 +1367,13 @@ class CertificadoController extends AppBaseController
 	 */
 	public function Update()
 	{
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 						
@@ -1188,6 +1426,13 @@ class CertificadoController extends AppBaseController
 	 */
 	public function Delete()
 	{
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
 		try
 		{
 						

@@ -25,6 +25,7 @@ class PalestraPalestranteCriteria extends PalestraPalestranteCriteriaDAO
 	public $TemCertificado;
 	public $NaoTemCertificado;
 	public $OrderByNomePalestrante;
+	public $Limite;
 	
 	/**
 	 * This is overridden so that we can instruct Phreezer what database field
