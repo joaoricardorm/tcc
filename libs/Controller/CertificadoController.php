@@ -728,7 +728,7 @@ class CertificadoController extends AppBaseController
 			$dadosModeloCertificado = preg_replace('/hide-palestrante(\ hide)?/i', '', $dadosModeloCertificado);
 		
 		///REMOVER ISSO!!!
-		echo '<link rel="stylesheet" type="text/css" media="screen,print" href="'. GlobalConfig::$ROOT_URL. '/styles/certificados/padrao.css" />';
+		//echo '<link rel="stylesheet" type="text/css" media="screen,print" href="'. GlobalConfig::$ROOT_URL. '/styles/certificados/padrao.css" />';
 		
 		$classePalestrante = '';
 		$tableStyle = '';
@@ -819,9 +819,9 @@ class CertificadoController extends AppBaseController
 		
 		//preg_match_all('/(<table[^>]*>(?:.|\n)*(?=<\/table>))/',
 		
-		echo '--------------------------------------';
-		print_r($dadosModeloCertificado);
-		echo '--------------------------------------';		
+		// echo '--------------------------------------';
+		// print_r($dadosModeloCertificado);
+		// echo '--------------------------------------';		
 		
 		
 		
@@ -834,7 +834,7 @@ class CertificadoController extends AppBaseController
 				if($corValue != '')
 					$styleCor = 'color: '.$corValue.';';
 					
-					echo '<Br>~~~ ~~~~~~'.$corValue.'********<br>';
+					//echo '<Br>~~~ ~~~~~~'.$corValue.'********<br>';
 				
 				if(preg_match('/id="(nomeParticipante|nomePalestrante)" class="(.*?)"/',$dadosModeloCertificado,$centralizarTextoArr));
 				$centralizarTexto = $centralizarTextoArr ? $centralizarTextoArr[2] : '';
@@ -843,7 +843,7 @@ class CertificadoController extends AppBaseController
 				if (strpos($centralizarTexto,'center-block') !== false)
 					$classCenter = 'center-block';
 				
-				echo '<Br>************'.$classCenter.'********<br>';
+				//echo '<Br>************'.$classCenter.'********<br>';
 		
 		
 		
@@ -875,9 +875,9 @@ class CertificadoController extends AppBaseController
 			$tagsFinal .= $join.$tag;
 		}		
 		
-		print_r($tagsFinal);
+		//print_r($tagsFinal);
 		
-		$novoTexto = print_r($textoParticipante);
+		$novoTexto = $textoParticipante;
 		
 		//substitui texto dinamico
 		$dadosModeloCertificado = preg_replace('/<div id="containerDinamico">(.+?)<\/div>/i', '<div id="containerDinamico">'.$tagsFinal.'</div>', $dadosModeloCertificado);	
@@ -932,7 +932,7 @@ class CertificadoController extends AppBaseController
 
 		
 		
-		echo '&&&begin&&&&&&&&&'.$htmlAssinaturas.'&&&&&end&&&&&&';
+		//echo '&&&begin&&&&&&&&&'.$htmlAssinaturas.'&&&&&end&&&&&&';
 
 		
 				
@@ -991,9 +991,9 @@ class CertificadoController extends AppBaseController
 					AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
 				}
 
-				echo $html;
+				//echo $html;
 				
-				echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
+				//echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
 				
 				//$this->DownloadCertificadoParticipante($palestra->IdPalestra, $participante->IdParticipante);
 				
@@ -1051,16 +1051,16 @@ class CertificadoController extends AppBaseController
 		}
 
 		foreach($pessoas as $pessoa){
-			$this->GeraCertificadoParticipante($pessoa, $idPalestra,false,$ehPalestrante); //false=substitui os certificados existentes
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,true,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
 		
 		foreach($pessoas as $pessoa){
 			if($ehPalestrante){
-					echo 'Pegou '.$idPalestra.' palestrante '.$pessoa; 
+					return 'Pegou '.$idPalestra.' palestrante '.$pessoa; 
 					//$this->DownloadCertificadoPalestrante($idPalestra, $palestrante);
 			} else {
-					echo 'Pegou '.$idPalestra.' participantes '.$pessoa; 
+					return 'Pegou '.$idPalestra.' participantes '.$pessoa; 
 					//$this->DownloadCertificadoParticipante($idPalestra, $participante);
 			}
 		}
