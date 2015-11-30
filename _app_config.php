@@ -101,7 +101,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'POST:emitir-certificados/obter/(:num)' => array('route' => 'Certificado.ObterCertificadosEmitidosView', 'params' => array('idPalestra' => 2)),
 	
 	'GET:validar-certificado' => array('route' => 'Certificado.ValidarCertificadoView'),
-	'GET:validar-certificado/(:num)' => array('route' => 'Certificado.ValidarCertificadoView', 'params' => array('idCertificado' => 1)),
+	'GET:validar-certificado/(:num)' => array('route' => 'Certificado.ValidarCertificadoPorIdView', 'params' => array('idCertificado' => 1)),
 	
 	
 	'GET:certificados' => array('route' => 'Certificado.ListView'),
@@ -138,6 +138,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/downloadcertificado/(:num)' => array('route' => 'Certificado.DownloadCertificado', 'params' => array('idCertificado' => 2)),
 	
 	'GET:api/downloadcertificadoparticipante/(:num)/(:num)' => array('route' => 'Certificado.DownloadCertificadoParticipante', 'params' => array('idPalestra' => 2, 'idParticipante' => 3)),
+	'GET:api/downloadcertificadopalestrante/(:num)/(:num)' => array('route' => 'Certificado.DownloadCertificadoPalestrante', 'params' => array('idPalestra' => 2, 'idPalestrante' => 3)),
 	
 	
 	

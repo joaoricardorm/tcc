@@ -676,9 +676,6 @@ class CertificadoController extends AppBaseController
 
 			$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
 			
-			//só pegar os 3 primeiros palestrantes
-			$palestrantes = array_slice($palestrantes, 0, 3);
-			
 			//PalestraParticipante
 			require_once('Model/PalestraParticipante.php');
 			$criteria = new PalestraParticipanteCriteria();
@@ -715,6 +712,15 @@ class CertificadoController extends AppBaseController
 		//Orientacao
 		$orientacao = preg_match("/A4portrait/", $dadosModeloCertificado, $matches);
 		if($orientacao) $orientacao = 'portrait'; else $orientacao = 'landscape';
+		
+		
+		//só pegar os 2 primeiros palestrantes se for retrato, ou 3 se for paisagem
+		if($ehPalestrante == false){
+			if($orientacao == 'portrait')
+				$palestrantes = array_slice($palestrantes, 0, 2);
+			else
+				$palestrantes = array_slice($palestrantes, 0, 3);
+		}
 			
 		
 		//exibe assinatura do particcipante removendo o hide
@@ -730,6 +736,8 @@ class CertificadoController extends AppBaseController
 			$classePalestrante = 'palestrante';
 			$tableStyle = '';
 		}
+		
+		if($orientacao === 'portrait') $tableStyle='style="margin-top:10mm!important;"';
 		
 		$htmlAssinaturas = '';
 		//REMOVE ASSINATURAS ESTÁTICAS E COLOCA DINÂMICAS
@@ -881,7 +889,8 @@ class CertificadoController extends AppBaseController
 			'Data da Atividade',
 			'Duração do Evento',
 			'Carga Horária',
-			'Registro nº 9081/15 folha 86 do livro nº 2'
+			'Registro nº 9081/15 folha 86 do livro nº 2',
+			'validar-certificado/'
 		);
 		$novo = array(
 			$palestra->Nome,
@@ -889,29 +898,27 @@ class CertificadoController extends AppBaseController
 			date('d/m/Y',strtotime($palestra->Data)),
 			$evento->Duracao,
 			date('H:i',strtotime($palestra->CargaHoraria)),
-			'Registro nº '.$certificado->Codigo.'/'.date('y',strtotime($certificado->DataEmissao)).' folha '.$certificado->Folha.' do livro nº '.$certificado->Livro
+			'Registro nº '.$certificado->Codigo.'/'.date('y',strtotime($certificado->DataEmissao)).' folha '.$certificado->Folha.' do livro nº '.$certificado->Livro,
+			'validar-certificado/'.$certificado->IdCertificado.'/'
 		);
 		
 		
 		if($ehPalestrante){
 			
 			array_push($antigo,
-				'Nome do Palestrante',
-				'validar-certificado/'
+				'Nome do Palestrante'
 			);
 			array_push($novo,
-				$palestrante->NomePalestrante,
-				'validar-certificado/'.$palestrante->IdPalestrante.'/'
+				$palestrante->NomePalestrante
 			);
 			
 		} else {
 			
 			array_push($antigo,
-				'Nome do Participante',
-				'validar-certificado/');
+				'Nome do Participante'
+			);
 			array_push($novo,
-				$participante->NomeParticipante,
-				'validar-certificado/'.$participante->IdParticipante.'/'
+				$participante->NomeParticipante
 			);
 			
 		}
@@ -1040,7 +1047,7 @@ class CertificadoController extends AppBaseController
 		}
 
 		foreach($pessoas as $pessoa){
-			$this->GeraCertificadoParticipante($pessoa, $idPalestra,false,$ehPalestrante); //false=substitui os certificados existentes
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,true,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
 		
@@ -1179,6 +1186,23 @@ class CertificadoController extends AppBaseController
 		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 		
 		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Certificado de '.$participante->Nome.' em '.$palestra->Nome);
+	}
+
+	public function DownloadCertificadoPalestrante($paramIdPalestra=null,$paramIdPalestrante=null)
+	{
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$idPalestrante = $this->GetRouter()->GetUrlParam('idPalestrante');
+		
+		if($paramIdPalestra) $idPalestra = $paramIdPalestra;
+		if($paramIdPalestrante) $idPalestrante = $paramIdPalestrante;
+		
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		$palestrante = $this->Phreezer->Get('Palestrante',$idPalestrante);
+		
+		$arquivo = 'palestrante'.$idPalestrante.'.pdf';
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Certificado de '.$palestrante->Nome.' em '.$palestra->Nome);
 	}	
 	
 	/**
@@ -1211,6 +1235,93 @@ class CertificadoController extends AppBaseController
 	}
 	
 	/**
+	 * Pagina para validação de certificado POR ID
+	 */
+	public function ValidarCertificadoPorIdView()
+	{
+		$idCertificado = $this->GetRouter()->GetUrlParam('idCertificado');
+		$this->Assign('GetIdCertificado',$idCertificado);
+		
+		try {
+			
+			if($idCertificado != ''){
+				
+				//Certificado
+				require_once('Model/Certificado.php');					
+				$certificado = $this->Phreezer->Get('Certificado',$idCertificado);
+				$this->Assign('Certificado',$certificado);
+			
+					//SE FOR PARTICIPANTE
+					try {
+						
+						//PalestraParticipante
+						require_once('Model/PalestraParticipante.php');
+						$criteria = new PalestraParticipanteCriteria();
+						$criteria->IdCertificado_Equals = $certificado->IdCertificado;
+						
+						$palestraparticipante = $this->Phreezer->GetByCriteria('PalestraParticipante',$criteria);
+						
+						
+						
+						//Elementos
+						$participante = $this->Phreezer->Get('Participante',$palestraparticipante->IdParticipante);
+						$this->Assign('Participante',$participante);
+						
+						$palestra = $this->Phreezer->Get('Palestra',$palestraparticipante->IdPalestra);
+						$this->Assign('Palestra',$palestra);
+						
+						$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+						$this->Assign('Evento',$evento);
+						
+						$this->Assign('CertificadoValido',true);
+						$this->Assign('FaltaParametros',false);
+						$this->Assign('EhPalestrante',false);
+					
+					} catch(Exception $ex){
+					
+						//SE FOR PARTICIPANTE
+						
+						//PalestraPalestrante
+						require_once('Model/PalestraPalestrante.php');
+						$criteria = new PalestraPalestranteCriteria();
+						$criteria->IdCertificado_Equals = $certificado->IdCertificado;
+						
+						$palestrapalestrante = $this->Phreezer->GetByCriteria('PalestraPalestrante',$criteria);
+						
+						
+						
+						//Elementos
+						$palestrante = $this->Phreezer->Get('Palestrante',$palestrapalestrante->IdPalestrante);
+						$this->Assign('Participante',$palestrante); //participante para manter o padrao
+						
+						$palestra = $this->Phreezer->Get('Palestra',$palestrapalestrante->IdPalestra);
+						$this->Assign('Palestra',$palestra);
+						
+						$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
+						$this->Assign('Evento',$evento);
+						
+						$this->Assign('CertificadoValido',true);
+						$this->Assign('FaltaParametros',false);
+						$this->Assign('EhPalestrante',true);
+						
+					}
+					
+					
+				
+				} else {
+					$this->Assign('FaltaParametros',true);
+					$this->Assign('CertificadoValido',false);
+				}
+							
+			} catch(NotFoundException $ex){
+				//throw new NotFoundException("A atividade #$ex não existe".$ex);
+				$this->Assign('CertificadoValido',false);
+			}
+			
+			$this->Render('ValidarCertificadoView');
+	}
+	
+	/**
 	 * Pagina para validação de certificado
 	 */
 	public function ValidarCertificadoView()
@@ -1219,9 +1330,13 @@ class CertificadoController extends AppBaseController
 		$folha = $this->GetRouter()->GetUrlParam('folha');		
 		$codigo = $this->GetRouter()->GetUrlParam('codigo');
 		
-		if($codigo){
-		preg_match('@(.*?)\/@',$codigo,$preg_codigoBanco); //pois lá gera com registro/ano
-		$codigoBanco = $preg_codigoBanco[1];
+		$achouBarra = preg_match('@(.*?)\/@',$codigo,$preg_codigoBanco);
+		
+		if($achouBarra){
+			 //pois lá gera com registro/ano
+			$codigoBanco = $preg_codigoBanco[1];
+		} else {
+			$codigoBanco = $codigo;
 		}
 		
 		try {

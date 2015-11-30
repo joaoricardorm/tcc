@@ -25,18 +25,29 @@
 	
 	<p>Ele foi emitido para <strong><?php $this->eprint($this->Participante->Nome); ?></strong> ao participar <?php echo ($this->Palestra->ProprioEvento) ? 'do evento' : 'da atividade' ; ?> <strong><?php echo $this->Palestra->Nome; ?></strong> no dia <strong><?php echo date('d/m/Y',strtotime($this->Palestra->Data)); ?></strong></p>
 	
-	<!--TROCAR ID PALESTRA POR $this->Certificado->IdCertificado -->
-	<p><a id="btnObterCertificado" href="./api/downloadcertificadoparticipante/<?php echo $this->Palestra->IdPalestra.'/'.$this->Participante->IdParticipante.'/'; ?>" type="submit" class="btn btn-success btn-large">
+	<p>
+	
+	<?php 
+		if(isset($this->Participante->IdPalestrante)){
+			$urlDownload = './api/downloadcertificadopalestrante/'.$this->Palestra->IdPalestra.'/'.$this->Participante->IdPalestrante.'/';
+		} else {
+			$urlDownload = './api/downloadcertificadoparticipante/'.$this->Palestra->IdPalestra.'/'.$this->Participante->IdParticipante.'/';
+		}
+	?>
+	
+	<a id="btnObterCertificado" href="<?php echo $urlDownload; ?>" type="submit" class="btn btn-success btn-large">
 		<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
 	</a></p>
 	
 <?php } ?>
 
-<?php if(isset($_GET['codigo']) && !isset($this->FaltaParametros)){ ?>
+<?php if((isset($_GET['codigo']) or isset($this->GetIdCertificado)) && !isset($this->FaltaParametros)){ ?>
 
 	<h1 class="text-error"><i class="icon icon-remove"></i> Não foi possível encontrar no sistema o certificado com os dados informados</h1>
 	
-	<p>Dados informados: <strong>Registro nº <?php echo $_GET['codigo']; ?> Folha <?php echo $_GET['folha']; ?> do livro nº <?php echo $_GET['livro']; ?></strong></p>
+	 <?php if(isset($_GET['codigo'])) { ?>
+		<p>Dados informados: <strong>Registro nº <?php if(isset($_GET['codigo'])) echo $_GET['codigo']; ?> Folha <?php if(isset($_GET['folha'])) echo $_GET['folha']; ?> do livro nº <?php if(isset($_GET['livro'])) echo $_GET['livro']; ?></strong></p>
+	<?php } ?>
 	
 	<p>O que fazer?</p>
 	<p>
@@ -52,7 +63,7 @@
 	
 <?php } else if ((isset($_GET['livro']) or isset($_GET['folha']) or isset($_GET['codigo'])) && $this->FaltaParametros == true){ echo '<h3 class="text-warning">Faltou preencher algum campo. Verifique.</h3>'; } ?>
 
-<form id="dadosCertificado" class="form-horizontal" method="get">
+<form id="dadosCertificado" action="./validar-certificado/" class="form-horizontal" method="get">
 	<fieldset>
 		<div class="well grey">
 			<div id="livroInputContainer" class="control-group">

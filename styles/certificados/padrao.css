@@ -66,12 +66,12 @@ table {
 }
 .containerCertificado .dbItemCertificado { font-weight:bold; }
 .containerCertificado .dbItemCertificado,
-.containerCertificado .rodapeCertificado .siteCertificado { color:rgb(234, 89, 19); }
+.containerCertificado .rodapeCertificado .siteCertificado { color: rgb(234, 89, 19); }
 .containerCertificado #ImagemLogo { height:20mm; margin-bottom:0px!important; line-height:normal; }
 .containerCertificado #TituloCertificado { line-height:normal; color: rgb(234, 89, 19); font-size:70px; margin-bottom:5px; font-family:'Rochester'!important; text-decoration:none!important; font-weight:normal; }
 .containerCertificado #TituloMarcador { line-height:normal;  margin-bottom:5px; width:60mm; height:6.224mm; }
-.containerCertificado .nomeParticipante.center-block, .containerCertificado .nomePalestrante.center-block { font-size:26px; margin:5px; }
-.containerCertificado .rodapeCertificado { color:#555; position: absolute; font-size:10px; line-height:normal; }
+.containerCertificado .nomeParticipante, .containerCertificado .nomePalestrante { display:block; font-size:26px; margin:5px auto; }
+.containerCertificado .rodapeCertificado { vertical-align:bottom!important; color:#555; position: absolute; font-size:10px; line-height:normal; }
 
 .containerCertificado .assinaturas  { width:100%; text-align:center; line-height:normal; margin-top:30px; }
 .containerCertificado .assinaturas td { color:#333; vertical-align: top; padding:0 5mm; width:50%; } 
@@ -89,14 +89,14 @@ table {
 }
 .containerCertificado .assinaturas hr { height:1px; border:1px; min-width:40mm; width:100%; background:#333; border-color:#777; }
 
-.bottom {  left:20mm; right:20mm; bottom:25mm!important; }
-.bottom-left {  left:20mm; width:70mm; bottom:25mm; }
-.bottom-right { right:20mm;  width:60mm; bottom:25mm; }
+.bottom {  left:20mm; right:20mm; bottom:20mm!important; }
+.bottom-left {  left:20mm; width:70mm; bottom:20mm; }
+.bottom-right { right:20mm;  width:60mm; bottom:20mm; }
 
 
 /* FOLHA RETRATO */
-.A4portrait #containerDinamico { margin-top:90px; }
-.A4portrait .nomeParticipante.center-block, .A4portrait .nomePalestrante.center-block { margin:30px 0; }
+.A4portrait #containerDinamico { margin-top:40mm; }
+.A4portrait .nomeParticipante, .A4portrait .nomePalestrante { margin:15px auto; }
 .A4portrait .assinaturas, .A4portrait .assinaturas.palestrante { margin-top:90px!important; }
 .assinaturas.A4portrait, .A4portrait.assinaturas.palestrante { margin-top:90px!important; }
 
@@ -109,7 +109,7 @@ table {
 		position:absolute; left:50%; 
 	}
 	
-	.bottom { bottom:20mm!important; }
+	.bottom { bottom:23mm!important; }
 	.bottom-left {  left:20mm; bottom:200mm!important; }
 	.bottom-right { right:20mm; bottom:50mm!important; }
 }
