@@ -6,8 +6,16 @@
 	$this->display('_Header.tpl.php');
 ?>
 
+<script type="text/javascript" src="./scripts/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="./scripts/jquery.maskedinput.min.js"></script>
+
 <script type="text/javascript">
 	//$LAB.script(base+"scripts/app/emitir-certificados.js?"+Math.floor((Math.random() * 1000) + 1));
+	
+	$(document).ready(function(){
+		//mascara para telefone e cnpj
+		$("#cpf").mask("999.999.999-99",{placeholder:"_", autoclear: false });
+	});
 </script>
 
 <div id="conteudo" class="container hero-unit">
@@ -58,7 +66,7 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 	<p>Ele foi emitido para <strong><?php $this->eprint($this->Participante->Nome); ?></strong> ao participar <?php echo ($this->Palestra->ProprioEvento) ? 'do evento' : 'da atividade' ; ?> <strong><?php echo $this->Palestra->Nome; ?></strong> no dia <strong><?php echo date('d/m/Y',strtotime($this->Palestra->Data)); ?></strong></p>-->
 	
 	<!--TROCAR ID PALESTRA POR $this->Certificado->IdCertificado -->
-	<p><a id="btnObterCertificado" href="./api/downloadcertificado/<?php echo $palestraParticipante['Certificado']->IdCertificado; ?>" class="btn btn-success margin-right-bigger-sm margin-bottom-5px" style="color:white;">
+	<p><a id="btnObterCertificado" href="./api/downloadcertificadoparticipante/<?php echo $palestraParticipante['Palestra']->IdPalestra .'/'. $this->Participante->IdParticipante .'/'; ?>" class="btn btn-success margin-right-bigger-sm margin-bottom-5px" style="color:white;">
 		<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
 	</a>
 	

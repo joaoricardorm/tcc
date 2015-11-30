@@ -1040,7 +1040,7 @@ class CertificadoController extends AppBaseController
 		}
 
 		foreach($pessoas as $pessoa){
-			$this->GeraCertificadoParticipante($pessoa, $idPalestra,true,$ehPalestrante); //false=substitui os certificados existentes
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,false,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
 		
@@ -1219,7 +1219,10 @@ class CertificadoController extends AppBaseController
 		$folha = $this->GetRouter()->GetUrlParam('folha');		
 		$codigo = $this->GetRouter()->GetUrlParam('codigo');
 		
-		$codigoBanco = preg_replace('@([0-9])\/[0-9]@','$1',$codigo); //pois lá gera com registro/ano
+		if($codigo){
+		preg_match('@(.*?)\/@',$codigo,$preg_codigoBanco); //pois lá gera com registro/ano
+		$codigoBanco = $preg_codigoBanco[1];
+		}
 		
 		try {
 			

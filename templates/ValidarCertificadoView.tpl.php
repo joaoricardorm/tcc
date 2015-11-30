@@ -26,7 +26,7 @@
 	<p>Ele foi emitido para <strong><?php $this->eprint($this->Participante->Nome); ?></strong> ao participar <?php echo ($this->Palestra->ProprioEvento) ? 'do evento' : 'da atividade' ; ?> <strong><?php echo $this->Palestra->Nome; ?></strong> no dia <strong><?php echo date('d/m/Y',strtotime($this->Palestra->Data)); ?></strong></p>
 	
 	<!--TROCAR ID PALESTRA POR $this->Certificado->IdCertificado -->
-	<p><a id="btnObterCertificado" href="./api/downloadcertificado/<?php echo $this->Certificado->IdCertificado; ?>" type="submit" class="btn btn-success btn-large">
+	<p><a id="btnObterCertificado" href="./api/downloadcertificadoparticipante/<?php echo $this->Palestra->IdPalestra.'/'.$this->Participante->IdParticipante.'/'; ?>" type="submit" class="btn btn-success btn-large">
 		<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
 	</a></p>
 	

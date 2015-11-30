@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+jaBaixou = false;
 	
 app.alertaAnimado('#btnObterAta', 'click', '#alertaDownloadAta',4000);
 
@@ -53,17 +55,18 @@ palestrantesPalestra.complete(function(td){
 //AÇÕES DO SISTEMA DE ACORDO COM AS OPÇÕES	
 	$('#btnObterCertificados').click(function(){
 		
+		jaBaixou = false;
+		
 		$('#btnObterCertificados .icon-spin').removeClass('hidden');
 		
 		if($('#cbkImprimir').is(':checked')){
-			gerarPDFParticipantes();
-			gerarPDFPalestrantes();	
+			if(!$('#cbkPDF').is(':checked')){ //se pdf não tiver marcado
+				gerarPDFParticipantes(); //ela ja chama o de palestrnates
+			}
 			setTimeout(function(){  imprimirCertificados(); },500);
 		}
 		if($('#cbkPDF').is(':checked')){
-			gerarPDFParticipantes();
-			gerarPDFPalestrantes();		
-			setTimeout(function(){  downloadCertificados(); },500);
+			gerarPDFParticipantes(); //ela ja chama o de palestrnates		
 		}
 		if($('#cbkEmail').is(':checked')){
 			alert('Email');
@@ -94,15 +97,17 @@ palestrantesPalestra.complete(function(td){
 				
 				if(qtd===totalParticipantes){
 					setTimeout(function(){
-						$('#progresso').addClass('animated fadeOutUp').delay(450).queue(function(){ $(this).removeClass('animated fadeOutUp fadeInUp').addClass('hidden'); });
+						//$('#progresso').addClass('animated fadeOutUp').delay(450).queue(function(){ $(this).removeClass('animated fadeOutUp fadeInUp').addClass('hidden'); });
 						
-						$('#progresso').addClass('hidden');
+						//$('#progresso').addClass('hidden');
 						
-						$('#btnObterCertificados .icon-spin').addClass('hidden');
+						//$('#btnObterCertificados .icon-spin').addClass('hidden');
 							
 					}, 450);
 					
-					//CHAMA FUNÇÃO PARA EMITIR O CERTIFICADOS DOS PALESTRANTES
+					//CHAMA A FUNÇÃO DE GERAR PDF DOS PALESTRANTES
+					gerarPDFPalestrantes();
+					
 				}
 				
 				qtd++;
@@ -147,7 +152,13 @@ palestrantesPalestra.complete(function(td){
 							
 					}, 450);
 					
-					//CHAMA FUNÇÃO PARA EMITIR O CERTIFICADOS DOS PALESTRANTES
+					
+					//CHAMA FUNÇÃO PARA baixar Os CERTIFICADOS se o checkbox de pdf estiver marcado
+					if($('#cbkPDF').is(':checked')){
+						setTimeout(function(){  downloadCertificados(); },500);
+					}
+					
+					
 				}
 				
 				qtd++;
@@ -172,17 +183,22 @@ palestrantesPalestra.complete(function(td){
 	
 	//COMPACTA E BAIXA OS CERTIFICADOS DE PALESTRANTES DE PARTICIPANTES
 	function downloadCertificados(){
-	  var files = [];
-	  
-	  var urlDownloadParticipantes = base+'api/compactarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes='+JSON.stringify(ArrParticipantesInt);
-	  var urlDownloadPalestrantes = base+'api/compactarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'/palestrantes?palestrantes='+JSON.stringify(ArrPalestrantesInt);
-	  
-	  files.push(urlDownloadParticipantes);
-	  files.push(urlDownloadPalestrantes);
+		
+		  var files = [];
+		  
+		  var urlDownloadParticipantes = base+'api/compactarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes='+JSON.stringify(ArrParticipantesInt);
+		  var urlDownloadPalestrantes = base+'api/compactarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'/palestrantes?palestrantes='+JSON.stringify(ArrPalestrantesInt);
+		  
+		  
+		if(jaBaixou === false) {  
+			  files.push(urlDownloadParticipantes);
+			  files.push(urlDownloadPalestrantes);
 
-	  for(var ii=0; ii<files.length; ii++){
-		downloadURL(files[ii]);
-	  }
+			  for(var ii=0; ii<files.length; ii++){
+				downloadURL(files[ii]);
+			  }
+			  jaBaixou = true;
+		}
 	}
 
 	var count=0;

@@ -56,6 +56,7 @@ input, button, select, textarea,
 a, .a { color:lightslateblue; text-decoration:none!important; cursor:pointer; }
 a:active .a:active, a:visited, .a:visited { color:slateblue; text-decoration:none; }
 a:hover, .a:hover { color:crimson; text-decoration:none; }
+a.btn-success:active .a.btn-success:active, a.btn-success:visited, .a.btn-success:visited { color:white; text-decoration:none; }
 
 .dropdown-menu li.btn-primary > a {
     color: #FFF;
