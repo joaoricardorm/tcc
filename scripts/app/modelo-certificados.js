@@ -330,7 +330,11 @@ $(document).ready(function(){
 			
 			
 			
-			var json = JSON.parse(textoTags);				
+			try {
+				var json = JSON.parse(textoTags);		
+			} catch(e) {
+				var json = textoTags;		
+			}		
 			
 			$('#sortable1').tagit({
 			focusInputOnLoad: true,
