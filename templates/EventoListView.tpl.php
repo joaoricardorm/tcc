@@ -7,7 +7,8 @@
 
 <script type="text/javascript">
 	$LAB
-	.script(base+"scripts/app/eventos.js").wait(function(){
+	.script(base+"scripts/app/eventos.js")
+	.wait(function(){
 		$(document).ready(function(){
 			page.init();
 		});

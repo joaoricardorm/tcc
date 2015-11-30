@@ -308,8 +308,12 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 					window.history.pushState('Object', 'Evento '+evento.get('nome'), base+'evento/'+evento.id+'/'+app.parseURL(evento.get('nome'))+'/');
 					
 					
-					$("#eventoDetailDialog a").not('.close, #cancelSaveEventoButton, #saveEventoButton').click(function(link) {
+					$("#eventoDetailDialog a").not('.close, #deleteEventoButton, #cancelDeleteEventoButton, #confirmDeleteEventoButton, #cancelSaveEventoButton, #saveEventoButton').click(function(link) {
 						link.preventDefault();
+						
+						if($(this).attr('id') === 'saveEventoButton')
+							$(this).attr('href','SALVAR-MODEL');
+						
 						page.updateModel($(this).attr('href'));
 					});
 					
@@ -409,7 +413,7 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 			$('#deleteEventoButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteEventoContainer').show('fast');
+				$('#confirmDeleteEventoContainer').show('fast').removeClass('hide');
 			});
 
 			$('#cancelDeleteEventoButton').click(function(e) {
@@ -455,10 +459,12 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 			wait: true,
 			success: function(){
 				
-				if(linkClicado === false)
-					$('#eventoDetailDialog').modal('hide');
-				else {
-					document.location.href = linkClicado;
+				if(!isNew){
+					if(linkClicado === false)
+						$('#eventoDetailDialog').modal('hide');
+					else {
+						document.location.href = linkClicado;
+					}
 				}
 				
 				//$('#eventoDetailDialog').modal('hide');
@@ -469,6 +475,8 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 				if (isNew) { 
 				
 					page.eventos.add(page.evento);
+					
+					console.log('Eh novo?',isNew);
 
 					//Apresenta opção se é apenas uma palestra ou possui outras dentro do evento
 					$('#saveEventoButton').confirmation({
