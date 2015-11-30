@@ -141,6 +141,9 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/downloadcertificadopalestrante/(:num)/(:num)' => array('route' => 'Certificado.DownloadCertificadoPalestrante', 'params' => array('idPalestra' => 2, 'idPalestrante' => 3)),
 	
 	
+	//mescla certificados para impressao
+	'GET:api/mesclarcertificados/palestra/(:num)' => array('route' => 'Certificado.MesclarCertificadosPalestraLote', 'params' => array('idPalestra' => 3)),
+	'POST:api/mesclarcertificados/palestra/(:num)' => array('route' => 'Certificado.MesclarCertificadosPalestraLote', 'params' => array('idPalestra' => 3)),
 	
 	
 	

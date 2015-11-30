@@ -1067,6 +1067,74 @@ class CertificadoController extends AppBaseController
 		
 		
 	}
+	
+	
+	//*****///****FUNÇÃO PARA MESCLAR OS CERTIFICADOS DE CADA PARTICIPANTE E PALESTRANTE DA PALESTRA PARA IMPRESSAO******///*****///
+	
+	public function MesclarCertificadosPalestraLote(){
+		
+		// Requer permissão de acesso
+		$this->RequirePermission(Usuario::$P_ADMIN,
+				'SecureExample.LoginForm',
+				'Autentique-se para acessar esta página',
+				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+		
+		
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$participantes = $this->GetRouter()->GetUrlParam('participantes');
+		
+		//Palestra
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		if($this->GetRouter()->GetUrlParam('palestrantes')){
+			
+			//PalestraParticipante
+			require_once('Model/PalestraPalestrante.php');
+			$criteria = new PalestraPalestranteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra;
+
+			$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+			
+			$pessoas = array();
+			foreach($palestrantes as $palestrante){
+				$pessoas[] = $palestrante->idPalestrante;
+			}
+			
+			if($this->GetRouter()->GetUrlParam('idPalestrante'))
+				$pessoas = array($this->GetRouter()->GetUrlParam('idPalestrante'));
+			
+			$ehPalestrante = true;
+			
+			print_r($pessoas);
+			
+		} else {
+			$pessoas = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+			$ehPalestrante = false;
+		}
+
+		
+		
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		
+		include './vendor/PDFMerger/PDFMerger.php';
+
+		$pdf = new PDFMerger;
+		
+		foreach($pessoas as $pessoa){
+			$arquivo = GlobalConfig::$APP_ROOT.$caminho.'palestra'.$pessoa.'.pdf';
+			$pdf->addPDF($arquivo);		
+		}
+		
+		$fileMerged = $caminho.'impressao.pdf';
+		
+		$pdf->merge('file', GlobalConfig::$APP_ROOT.$fileMerged);
+		
+		if($pdf)
+			echo GlobalConfig::$ROOT_URL.$fileMerged;
+		
+		
+	}
 
 	
 	public function CompactarCertificados(){
@@ -1412,24 +1480,44 @@ class CertificadoController extends AppBaseController
 					
 					try {
 					
-					//Participante
-					require_once('Model/Participante.php');
-					$criteria = new ParticipanteCriteria();
-					$criteria->Cpf_Equals = $cpf;
 					
-					$participante = $this->Phreezer->GetByCriteria('Participante',$criteria);
-					
-					$this->Assign('Participante',$participante);
-					
-					
-					//PalestraParticipante
-					require_once('Model/PalestraParticipante.php');
-					$criteria = new PalestraParticipanteCriteria();
-					$criteria->CpfParticipante_Equals = $cpf;
-					$criteria->TemCertificado = true;
-					$criteria->Presenca_Equals = 1; //Só pode obter se tiver participado
+					try {
+						//Participante
+						require_once('Model/Participante.php');
+						$criteria = new ParticipanteCriteria();
+						$criteria->Cpf_Equals = $cpf;
+						
+						$participante = $this->Phreezer->GetByCriteria('Participante',$criteria);
+						
+						$this->Assign('Participante',$participante);
+						
+						
+						//PalestraParticipante
+						require_once('Model/PalestraParticipante.php');
+						$criteria = new PalestraParticipanteCriteria();
+						$criteria->CpfParticipante_Equals = $cpf;
+						$criteria->TemCertificado = true;
+						$criteria->Presenca_Equals = 1; //Só pode obter se tiver participado
 
-					$listaPalestraParticipante = $this->Phreezer->Query('PalestraParticipanteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+						$listaPalestraParticipante = $this->Phreezer->Query('PalestraParticipanteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+					} catch(NotFoundException $ex){
+						//Palestrante
+						require_once('Model/Palestrante.php');
+						$criteria = new PalestranteCriteria();
+						$criteria->Cpf_Equals = $cpf;
+						
+						$palestrante = $this->Phreezer->GetByCriteria('Palestrante',$criteria);
+						
+						$this->Assign('Participante',$palestrante);
+						
+						
+						//PalestraPalestrante
+						require_once('Model/PalestraPalestrante.php');
+						$criteria = new PalestraPalestranteCriteria();
+						$criteria->CpfPalestrante_Equals = $cpf;
+
+						$listaPalestraParticipante = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+					}
 
 					$this->Assign('ListaCertificados', $listaPalestraParticipante);
 					

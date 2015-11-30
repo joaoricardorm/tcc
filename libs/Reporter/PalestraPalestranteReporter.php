@@ -101,9 +101,13 @@ if($criteria->InnerJoinCertificado){
 		} else {
 			
 			$sql .= "inner join palestra_palestrante on `palestra_palestrante`.`id_palestrante` = `palestrante`.`id_palestrante`";
-		
+			
 			if($criteria->IdPalestrante_Equals)
-				$sql .= " WHERE `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";			
+				$sql .= " WHERE `palestrante`.`id_palestrante` = '" . $criteria->Escape($criteria->IdPalestrante_Equals) . "' ";
+			else if($criteria->CpfPalestrante_Equals){
+				$sql .= " WHERE `palestrante`.`cpf` = '" . $criteria->Escape($criteria->CpfPalestrante_Equals) . "' ";		
+			}	
+			
 		
 		}
 		
