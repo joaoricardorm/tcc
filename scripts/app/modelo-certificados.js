@@ -1,6 +1,8 @@
 $(document).ready(function(){
 			
 	
+	$('.btnNaoFunciona').hide();
+	
 	var options, toolbarBtnSelector;
 	
 	var options = { activeToolbarClass: 'btn-info', toolbarSelector: '[data-role=editor-toolbar]', commandRole: 'edit' };
@@ -101,6 +103,7 @@ $(document).ready(function(){
 				
 					//remove as classes adicionais para ficar no Id
 					var idDbItem = $(this).attr('class').replace(/(dbitem|tagit-choice|ui-sortable-handle|\ )/g,'');
+				
 					if($(this).hasClass('dbitem'))
 						item = '<span id="'+idDbItem+'" class="dbItemCertificado '+$(this).attr('class')+'" style="color: '+corTextoDinamico+'">'+item+'</span>';
 					
@@ -119,6 +122,18 @@ $(document).ready(function(){
 				if(typeof alinhamento !== 'undefined' && alinhamento !== null)
 					$('a[data-edit="justify'+alinhamento[1]+'"]').click();
 				
+				/*if(ehPalestrante)
+				nomeDeQuem = 'nomePalestrante';
+				else
+				nomeDeQuem = 'nomeParticipante';
+				
+				var centralizarNome = '';
+				 
+				centralizarNome = $('.containerPDF #'+nomeDeQuem).attr('class').match(/.*?center-block/i);
+				console.log(centralizarNome);
+				if(typeof centralizarNome !== 'undefined' && centralizarNome != null)
+					$('.ToolBarDbItem a[data-edit="center-block"]').click();
+				*/
 				
 				var bold = '';
 				bold = $('.containerPDF').attr('class').match(/.*?bold/i);
@@ -263,6 +278,8 @@ $(document).ready(function(){
 			
 			} else {
 				
+				
+				
 			  console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 			  console.log(modeloCertificado.rows[0].textoParticipante);
 				
@@ -290,7 +307,11 @@ $(document).ready(function(){
 			else
 				$('#previewCertificado').html(certPadrao.elementos);
 			
-			function previewCertificado(){
+			function previewCertificado(atualizarToolbar){
+					
+					if (typeof atualizarToolbar == "undefined") atualizarToolbar = false;
+				
+					
 					preview = getTags($('#sortable1'));
 					$('#previewCertificado #containerDinamico').html(preview);		
 					updateToolBar();
@@ -327,10 +348,11 @@ $(document).ready(function(){
 					$(this).html('<input class="inputTagEdit" type="text" value="'+textoSemX.text()+'" style="width:'+tagWidth+'px!important;">').parent('box-sizing','border-box');
 					$('.inputTagEdit',this).keyup(function(e){
 						$(this).parent().css('width',$(this).width()+'px!important');
-						if(e.which == 13 || e.keyCode == 13){
+					});
+					
+					$('.inputTagEdit',this).blur(function(e){
 							$(this).parent().html($(this).val());
 							previewCertificado();
-						}
 					});
 				}
 				
@@ -406,7 +428,7 @@ $(document).ready(function(){
 			
 			
 		
-			$('#btnContinuar').click(function(){	
+			$('#btnContinuar').click(function(e){	
 			
 			$('.icon-arrow-right',this).addClass('hidden')
 			$('.icon-spin',this).removeClass('hidden');
@@ -566,7 +588,7 @@ $(document).ready(function(){
 		connectWith: ".connectedSortable",
 		placeholder : "highlight",
 		items: "li:not(.tagit-input)",
-		stop: function(event, ui) { previewCertificado(); },
+		stop: function(event, ui) { previewCertificado(false); console.log('TAGS COMO JASON HOJE -----',getTagsAsJSON($('#sortable1'))) },
 		start: function(e, ui ){
 			 ui.placeholder.width(ui.helper.outerWidth());
 		},

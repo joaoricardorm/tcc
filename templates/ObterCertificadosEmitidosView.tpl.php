@@ -17,8 +17,8 @@
 <!--["111","112","113","115","116","117","118"]-->
 
 <textarea name="listaParticipantes" id="listaParticipantes">
-["119","117"]
-<?php if(isset($_POST['cbParticipante'])) echo json_encode($_POST['cbParticipante']); ?></textarea>
+<?php if(isset($_POST['cbParticipante'])) echo json_encode($_POST['cbParticipante']); ?>
+</textarea>
 
 <nav class="container hero-unit small small margin-bottom-5px">
 		<ol class="cd-multi-steps text-top">		
@@ -141,6 +141,17 @@
 			</div>
 			
 			<div class="clearfix"></div>
+			
+			
+		<div id="alertaDownloadCertificados" class="hide alert alert-success text-large" style="padding-left:8px; margin:15px 0 0 0;">
+	
+			<button type="button" class="close" data-dismiss="alert" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+			
+			<i class="icon-download icon-big icon-margin-right icon-large" style="font-size:3em; vertical-align:middle; opacity:0.7;"></i>
+			
+			Os arquivos de certificados dos palestrantes e de participantes foram baixados para o seu dispositivo.
+			
+		</div>
 			
 			
 			

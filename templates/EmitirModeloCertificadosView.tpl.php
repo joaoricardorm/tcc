@@ -49,7 +49,12 @@
 	if(isset($_POST['cbParticipante'])){
 		foreach($_POST['cbParticipante'] as $key => $value)
 		{
-		  echo '<input type="hidden" name="cbParticipante[]" value="'. $value. '">';
+			if(isset($_GET['palestrante']))
+				$val = $value;
+			else
+				$val = $key;
+			
+		  echo '<input type="hidden" name="cbParticipante[]" value="'. $val. '">';
 		}
 	}
 	?>
@@ -150,27 +155,53 @@
 		
 				
 				
-	 <div class="btn-toolbar" data-spy="affix" data-offset-top="720" data-role="editor-toolbar" data-target="#editor" style="z-index:999;">
+	 <div id="toolBarDiv" class="btn-toolbar" data-spy="affix" data-offset-top="720" data-role="editor-toolbar" data-target="#editor" style="z-index:999;">
 	  
 	  <div class="pull-left text-center-sm block-sm">
 	   
 	   <legend class="text-center">Estilos para o conteúdo dinâmico</legend>
 	   
 	   <div>
-		   <div class="ToolBarDbItem geral pull-left btn-group" data-target=".containerPDF .dbitem">
+		   
+		   <div class="btnNaoFunciona">
+		   
+		    <div class="ToolBarDbItem geral pull-left btn-group" data-target=".dbitem">
 					<a <?php if(selectedToolbar('fontSizeSmall',$elementos,true)) echo 'data-selected="true"'; ?> class="btn unico" data-edit="fontSizeSmall" title="Tamanho pequeno"><i class="icon-font" style="font-size:10px;"></i></a>
 					<a <?php if(selectedToolbar('fontSizeNormal',$elementos,true)) echo 'data-selected="true"'; ?> class="btn unico" data-edit="fontSizeNormal" title="Tamanho normal"><i class="icon-font"></i></a>
 					<a <?php if(selectedToolbar('fontSizeBig',$elementos,true)) echo 'data-selected="true"'; ?> class="btn unico" data-edit="fontSizeBig" title="Tamanho grande"><i class="icon-font icon-big" style="font-size:18px;"></i></a>
 			</div>
-			<div class="ToolBarDbItem btn-group" data-target=".containerPDF .dbitem">	
-				<a <?php if(selectedToolbar('center-block',$elementos,true)) echo 'data-selected="true"'; ?> style="line-height:0.9em;" class="btn btn-small" data-target=".nomeParticipante, .nomePalestrante" data-edit="center-block" title="Centralizar o nome do participante/palestrante no certificado">Centralizar<br>Nome</a>
+			
+			<div class="ToolBarDbItem btn-group" data-target=".dbitem">	
+				<a <?php if(selectedToolbar('center-block',$elementos,true)) echo 'data-selected="true"'; ?> style="line-height:0.9em;" class="btn btn-small" data-itemdb-id="nomeParticipante" data-target=".nomeParticipante, .nomePalestrante" data-edit="center-block" title="Centralizar o nome do participante/palestrante no certificado">Centralizar<br>Nome</a>
 			</div>
-			<div class="ToolBarDbItem btn-group" data-target=".containerPDF .dbitem">
+			
+			
+			</div>
+			
+			
+			
+			
+			
+			
+			<div class="ToolBarDbItem btn-group" data-target=".dbitem">
+			
+			
+			<div class="btnNaoFunciona">
+			
+			
+			
 				<?php echo selectedToolbar('bold',$elementos,true); ?>
 				<a <?php if(selectedToolbar('bold',$elementos,true)) echo 'data-selected="true"'; ?> class="btn" data-edit="bold" title="Negrito"><i class="icon-bold"></i></a>
 				<a <?php if(selectedToolbar('italic',$elementos,true)) echo 'data-dbitem="true"'; ?> class="btn" data-edit="italic" title="Itálico"><i class="icon-italic"></i></a>
 				<a <?php if(selectedToolbar('underline',$elementos,true)) echo 'data-selected="true"'; ?> class="btn" data-edit="underline" title="Sublinhado"><i class="icon-underline"></i></a>
-				<input class="inputcordbitem btn btn-default small" type="color"  title="Cor do texto do certificado" onchange="$($(this).parent().data('target')).css('color',$(this).val())">
+				
+			
+			</div>
+
+			
+			<input class="inputcordbitem btn btn-default small" type="color"  title="Cor do texto do certificado" onchange="$($(this).parent().data('target')).css('color',$(this).val())">
+			
+			
 			</div>
 		  </div>
 	  </div>
@@ -236,7 +267,7 @@
 					<i class="icon-margin-right icon icon-file-pdf-o"></i> Ver em PDF <i class="icon-margin-left hidden carregando icon-spin icon-refresh"></i>
 				</a>
 				
-				<button id="enter-exit-fs" onkeypress="return false;" onfocus="this.blur()" onclick="enterFullscreen();" title="Visualizar em tela cheia" class="btn btn-primary" style="padding:3px 10px; box-shadow:1px 1px 0 rgba(255,255,255,1); border:1px solid white;"><i class="icon icon-fullscreen"></i></button>
+				<span id="enter-exit-fs" onclick="enterFullscreen();" title="Visualizar em tela cheia" class="btn btn-primary" style="padding:3px 10px; box-shadow:1px 1px 0 rgba(255,255,255,1); border:1px solid white;"><i class="icon icon-fullscreen"></i></span>
 			  </div>
 			
 			<div class="outer">

@@ -636,7 +636,7 @@ class CertificadoController extends AppBaseController
 	
 	
 	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
-	public function GeraCertificadoParticipante($idParticipante, $idPalestra,$replace=false){				
+	public function GeraCertificadoParticipante($idParticipante, $idPalestra,$replace=false,$ehPalestrante=false){				
 		
 		
 		// Requer permissão de acesso
@@ -652,33 +652,56 @@ class CertificadoController extends AppBaseController
 		//Evento
 		$evento = $this->Phreezer->Get('Evento',$palestra->IdEvento);
 		
-		//PalestraPalestrante
-		require_once('Model/PalestraPalestrante.php');
-		$criteria = new PalestraPalestranteCriteria();
-		$criteria->IdPalestra_Equals = $idPalestra; 
 
-		$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
-		
-		//só pegar os 4 primeiros palestrantes
-		$palestrantes = array_slice($palestrantes, 0, 3);
-		
-		//PalestraParticipante
-		require_once('Model/PalestraParticipante.php');
-		$criteria = new PalestraParticipanteCriteria();
-		$criteria->IdPalestra_Equals = $idPalestra; 
-		$criteria->IdParticipante_Equals = $idParticipante; 	
+		//SE FOR PALESTRANTE OU SE FOR PARTICIPANTE
+		if($ehPalestrante){
+			
+			//PalestraParticipante
+			require_once('Model/PalestraPalestrante.php');
+			$criteria = new PalestraPalestranteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra; 
+			$criteria->IdPalestrante_Equals = $idParticipante; 	
+			
+			$palestrante = $this->Phreezer->GetByCriteria('PalestraPalestranteReporter',$criteria);
+			
+			//Certificado
+			$certificado = $this->Phreezer->Get('Certificado',$palestrante->IdCertificado);
+			
+		} else {
+			
+			//PalestraPalestrante
+			require_once('Model/PalestraPalestrante.php');
+			$criteria = new PalestraPalestranteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra; 
 
-		$participante = $this->Phreezer->GetByCriteria('PalestraParticipanteReporter',$criteria);
-		
-		//Certificado
-		$certificado = $this->Phreezer->Get('Certificado',$participante->IdCertificado);		
+			$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+			
+			//só pegar os 3 primeiros palestrantes
+			$palestrantes = array_slice($palestrantes, 0, 3);
+			
+			//PalestraParticipante
+			require_once('Model/PalestraParticipante.php');
+			$criteria = new PalestraParticipanteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra; 
+			$criteria->IdParticipante_Equals = $idParticipante; 	
+			
+			$participante = $this->Phreezer->GetByCriteria('PalestraParticipanteReporter',$criteria);
+			
+			//Certificado
+			$certificado = $this->Phreezer->Get('Certificado',$participante->IdCertificado);
+			
+		}		
 		
 		//Modelo Certificado
 		$modeloCertificado = $this->Phreezer->Get('ModeloCertificado',$palestra->IdModeloCertificado);		
 		
 		$dadosModeloCertificado = $modeloCertificado->Elementos;
 		
-		$textoParticipante = json_decode($modeloCertificado->TextoParticipante);
+		if($ehPalestrante){
+			$textoParticipante = json_decode($modeloCertificado->TextoPalestrante);
+		} else {
+			$textoParticipante = json_decode($modeloCertificado->TextoParticipante);
+		}
 		
 		//print_r( $textoParticipante);
 		
@@ -693,27 +716,52 @@ class CertificadoController extends AppBaseController
 		$orientacao = preg_match("/A4portrait/", $dadosModeloCertificado, $matches);
 		if($orientacao) $orientacao = 'portrait'; else $orientacao = 'landscape';
 			
-			
+		
 		//exibe assinatura do particcipante removendo o hide
-		$dadosModeloCertificado = preg_replace('/hide-palestrante(\ hide)?/i', '', $dadosModeloCertificado);
+		if($ehPalestrante == false)
+			$dadosModeloCertificado = preg_replace('/hide-palestrante(\ hide)?/i', '', $dadosModeloCertificado);
 		
 		///REMOVER ISSO!!!
 		echo '<link rel="stylesheet" type="text/css" media="screen,print" href="'. GlobalConfig::$ROOT_URL. '/styles/certificados/padrao.css" />';
 		
+		$classePalestrante = '';
+		$tableStyle = '';
+		if($ehPalestrante){
+			$classePalestrante = 'palestrante';
+			$tableStyle = '';
+		}
+		
 		$htmlAssinaturas = '';
 		//REMOVE ASSINATURAS ESTÁTICAS E COLOCA DINÂMICAS
 		$htmlAssinaturas .=
-		'<table class="assinaturas dinamico justifyleft" style="width:100%;">
+		'<table class="assinaturas '.$classePalestrante.' dinamico justifyleft" '.$tableStyle.'>
 			<tbody><tr>';
 				
-				$totalPalestrantes = sizeof($palestrantes);
+				if($ehPalestrante){
+						
+						//print_r($palestrante);
+					
+						$totalPalestrantes = 0; //vai somar +1 para dar 100%;
+					
+						$htmlAssinaturas .= '<td align="center" valign="bottom" style="width:'.(100/($totalPalestrantes+1)).'%!important; margin:0px 10mm; vertical-align:bottom;">';
+						if($palestrante->ImagemAssinatura){
+							$htmlAssinaturas .= '<img style="width:auto; height:22mm;" id="AssinaturaPalestrante" class="assinatura" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'.$palestrante->ImagemAssinatura.'">';
+						}
+						$htmlAssinaturas .= '</td>';
 				
-				foreach($palestrantes as $palestrante){	
-					$htmlAssinaturas .= '<td align="center" valign="bottom" style="width:'.(100/($totalPalestrantes+1)).'%!important; margin:0px 10mm; vertical-align:bottom;">';
-					if($palestrante->imagemAssinatura){
-						$htmlAssinaturas .= '<img style="width:40mm; height:auto;" id="AssinaturaPalestrante" class="assinatura" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'.$palestrante->imagemAssinatura.'">';
+				
+				} else {
+					
+					$totalPalestrantes = sizeof($palestrantes);
+					
+					foreach($palestrantes as $palestrante){					
+						$htmlAssinaturas .= '<td align="center" valign="bottom" style="width:'.(100/($totalPalestrantes+1)).'%!important; margin:0px 10mm; vertical-align:bottom;">';
+						if($palestrante->imagemAssinatura){
+							$htmlAssinaturas .= '<img style="width:auto; height:22mm;" id="AssinaturaPalestrante" class="assinatura" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'.$palestrante->imagemAssinatura.'">';
+						}
+						$htmlAssinaturas .= '</td>';						
 					}
-					$htmlAssinaturas .= '</td>';
+					
 				}
 		
 		$htmlAssinaturas .=
@@ -721,9 +769,10 @@ class CertificadoController extends AppBaseController
 			</tr>
 			<tr>';
 			
-				
-				foreach($palestrantes as $palestrante){	
-					$htmlAssinaturas .= '<td style="width:'.(100/($totalPalestrantes+1)).'%!important;"><hr style="0 margin:20px!important;"></td>';
+				if(!$ehPalestrante){
+					foreach($palestrantes as $palestrante){	
+						$htmlAssinaturas .= '<td style="width:'.(100/($totalPalestrantes+1)).'%!important;"><hr style="0 margin:20px!important;"></td>';
+					}
 				}
 				
 		$htmlAssinaturas .= '
@@ -731,17 +780,30 @@ class CertificadoController extends AppBaseController
 			</tr>
 			<tr>';
 		
-		foreach($palestrantes as $palestrante){	
+		
+		if($ehPalestrante){	
+		
+			//remove assinatura do participante
+			$dadosModeloCertificado = preg_replace('/<td class="hide-palestrante">(.*?)<\\/td>/s', '', $dadosModeloCertificado);
+		
 			$htmlAssinaturas .= 
-				'<td align="center" valign="top"><small><strong>'.$palestrante->nomePalestrante.'</strong><br>'.$palestrante->cargoPalestrante.'</small></td>';
+				'<td align="center" valign="top"><small><strong>'.$palestrante->NomePalestrante.'</strong><br>'.$palestrante->CargoPalestrante.'</small></td>';			
+		} else {
+			
+			foreach($palestrantes as $palestrante){	
+				$htmlAssinaturas .= 
+					'<td align="center" valign="top"><small><strong>'.$palestrante->nomePalestrante.'</strong><br>'.$palestrante->cargoPalestrante.'</small></td>';
+			}
+			
+			$htmlAssinaturas .=
+			'<td align="center" valign="top" style="width:'.(100/($totalPalestrantes+1)).'%!important;"><small><strong>'.$participante->NomeParticipante.'</strong><br>Participante</small></td>';
 		}
 		
 		$htmlAssinaturas .=
-			'<td align="center" valign="top"><small><strong>'.$participante->NomeParticipante.'</strong><br>Participante</small></td>
-			</tr>
+			'</tr>
 		</tbody></table>';
 		
-		$dadosModeloCertificado = preg_replace('/<table class="assinaturas justifyleft"(.*?)>(.*?)<\\/table>/s', $htmlAssinaturas, $dadosModeloCertificado);
+		$dadosModeloCertificado = preg_replace('/<table class="assinaturas(.*?)"(.*?)>(.*?)<\\/table>/s', $htmlAssinaturas, $dadosModeloCertificado);
 		
 		
 		//$dadosModeloCertificado = preg_replace('/\<[\/]?(table|tr|td)([^\>]*)\>/i', '', $dadosModeloCertificado);
@@ -752,6 +814,28 @@ class CertificadoController extends AppBaseController
 		echo '--------------------------------------';
 		print_r($dadosModeloCertificado);
 		echo '--------------------------------------';		
+		
+		
+		
+		
+		//PEGA A COR DOS ELEMENTOS DINAMICOS
+				$cor = preg_match('/id="(nomeParticipante|nomePalestrante|nomeAtividade|cargaHoraria)".*?style="color:\ (.*?)"/',$dadosModeloCertificado,$corArr);
+				$corValue = $cor ? $corArr[2] : '';
+				
+				$styleCor = '';
+				if($corValue != '')
+					$styleCor = 'color: '.$corValue.';';
+					
+					echo '<Br>~~~ ~~~~~~'.$corValue.'********<br>';
+				
+				if(preg_match('/id="(nomeParticipante|nomePalestrante)" class="(.*?)"/',$dadosModeloCertificado,$centralizarTextoArr));
+				$centralizarTexto = $centralizarTextoArr ? $centralizarTextoArr[2] : '';
+				
+				$classCenter = '';
+				if (strpos($centralizarTexto,'center-block') !== false)
+					$classCenter = 'center-block';
+				
+				echo '<Br>************'.$classCenter.'********<br>';
 		
 		
 		
@@ -772,10 +856,11 @@ class CertificadoController extends AppBaseController
 				if(preg_match('/(,|\.|;|\?)(\ |^$)/i',$tag->label))
 					$join = '';
 				
-				$cor = preg_match('/style="color:\ (.*?)"/',$dadosModeloCertificado,$corArr);
-				$corValue = $cor ? $corArr[1] : '';
-	
-				$tag = '<span class="dbItemCertificado '.$tag->class.'" style="color: '.$corValue.'">'.$tag->label.'</span>';
+				$textCenter = '';
+				if($tag->label == 'Nome do Participante' || $tag->label == 'Nome do Palestrante')
+					$textCenter = $classCenter; 
+				
+				$tag = '<span class="dbItemCertificado '.$tag->class.' '.$textCenter.'" style="'.$styleCor.'">'.$tag->label.'</span>';
 			
 			}
 			
@@ -790,30 +875,53 @@ class CertificadoController extends AppBaseController
 		$dadosModeloCertificado = preg_replace('/<div id="containerDinamico">(.+?)<\/div>/i', '<div id="containerDinamico">'.$tagsFinal.'</div>', $dadosModeloCertificado);	
 			
 			
-			
 		$antigo = array(
-			'Nome do Participante',
 			'Nome da Atividade',
 			'Local da Atividade',
 			'Data da Atividade',
 			'Duração do Evento',
 			'Carga Horária',
-			'validar-certificado/',
 			'Registro nº 9081/15 folha 86 do livro nº 2'
 		);
 		$novo = array(
-			$participante->NomeParticipante,
 			$palestra->Nome,
 			$evento->Local,
 			date('d/m/Y',strtotime($palestra->Data)),
 			$evento->Duracao,
 			date('H:i',strtotime($palestra->CargaHoraria)),
-			'validar-certificado/'.$participante->IdParticipante.'/',
 			'Registro nº '.$certificado->Codigo.'/'.date('y',strtotime($certificado->DataEmissao)).' folha '.$certificado->Folha.' do livro nº '.$certificado->Livro
 		);
 		
+		
+		if($ehPalestrante){
+			
+			array_push($antigo,
+				'Nome do Palestrante',
+				'validar-certificado/'
+			);
+			array_push($novo,
+				$palestrante->NomePalestrante,
+				'validar-certificado/'.$palestrante->IdPalestrante.'/'
+			);
+			
+		} else {
+			
+			array_push($antigo,
+				'Nome do Participante',
+				'validar-certificado/');
+			array_push($novo,
+				$participante->NomeParticipante,
+				'validar-certificado/'.$participante->IdParticipante.'/'
+			);
+			
+		}
+		
+		
 		$dadosModeloCertificado = str_replace($antigo,$novo,$dadosModeloCertificado);
 
+		
+		
+		echo '&&&begin&&&&&&&&&'.$htmlAssinaturas.'&&&&&end&&&&&&';
 
 		
 				
@@ -861,13 +969,19 @@ class CertificadoController extends AppBaseController
 				
 				//echo $html;
 				
-				$arquivo = 'palestra'.$participante->IdParticipante.'.pdf';
+				if($ehPalestrante)
+					$arquivo = 'palestrante'.$palestrante->IdPalestrante	.'.pdf';
+				else
+					$arquivo = 'palestra'.$participante->IdParticipante.'.pdf';
+				
 				$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
 				
 				if($replace or !file_exists(GlobalConfig::$APP_ROOT.$caminho.$arquivo)){
 					AppBaseController::geraPDF($arquivo, GlobalConfig::$APP_ROOT.$caminho, $html,'a4',$orientacao);
 				}
 
+				echo $html;
+				
 				echo '<embed id="iwc" name="iwc" src="'.GlobalConfig::$ROOT_URL.$caminho.$arquivo.'" width="100%" height="300" wmode="transparent" type="application/pdf" style="display:block; margin:0 auto;">';
 				
 				//$this->DownloadCertificadoParticipante($palestra->IdPalestra, $participante->IdParticipante);
@@ -888,7 +1002,7 @@ class CertificadoController extends AppBaseController
 	
 	//*****///****CHAMA FUNÇÃO DE GERAR CERTIFICADO DE CADA USUARIO DA PALESTRA******///*****///
 	
-	public function GeraCertificadosPalestraImprimir(){
+	public function GeraCertificadosPalestraLote(){
 		
 		// Requer permissão de acesso
 		$this->RequirePermission(Usuario::$P_ADMIN,
@@ -898,29 +1012,65 @@ class CertificadoController extends AppBaseController
 		
 		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
-		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
 		
-		foreach($participantes as $participante){
-			$this->GeraCertificadoParticipante($participante, $idPalestra,true); //false=substitui os certificados existentes
+		if($this->GetRouter()->GetUrlParam('palestrantes')){
+			
+			//PalestraParticipante
+			require_once('Model/PalestraPalestrante.php');
+			$criteria = new PalestraPalestranteCriteria();
+			$criteria->IdPalestra_Equals = $idPalestra;
+
+			$palestrantes = $this->Phreezer->Query('PalestraPalestranteReporter',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
+			
+			$pessoas = array();
+			foreach($palestrantes as $palestrante){
+				$pessoas[] = $palestrante->idPalestrante;
+			}
+			
+			if($this->GetRouter()->GetUrlParam('idPalestrante'))
+				$pessoas = array($this->GetRouter()->GetUrlParam('idPalestrante'));
+			
+			$ehPalestrante = true;
+			
+			print_r($pessoas);
+			
+		} else {
+			$pessoas = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+			$ehPalestrante = false;
+		}
+
+		foreach($pessoas as $pessoa){
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,false,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
-		foreach($participantes as $participante){
-			echo 'Pegou '.$idPalestra.' participantes '.$participante; 
-			//$this->DownloadCertificadoParticipante($idPalestra, $participante);
+		
+		foreach($pessoas as $pessoa){
+			if($ehPalestrante){
+					echo 'Pegou '.$idPalestra.' palestrante '.$pessoa; 
+					//$this->DownloadCertificadoPalestrante($idPalestra, $palestrante);
+			} else {
+					echo 'Pegou '.$idPalestra.' participantes '.$pessoa; 
+					//$this->DownloadCertificadoParticipante($idPalestra, $participante);
+			}
 		}
+		
+		
 	}
 
 	
-	public function CompactarCertificadosParticipante(){
-		
-		// Requer permissão de acesso
-		$this->RequirePermission(Usuario::$P_ADMIN,
-				'SecureExample.LoginForm',
-				'Autentique-se para acessar esta página',
-				'Você não possui permissão para acessar essa página ou sua sessão expirou');
+	public function CompactarCertificados(){
 	
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
-		$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+		
+		$ehPalestrante = false;
+		if($this->GetRouter()->GetUrlParam('palestrantes'))
+			$ehPalestrante = true;	
+		
+		if($ehPalestrante){
+			$participantes = json_decode($this->GetRouter()->GetUrlParam('palestrantes'));
+		} else {
+			$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+		}
 		
 		//Palestra
 		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
@@ -931,11 +1081,16 @@ class CertificadoController extends AppBaseController
 		
 		foreach($participantes as $idParticipante){	
 
-			//Palestra
-			$participante = $this->Phreezer->Get('Participante',$idParticipante);
+			if($ehPalestrante){
+				$participante = $this->Phreezer->Get('Palestrante',$idParticipante);
+				$arquivos[] = $caminho.'palestrante'.$idParticipante.'.pdf'; 
+				$novosNomes[] = AppBaseController::parseURL($participante->Nome).'.pdf';
+			} else {
+				$participante = $this->Phreezer->Get('Participante',$idParticipante);
+				$arquivos[] = $caminho.'palestra'.$idParticipante.'.pdf'; 
+				$novosNomes[] = AppBaseController::parseURL($participante->Nome).'.pdf';
+			}
 			
-			$arquivos[] = $caminho.'palestra'.$idParticipante.'.pdf'; 
-			$novosNomes[] = AppBaseController::parseURL($participante->Nome).'.pdf';
 			//$arquivos[] = './certificados-gerados/workshop-tecnicas-avancadas-de-pog-128/palestra113.pdf';
 		}
 		
@@ -951,7 +1106,11 @@ class CertificadoController extends AppBaseController
 		$zip = $this->compactar($arquivos, $novosNomes, $caminho, 'certificados',true); //true=sobrescreve arquivo temporario
 		
 		$eventoOuPalestra = ($palestra->ProprioEvento) ? ' do evento ' : ' da atividade ';
-		$novo_nome = 'Certificados '.$eventoOuPalestra.$palestra->Nome.'.zip';
+		
+		if($ehPalestrante)
+			$novo_nome = 'PALESTRANTES - Certificados '.$eventoOuPalestra.$palestra->Nome.'.zip';
+		else
+			$novo_nome = 'Certificados '.$eventoOuPalestra.$palestra->Nome.'.zip';
 		
 		AppBaseController::send_download($zip, $novo_nome);
 		

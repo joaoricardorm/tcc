@@ -58,25 +58,27 @@ table {
 	background:url(images/moldura-padrao.png); 
 	background-size:cover;
 	font-size:20px;
-	line-height:2em;
+	line-height:1.7em;
 	font-family:Arial, Helvetica, Sans-Serif;
 }
 .containerCertificado.A4portrait {
 	background:url(images/moldura-padrao-portrait.png); 
 }
+.containerCertificado .dbItemCertificado { font-weight:bold; }
 .containerCertificado .dbItemCertificado,
 .containerCertificado .rodapeCertificado .siteCertificado { color:rgb(234, 89, 19); }
-.containerCertificado #ImagemLogo { height:20mm; margin-bottom:10px; }
-.containerCertificado #TituloCertificado { line-height:normal; color: rgb(234, 89, 19); font-size:70px; margin-bottom:15px; font-family:'Rochester'!important; text-decoration:none!important; font-weight:normal; }
-.containerCertificado #TituloMarcador { line-height:normal;  margin-bottom:15px; width:60mm; height:6.224mm; }
-.containerCertificado .nomeParticipante.center-block, .containerCertificado .nomePalestrante.center-block { font-size:26px; margin:10px; }
+.containerCertificado #ImagemLogo { height:20mm; margin-bottom:0px!important; line-height:normal; }
+.containerCertificado #TituloCertificado { line-height:normal; color: rgb(234, 89, 19); font-size:70px; margin-bottom:5px; font-family:'Rochester'!important; text-decoration:none!important; font-weight:normal; }
+.containerCertificado #TituloMarcador { line-height:normal;  margin-bottom:5px; width:60mm; height:6.224mm; }
+.containerCertificado .nomeParticipante.center-block, .containerCertificado .nomePalestrante.center-block { font-size:26px; margin:5px; }
 .containerCertificado .rodapeCertificado { color:#555; position: absolute; font-size:10px; line-height:normal; }
 
 .containerCertificado .assinaturas  { width:100%; text-align:center; line-height:normal; margin-top:30px; }
 .containerCertificado .assinaturas td { color:#333; vertical-align: top; padding:0 5mm; width:50%; } 
+.containerCertificado .assinaturas td strong, .containerCertificado .assinaturas td small { width:100%!important; } 
 
-.containerCertificado .assinaturas.palestrante { width:60mm!important; margin-left:auto; margin-right:auto; }
-.containerCertificado .assinaturas.palestrante td { width:100%; }
+.containerCertificado .assinaturas.palestrante { width:90mm!important; margin-top:30px!important; margin-left:auto; margin-right:auto; }
+.containerCertificado .assinaturas.palestrante td { width:90mm!important; }
 
 .containerCertificado .assinatura { 
 	height:60px; 
@@ -95,7 +97,8 @@ table {
 /* FOLHA RETRATO */
 .A4portrait #containerDinamico { margin-top:90px; }
 .A4portrait .nomeParticipante.center-block, .A4portrait .nomePalestrante.center-block { margin:30px 0; }
-.assinaturas.A4portrait { margin-top:90px!important; }
+.A4portrait .assinaturas, .A4portrait .assinaturas.palestrante { margin-top:90px!important; }
+.assinaturas.A4portrait, .A4portrait.assinaturas.palestrante { margin-top:90px!important; }
 
 
 @page {

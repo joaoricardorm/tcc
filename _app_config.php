@@ -101,6 +101,7 @@ GlobalConfig::$ROUTE_MAP = array(
 	'POST:emitir-certificados/obter/(:num)' => array('route' => 'Certificado.ObterCertificadosEmitidosView', 'params' => array('idPalestra' => 2)),
 	
 	'GET:validar-certificado' => array('route' => 'Certificado.ValidarCertificadoView'),
+	'GET:validar-certificado/(:num)' => array('route' => 'Certificado.ValidarCertificadoView', 'params' => array('idCertificado' => 1)),
 	
 	
 	'GET:certificados' => array('route' => 'Certificado.ListView'),
@@ -114,12 +115,24 @@ GlobalConfig::$ROUTE_MAP = array(
 	'POST:api/geracertteste/(:num)/(:any)' => array('route' => 'Certificado.GeraCertificadoModelo', 'params' => array('idPalestra' => 2, 'orientacao' => 3)),
 	
 	//gerar certificados em pdf
-	'GET:api/gerarcertificados/palestra/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraImprimir', 'params' => array('idPalestra' => 3)),
-	'POST:api/gerarcertificados/palestra/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraImprimir', 'params' => array('idPalestra' => 3)),
+	'GET:api/gerarcertificados/palestra/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraLote', 'params' => array('idPalestra' => 3)),
+	'POST:api/gerarcertificados/palestra/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraLote', 'params' => array('idPalestra' => 3)),
+	
+	//gerar certificados em pdf dos palestrantes
+	'GET:api/gerarcertificados/palestra/(:num)/palestrantes' => array('route' => 'Certificado.GeraCertificadosPalestraLote', 'params' => array('idPalestra' => 3, 'palestrantes' => 4)),
+	'POST:api/gerarcertificados/palestra/(:num)/palestrantes' => array('route' => 'Certificado.GeraCertificadosPalestraLote', 'params' => array('idPalestra' => 3, 'palestrantes' => 4)),
+	
+	//gera certificados em pdf de UM palestrante
+	'GET:api/gerarcertificados/palestra/(:num)/palestrantes/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraLote', 'params' => array('idPalestra' => 3, 'palestrantes' => 4, 'idPalestrate' => 5)),
+	'POST:api/gerarcertificados/palestra/(:num)/palestrantes/(:num)' => array('route' => 'Certificado.GeraCertificadosPalestraLote', 'params' => array('idPalestra' => 3, 'palestrantes' => 4, 'idPalestrate' => 5)),
 	
 	//compactar certificados
-	'GET:api/compactarcertificados/palestra/(:num)' => array('route' => 'Certificado.CompactarCertificadosParticipante', 'params' => array('idPalestra' => 3)),
-	'POST:api/compactarcertificados/palestra/(:num)' => array('route' => 'Certificado.CompactarCertificadosParticipante', 'params' => array('idPalestra' => 3)),
+	'GET:api/compactarcertificados/palestra/(:num)' => array('route' => 'Certificado.CompactarCertificados', 'params' => array('idPalestra' => 3)),
+	'POST:api/compactarcertificados/palestra/(:num)' => array('route' => 'Certificado.CompactarCertificados', 'params' => array('idPalestra' => 3)),
+	
+	//compactar certificados palestrantes
+	'GET:api/compactarcertificados/palestra/(:num)/palestrantes' => array('route' => 'Certificado.CompactarCertificados', 'params' => array('idPalestra' => 3)),
+	'POST:api/compactarcertificados/palestra/(:num)/palestrantes' => array('route' => 'Certificado.CompactarCertificados', 'params' => array('idPalestra' => 3)),
 
 	'GET:api/downloadcertteste/(:num)' => array('route' => 'Certificado.DownloadCertificadoModelo', 'params' => array('idPalestra' => 2)),
 	'GET:api/downloadcertificado/(:num)' => array('route' => 'Certificado.DownloadCertificado', 'params' => array('idCertificado' => 2)),
