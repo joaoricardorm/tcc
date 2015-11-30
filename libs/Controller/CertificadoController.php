@@ -515,7 +515,7 @@ class CertificadoController extends AppBaseController
 				
 				//AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
 				
-				//echo $html;
+				echo $html;
 				
 				// echo '<pre>';
 				// print_r($registros);
@@ -881,7 +881,9 @@ class CertificadoController extends AppBaseController
 		
 		//substitui texto dinamico
 		$dadosModeloCertificado = preg_replace('/<div id="containerDinamico">(.+?)<\/div>/i', '<div id="containerDinamico">'.$tagsFinal.'</div>', $dadosModeloCertificado);	
-			
+		
+		//substitui imagem do logotipo
+		$dadosModeloCertificado = preg_replace('/(<img id="ImagemLogo" src=)(.+?)"/i', '$1"'.GlobalConfig::$ROOT_URL.'/images/uploads/logos/small/'.$this->Configuracao->ImagemLogo.'"', $dadosModeloCertificado);		
 			
 		$antigo = array(
 			'Nome da Atividade',
@@ -890,7 +892,8 @@ class CertificadoController extends AppBaseController
 			'Duração do Evento',
 			'Carga Horária',
 			'Registro nº 9081/15 folha 86 do livro nº 2',
-			'validar-certificado/'
+			'validar-certificado/',
+			'http://localhost:85/tcc/'
 		);
 		$novo = array(
 			$palestra->Nome,
@@ -899,7 +902,8 @@ class CertificadoController extends AppBaseController
 			$evento->Duracao,
 			date('H:i',strtotime($palestra->CargaHoraria)),
 			'Registro nº '.$certificado->Codigo.'/'.date('y',strtotime($certificado->DataEmissao)).' folha '.$certificado->Folha.' do livro nº '.$certificado->Livro,
-			'validar-certificado/'.$certificado->IdCertificado.'/'
+			'validar-certificado/'.$certificado->IdCertificado.'/',
+			GlobalConfig::$ROOT_URL
 		);
 		
 		
@@ -1047,7 +1051,7 @@ class CertificadoController extends AppBaseController
 		}
 
 		foreach($pessoas as $pessoa){
-			$this->GeraCertificadoParticipante($pessoa, $idPalestra,true,$ehPalestrante); //false=substitui os certificados existentes
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,false,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
 		

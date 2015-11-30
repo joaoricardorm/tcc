@@ -89,11 +89,51 @@ INSERT INTO modelo_certificado(id_modelo_certificado, nome, texto_participante, 
 
 '["Certificamos que",{ "label": "Nome do Participante", "class": "tagit-choice dbitem nomeParticipante" },"participou da",{ "label": "Nome da Atividade", "class": "tagit-choice dbitem nomeAtividade" },", realizada no",{ "label": "Local da Atividade", "class": "tagit-choice dbitem localAtividade" },", em",{ "label": "Data da Atividade", "class": "tagit-choice dbitem dataAtividade" },", com duração de",{ "label": "Duração do Evento", "class": "tagit-choice dbitem duracaoEvento" },"e carga horária de",{ "label": "Carga Horária", "class": "tagit-choice dbitem cargaHoraria" }]',
 
-'[\n    "Certificamos que",\n    {\n        "label": "Nome do Palestrante",\n        "class": "dbitem nomePalestrante"\n    },\n    "ministrou a",\n    {\n        "label": "Nome da Atividade",\n        "class": "dbitem nomeAtividade"\n    },\n    ", realizada no",\n    {\n        "label": "Local da Atividade",\n        "class": "dbitem localAtividade"\n    },\n    ", em",\n    {\n        "label": "Data da Atividade",\n        "class": "dbitem dataAtividade"\n    },\n    ", com duração de",\n    {\n        "label": "Duração do Evento",\n        "class": "dbitem duracaoEvento"\n    },\n    "e carga horária de",\n    {\n        "label": "Carga Horária",\n        "class": "dbitem cargaHoraria"\n    }\n]',
+'[ "Certificamos que", { "label": "Nome do Palestrante", "class": "dbitem nomePalestrante" }, "ministrou a", { "label": "Nome da Atividade", "class": "dbitem nomeAtividade" }, ", realizada no", { "label": "Local da Atividade", "class": "dbitem localAtividade" }, ", em", { "label": "Data da Atividade", "class": "dbitem dataAtividade" }, ", com duração de", { "label": "Duração do Evento", "class": "dbitem duracaoEvento" }, "e carga horária de", { "label": "Carga Horária", "class": "dbitem cargaHoraria" } ]',
 
 'padrao',
 
-'				\n					<!--Certificado enviado para PDF-->\n					<div class="containerPDF justifycenter">\n						<div class="center-block">\n							<img id="ImagemLogo" src="http://localhost:85/tcc/images/uploads/logos/small/5b5bc6ad33beebb171f8a6e8a4149502.png">\n						</div>\n						\n						<div id="TituloCertificado" class="center-block reset-css">Certificado</div>\n						\n						<div class="center-block">\n							<img id="TituloMarcador" src="http://localhost:85/tcc/styles/certificados/images/marcador-titulo-padrao.png">\n						</div>\n						\n						<div id="containerDinamico">Certificamos que <span class="dbItemCertificado tagit-choice dbitem nomeParticipante">Nome do Participante</span> participou da <span class="dbItemCertificado tagit-choice dbitem nomeAtividade">Nome da Atividade</span>, realizada no <span class="dbItemCertificado tagit-choice dbitem localAtividade">Local da Atividade</span>, em <span class="dbItemCertificado tagit-choice dbitem dataAtividade">Data da Atividade</span>, com duração de <span class="dbItemCertificado tagit-choice dbitem duracaoEvento">Duração do Evento</span> e carga horária de <span class="dbItemCertificado tagit-choice dbitem cargaHoraria">Carga Horária</span></div>\n					</div>\n					<!--Certificado enviado para PDF-->\n					\n					<table class="assinaturas justifycenter">\n						<tbody><tr>\n							<td><img id="AssinaturaPalestrante" class="assinatura" src="http://localhost:85/tcc/images/uploads/logos/small/32dc6fa8ca13a53ebcad2053e87165fb.png"></td>\n							<td class="hide-palestrante"></td>\n						</tr>\n						<tr>\n							<td><hr></td>\n							<td class="hide-palestrante"><hr></td>\n						</tr>\n						<tr>\n							<td><small><strong>Nome do Palestrantre</strong><br>Cargo do Palestrante</small></td>\n							<td class="hide-palestrante"><small><strong>Nome do Participante</strong></small></td>\n						</tr>\n					</tbody></table>\n					\n					<div class="rodapeCertificado registro bottom-left justifyleft fixed-pdf">\n							Registro nº 9081/15 folha 86 do livro nº 2\n					</div>\n					\n					<div class="rodapeCertificado justifycenter autenticidade bottom-right fixed-pdf">\n						confirme a autenticidade deste certificado em\n						<span class="siteCertificado">http://localhost:85/tcc/validar-certificado/</span>\n					</div>\n					\n					\n\n				');
+'				
+<!--Certificado enviado para PDF-->
+<div class="containerPDF justifycenter">
+	<div class="center-block">
+		<img id="ImagemLogo" src="./images/uploads/logos/small/5b5bc6ad33beebb171f8a6e8a4149502.png">
+	</div>
+	
+	<div id="TituloCertificado" class="center-block reset-css">Certificado</div>
+	
+	<div class="center-block">
+		<img id="TituloMarcador" src="./styles/certificados/images/marcador-titulo-padrao.png">
+	</div>
+	
+	<div id="containerDinamico">Certificamos que <span class="dbItemCertificado tagit-choice dbitem nomeParticipante">Nome do Participante</span> participou da <span class="dbItemCertificado tagit-choice dbitem nomeAtividade">Nome da Atividade</span>, realizada no <span class="dbItemCertificado tagit-choice dbitem localAtividade">Local da Atividade</span>, em <span class="dbItemCertificado tagit-choice dbitem dataAtividade">Data da Atividade</span>, com duração de <span class="dbItemCertificado tagit-choice dbitem duracaoEvento">Duração do Evento</span> e carga horária de <span class="dbItemCertificado tagit-choice dbitem cargaHoraria">Carga Horária</span></div>
+</div>
+<!--Certificado enviado para PDF-->
+
+<table class="assinaturas justifycenter">
+	<tbody><tr>
+		<td><img id="AssinaturaPalestrante" class="assinatura" src="./images/uploads/logos/small/32dc6fa8ca13a53ebcad2053e87165fb.png"></td>
+		<td class="hide-palestrante"></td>
+	</tr>
+	<tr>
+		<td><hr></td>
+		<td class="hide-palestrante"><hr></td>
+	</tr>
+	<tr>
+		<td><small><strong>Nome do Palestrantre</strong><br>Cargo do Palestrante</small></td>
+		<td class="hide-palestrante"><small><strong>Nome do Participante</strong></small></td>
+	</tr>
+</tbody></table>
+
+<div class="rodapeCertificado registro bottom-left justifyleft fixed-pdf">
+		Registro nº 9081/15 folha 86 do livro nº 2
+</div>
+
+<div class="rodapeCertificado justifycenter autenticidade bottom-right fixed-pdf">
+	confirme a autenticidade deste certificado em
+	<span class="siteCertificado">http://localhost:85/tcc/validar-certificado/</span>
+</div>
+');
 
 
 CREATE TABLE palestra_palestrante (
