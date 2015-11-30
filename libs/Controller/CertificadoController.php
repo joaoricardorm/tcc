@@ -1040,7 +1040,7 @@ class CertificadoController extends AppBaseController
 		}
 
 		foreach($pessoas as $pessoa){
-			$this->GeraCertificadoParticipante($pessoa, $idPalestra,false,$ehPalestrante); //false=substitui os certificados existentes
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,true,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
 		
