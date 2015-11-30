@@ -26,7 +26,6 @@ class ModeloCertificadoReporter extends Reporter
 	public $TextoPalestrante;
 	public $ArquivoCss;
 	public $Elementos;
-	public $ElementosPalestrante;
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -50,7 +49,6 @@ class ModeloCertificadoReporter extends Reporter
 			,`modelo_certificado`.`texto_palestrante` as TextoPalestrante
 			,`modelo_certificado`.`arquivo_css` as ArquivoCss
 			,`modelo_certificado`.`elementos` as Elementos
-			,`modelo_certificado`.`elementos_palestrante` as ElementosPalestrante
 		from `modelo_certificado`";
 		
 		if ($criteria->IdPalestra_Equals){
