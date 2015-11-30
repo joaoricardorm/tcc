@@ -1262,6 +1262,8 @@ class CertificadoController extends AppBaseController
 						require_once('Model/PalestraParticipante.php');
 						$criteria = new PalestraParticipanteCriteria();
 						$criteria->IdCertificado_Equals = $certificado->IdCertificado;
+						$criteria->TemCertificado = true;
+						$criteria->Presenca_Equals = 1; //Só pode obter se tiver participado
 						
 						$palestraparticipante = $this->Phreezer->GetByCriteria('PalestraParticipante',$criteria);
 						
@@ -1361,6 +1363,8 @@ class CertificadoController extends AppBaseController
 					require_once('Model/PalestraParticipante.php');
 					$criteria = new PalestraParticipanteCriteria();
 					$criteria->IdCertificado_Equals = $certificado->IdCertificado;
+					$criteria->TemCertificado = true;
+					$criteria->Presenca_Equals = 1; //Só pode obter se tiver participado
 					
 					$palestraparticipante = $this->Phreezer->GetByCriteria('PalestraParticipante',$criteria);
 					
