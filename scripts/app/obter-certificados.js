@@ -69,7 +69,10 @@ palestrantesPalestra.complete(function(td){
 			gerarPDFParticipantes(); //true = substituir certificados ela ja chama o de palestrnates		
 		}
 		if($('#cbkEmail').is(':checked')){
-			alert('Email');
+			if(!$('#cbkPDF').is(':checked')){ //se pdf não tiver marcado
+				gerarPDFParticipantes(); //ela ja chama o de palestrnates se nao tiver marcada = porem nao substitui arquivos
+			}
+			setTimeout(function(){  enviarEmailCertificados(); },500);
 		}
 	});
 
@@ -260,6 +263,107 @@ function imprimirCertificados(substituirArquivos){
 		});				
 	}			
 	
+	
+	//ENVIAR CERTIFICADOS POR EMAIL
+	function enviarEmailCertificados(){
+
+		var qtd=1;
+			
+		$.each( ArrParticipantesInt , function(key, idParticipante) {
+				console.log('IDPART',idParticipante);
+				
+			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']');
+			
+			console.log(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']');
+
+			enviarCertificado.complete(function(response){
+				
+				if(qtd === 1){
+					$('#progresso').removeClass('hidden').addClass('animated fadeInUp');
+					$('#progresso .acao').text('Preperando para enviar os certificados por e-mail');
+					$('.progress-bar').css('width',0).attr('aria-valuenow', 0).text('0%');
+				}
+				
+				console.log('Deu certo',response);
+				
+				emailEnviado = JSON.parse(response.responseText);
+				console.log(emailEnviado);
+				
+				if(emailEnviado.success === true)
+					$('#progresso .acao').text('('+qtd+'/'+totalParticipantes+') Enviou para '+emailEnviado.email);
+				
+				progresso = qtd/totalParticipantes*100;
+				 $('.progress-bar').css('width', progresso+'%').attr('aria-valuenow', progresso).text(progresso.toFixed(1)+'%'); 
+				
+				if(qtd===totalParticipantes){
+					setTimeout(function(){
+						// $('#progresso').addClass('animated fadeOutUp').delay(450).queue(function(){ $(this).removeClass('animated fadeOutUp fadeInUp').addClass('hidden'); });
+						// $('#progresso').addClass('hidden');
+						// $('#btnObterCertificados .icon-spin').addClass('hidden');
+
+						enviarEmailCertificadosPalestrantes();	
+						
+					}, 450);
+					
+				}
+				
+				qtd++;
+			
+				console.log('RESPOSTA',response,idParticipante,'Progresso',progresso);
+			});			
+
+		});				
+	}	
+	
+	
+	
+	//ENVIAR CERTIFICADOS POR EMAIL DOS PALESTRANTES
+	function enviarEmailCertificadosPalestrantes(){
+
+		var qtd=1;
+			
+		$.each( ArrPalestrantesInt , function(key, idPalestrante) {
+			console.log('IDPAL',idPalestrante);
+				
+			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?palestrantes=['+idPalestrante+']');
+
+			enviarCertificado.complete(function(response){
+				
+				if(qtd === 1){
+					$('#progresso').removeClass('hidden').addClass('animated fadeInUp');
+					$('#progresso .acao').text('Preperando para enviar os certificados do palestrantes por e-mail');
+					$('.progress-bar').css('width',0).attr('aria-valuenow', 0).text('0%');
+				}
+				
+				console.log('Deu certo',response);
+				
+				emailEnviado = JSON.parse(response.responseText);
+				console.log(emailEnviado);
+				
+				if(emailEnviado.success === true)
+					$('#progresso .acao').text('('+qtd+'/'+totalPalestrantes+') Enviou para o palestrante '+emailEnviado.email);
+				
+				progresso = qtd/totalPalestrantes*100;
+				 $('.progress-bar').css('width', progresso+'%').attr('aria-valuenow', progresso).text(progresso.toFixed(1)+'%'); 
+				
+				if(qtd===totalPalestrantes){
+					$('#progresso .acao').text('Todos os e-mails foram enviados com sucesso');
+					
+					setTimeout(function(){
+						$('#progresso').addClass('animated fadeOutUp').delay(450).queue(function(){ $(this).removeClass('animated fadeOutUp fadeInUp').addClass('hidden'); });
+						$('#progresso').addClass('hidden');
+						$('#btnObterCertificados .icon-spin').addClass('hidden');	
+					}, 5000);
+					
+				}
+				
+				qtd++;
+			
+				console.log('RESPOSTA',response,idPalestrante,'Progresso',progresso);
+			});			
+
+		});				
+	}		
 	
 	
 

@@ -515,7 +515,7 @@ class CertificadoController extends AppBaseController
 				
 				//AppBaseController::downloadArquivo(GlobalConfig::$APP_ROOT.$caminho.$arquivo, 'Ata - '.$palestra->Nome);
 				
-				echo $html;
+				//echo $html;
 				
 				// echo '<pre>';
 				// print_r($registros);
@@ -1085,7 +1085,6 @@ class CertificadoController extends AppBaseController
 				'Autentique-se para acessar esta página',
 				'Você não possui permissão para acessar essa página ou sua sessão expirou');
 		
-		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		$participantes = $this->GetRouter()->GetUrlParam('participantes');
 		
@@ -1141,7 +1140,131 @@ class CertificadoController extends AppBaseController
 		
 		
 	}
+	
+	
+	//*****///****FUNÇÃO PARA ENVIAR OS CERTIFICADOS DE CADA PARTICIPANTE E PALESTRANTE DA PALESTRA PARA OS E-MAILS******///*****///
+	
+	public function EnviarEmailCertificadosPalestra(){
+		
+		
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$participantes = $this->GetRouter()->GetUrlParam('participantes');
+		
+		$voltar = false;
+		$voltar = $this->GetRouter()->GetUrlParam('voltar');
+			
+		//Palestra
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		//usuario logado
+		$usuario = Controller::GetCurrentUser();
+		
+		if($this->GetRouter()->GetUrlParam('palestrantes')){
+			$pessoas = json_decode($this->GetRouter()->GetUrlParam('palestrantes'));
+			$ehPalestrante = true;			
+		} else {
+			$pessoas = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+			$ehPalestrante = false;
+		}
+		
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		if($ehPalestrante)
+			$tipo = 'palestrante';
+		else
+			$tipo = 'palestra';
+		
+		//ENVIAR POR E-MAIL
+		require_once './vendor/PHPMailer/PHPMailerAutoload.php';
 
+		$mail = new PHPMailer;
+		
+		//debug
+		//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+		$mail->isSMTP();                                      // Set mailer to use SMTP
+		$mail->Host = 'mail.avivalista.com.br;mail.lojapotencial.com.br';  // Specify main and backup SMTP servers
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->Username = 'aviva';                 // SMTP username
+		$mail->Password = 'ieabrm';                           // SMTP password
+		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = 587;                                    // TCP port to connect to
+		$mail->CharSet = 'UTF-8';
+		$mail->setFrom('contato@avivalista.com.br', $this->Configuracao->NomeInstituicao);
+		$mail->addReplyTo('joaoricardo.rm@gmail.com', $this->Configuracao->NomeInstituicao); //REPLY TO MEU PARA NÃO IR PARA O DA IGREJA
+		//$mail->addBCC('joaoricardo.rm@live.com');
+		
+		$mail->isHTML(true);                                  // Set email format to HTML
+
+		$palestraOuEvento = ' do evento ';
+		if($palestra->ProprioEvento == 0)
+			$palestraOuEvento = ' da atividade ';
+		
+		$mail->Subject = 'Certificado'.$palestraOuEvento;		
+		
+		//Adiciona e-mail do usuario logado como copia oculta
+		$mail->addBCC($usuario->Email, $usuario->Nome);
+		
+		$result['success'] = false;
+		foreach($pessoas as $idPessoa){
+			
+			if($ehPalestrante){				
+				$pessoa = $this->Phreezer->Get('Palestrante',$idPessoa);
+				$nomePessoa = $pessoa->Nome;
+				$emailPessoa = $pessoa->Email;
+			} else {
+				//PalestraParticipante
+				require_once('Model/PalestraParticipante.php');
+				$criteria = new PalestraParticipanteCriteria();
+				$criteria->IdParticipante_Equals = $idPessoa;
+				$criteria->IdPalestra_Equals = $palestra->IdPalestra;
+				$criteria->TemCertificado = true;
+				$criteria->Presenca_Equals = 1; //Só pode obter se tiver participado
+				
+				$pessoa = $this->Phreezer->GetByCriteria('PalestraParticipanteReporter',$criteria);
+				$nomePessoa = $pessoa->NomeParticipante;
+				$emailPessoa = $pessoa->EmailParticipante;
+				
+				if($emailPessoa == '' or $pessoa->Presenca == 0) continue; //pula se não tiver email
+			}
+			
+			//Dados do e-mail		
+			$mail->addAddress($emailPessoa, $nomePessoa); 
+			
+			$arquivo = GlobalConfig::$APP_ROOT.$caminho.$tipo.$idPessoa.'.pdf';
+			$mail->addAttachment($arquivo, 'Certificado - '.$palestra->Nome.' - '.$nomePessoa.'.pdf');
+			
+			if($ehPalestrante)
+				$participadoOuMinistrado = 'ministrado';
+			else
+				$participadoOuMinistrado = 'participado';
+			
+			//Corpo do e-mail
+			$mail->Body  = '<h1><img alt="'.$this->Configuracao->NomeInstituicao.'" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'. $this->Configuracao->ImagemLogo .'"></h1>';
+			$mail->Body .= '<p><b>'.$nomePessoa.'</b>, obrigado por ter '.$participadoOuMinistrado.$palestraOuEvento.'<b>'.$palestra->Nome.'</b> em <b>'.date('d/m/Y',strtotime($palestra->Data)).'</b>.</p>';
+			$mail->Body .= '<p>O seu certificado está em anexo.</p>';
+			
+			//Corpo alternativo
+			$mail->AltBody = $nomePessoa.', obrigado por ter '.$participadoOuMinistrado.$palestraOuEvento.' em '.date('d/m/Y',strtotime($palestra->Data)).'. O seu certificado está em anexo.</p>';
+		
+			if(!$mail->send()) {
+				// echo 'Message could not be sent.';
+				// echo 'Mailer Error: ' . $mail->ErrorInfo;
+				
+				$result['success'] = false;
+			} else {
+				$result['success'] = true;
+				$result['email'] = $emailPessoa;
+			}
+		
+		}//foreach
+		
+		if($voltar == true)
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+		else
+			$this->RenderJSON($result);
+		
+	}
 	
 	public function CompactarCertificados(){
 	

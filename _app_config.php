@@ -146,6 +146,11 @@ GlobalConfig::$ROUTE_MAP = array(
 	'POST:api/mesclarcertificados/palestra/(:num)' => array('route' => 'Certificado.MesclarCertificadosPalestraLote', 'params' => array('idPalestra' => 3)),
 	
 	
+	//envia certificados por email
+	'GET:api/enviaremailcertificados/palestra/(:num)' => array('route' => 'Certificado.EnviarEmailCertificadosPalestra', 'params' => array('idPalestra' => 3)),
+	'POST:api/enviaremailcertificados/palestra/(:num)' => array('route' => 'Certificado.EnviarEmailCertificadosPalestra', 'params' => array('idPalestra' => 3)),
+	
+	
 	
 	//gerar ata de certificados da palestra
 	'GET:api/gerarata/(:num)' => array('route' => 'Certificado.GerarAta', 'params' => array('idPalestra' => 2)),

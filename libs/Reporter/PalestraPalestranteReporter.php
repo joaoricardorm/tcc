@@ -30,7 +30,8 @@ class PalestraPalestranteReporter extends Reporter
 	public $NomePalestrante;
 	public $CpfPalestrante;
 	public $ImagemAssinatura;
-	public $CargoPalestrante;	
+	public $CargoPalestrante;
+	public $EmailPalestrante;	
 	
 	public $DataEmissao;
 	public $Livro;
@@ -71,6 +72,7 @@ class PalestraPalestranteReporter extends Reporter
 			,`palestrante`.`cpf` as CpfPalestrante
 			,`palestrante`.`imagem_assinatura` as ImagemAssinatura
 			,`palestrante`.`cargo` as CargoPalestrante
+			,`palestrante`.`email` as EmailPalestrante
 			, `palestra_palestrante`.`id_palestra` as IdPalestra
 			,`palestra_palestrante`.`id_certificado` as IdCertificado ";
 	

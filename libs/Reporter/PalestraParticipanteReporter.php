@@ -24,8 +24,9 @@ class PalestraParticipanteReporter extends Reporter
 	public $IdPalestra;
 	public $IdCertificado;
 	
-	public $NomePalestrante;
-	public $CpfPalestrante;	
+	public $NomeParticipante;
+	public $CpfParticipante;
+	public $EmailParticipante;	
 
 	/*
 	* GetCustomQuery returns a fully formed SQL statement.  The result columns
@@ -43,6 +44,7 @@ class PalestraParticipanteReporter extends Reporter
 			,`palestra_participante`.`id_participante` as IdParticipante
 			,`participante`.`nome` as NomeParticipante
 			,`participante`.`cpf` as CpfParticipante
+			,`participante`.`email` as EmailParticipante
 			,`palestra_participante`.`id_palestra` as IdPalestra
 			,`palestra_participante`.`id_certificado` as IdCertificado ";
 	

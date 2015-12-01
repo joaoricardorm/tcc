@@ -76,9 +76,11 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 		if(isset($this->Participante->IdPalestrante)){
 			$urlDownload = './api/downloadcertificadopalestrante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdPalestrante.'/';
 			$urlImprimir = './api/mesclarcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?palestrantes=['.$this->Participante->IdPalestrante.']';
+			$urlEmail = './api/enviaremailcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?palestrantes=['.$this->Participante->IdPalestrante.']&voltar=true';
 		} else {
 			$urlDownload = './api/downloadcertificadoparticipante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdParticipante.'/';
 			$urlImprimir = './certificados-gerados/'.AppBaseController::ParseUrl($palestraParticipante['Palestra']->Nome).'-'.$palestraParticipante['Palestra']->IdPalestra.'/palestra'.$this->Participante->IdParticipante.'.pdf';
+			$urlEmail = './api/enviaremailcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?participantes=['.$this->Participante->IdParticipante.']&voltar=true';
 		}
 	?>
 	
@@ -92,7 +94,7 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 		<i class="icon-print icon-margin-right"></i> Imprimir
 	</a>
 	
-	<a id="btnObterCertificado" href="./api/downloadcertificado/<?php echo $palestraParticipante['Certificado']->IdCertificado; ?>" class="btn btn-default margin-bottom-5px">
+	<a id="btnObterCertificado" href="<?php echo $urlEmail; ?>" class="btn btn-default margin-bottom-5px">
 		<i class="icon-envelope icon-margin-right"></i> Enviar para o e-mail do participante
 	</a>	
 	
