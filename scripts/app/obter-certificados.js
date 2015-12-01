@@ -61,26 +61,29 @@ palestrantesPalestra.complete(function(td){
 		
 		if($('#cbkImprimir').is(':checked')){
 			if(!$('#cbkPDF').is(':checked')){ //se pdf não tiver marcado
-				gerarPDFParticipantes(); //ela ja chama o de palestrnates
+				gerarPDFParticipantes(); //ela ja chama o de palestrnates se nao tiver marcada = porem nao substitui arquivos
 			}
 			setTimeout(function(){  imprimirCertificados(); },500);
 		}
 		if($('#cbkPDF').is(':checked')){
-			gerarPDFParticipantes(); //ela ja chama o de palestrnates		
+			gerarPDFParticipantes(); //true = substituir certificados ela ja chama o de palestrnates		
 		}
 		if($('#cbkEmail').is(':checked')){
 			alert('Email');
 		}
 	});
 
-	function gerarPDFParticipantes(){
+	function gerarPDFParticipantes(substituirArquivos){
+		
+		//porpadrao nao substitui
+		substituirArquivos = typeof substituirArquivos !== 'undefined' ? substituirArquivos : false;
 		
 		var qtd=1;
 			
 		$.each( ArrParticipantesInt , function(key, idParticipante) {
 				console.log(idParticipante);
 				
-			geraCertificado = $.ajax(base+'api/gerarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']');
+			geraCertificado = $.ajax(base+'api/gerarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']&substituir='+substituirArquivos);
 
 			geraCertificado.complete(function(response){
 				
@@ -218,6 +221,47 @@ palestrantesPalestra.complete(function(td){
 	  }, 3400);
 	  
 	}
+	
+	
+function imprimirCertificados(substituirArquivos){
+	
+		//porpadrao nao substitui
+		substituirArquivos = typeof substituirArquivos !== 'undefined' ? substituirArquivos : false;
+		
+		$('#progresso').removeClass('hide').addClass('animated fadeIn');
+		$('#progresso .acao').text('Preparando a ata');
+		$('.progress-bar').addClass('active').removeClass('bar-success').css('width', '100%').attr('aria-valuenow', 100).text('');
+		
+		mesclarCertificados = $.get(base+'api/mesclarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes='+JSON.stringify(ArrParticipantesInt)+'&substituir='+substituirArquivos);
+
+		
+		console.log('LINK',base+'api/mesclarcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes='+JSON.stringify(ArrParticipantesInt)+'&substituir='+substituirArquivos);
+		
+			mesclarCertificados.complete(function(response){
+		
+		
+					$('.progress-bar').addClass('bar-success');
+		
+		
+				if(response){
+					//document.location.href = base+response;
+					
+					$('#progresso').removeClass('fadeIn').addClass('hide animated fadeOutUp').delay(900).queue(function(){ 
+						$(this).hide();					
+					});
+					
+					var urlPDFImpressao = response.responseText;
+					
+					app.printPDF(urlPDFImpressao);
+				}
+				
+				console.log('LINK CERTO',response.responseText);	
+
+		});				
+	}			
+	
+	
+	
 
 
 }); //LISTA PALESTRANTES

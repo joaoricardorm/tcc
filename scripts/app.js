@@ -138,6 +138,20 @@ var app = {
 		}
 	},
 	
+	printPDF: function(urlPDFImpressao){
+		
+		app.alertaAnimado('body', 'mousemove', '#alertaHabilitarPopup',7000);
+		
+		setTimeout(function(){
+			$('body').unbind('mousemove');
+		}, 1400);
+		
+		//$('#alertaHabilitarPopup').removeClass('hide').addClass('animated rubberBand');
+		
+		var w = window.open(urlPDFImpressao, "", "toolbar=no, scrollbars=no, resizable=yes, top=50, left=50, width="+(screen.width-100)+", height="+(screen.height-200)+"");
+		setTimeout(function(){ w.print(); },500);
+	},
+	
 	/**
 	 * remove um parametro da URL
 	 * @param parametro procurado

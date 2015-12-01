@@ -152,6 +152,19 @@
 			Os arquivos de certificados dos palestrantes e de participantes foram baixados para o seu dispositivo.
 			
 		</div>
+		
+		
+		
+		<div id="alertaHabilitarPopup" class="hide alert alert-dark text-large" style="padding-left:8px; margin:15px 0 0 0;">
+	
+			<button type="button" class="close" data-dismiss="alert" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+			
+			<i class="icon-print icon-big icon-margin-right icon-large" style="font-size:2em; vertical-align:middle; opacity:0.7;"></i>
+			<i class="icon-exclamation icon-margin-right icon-large" style="font-size:1.2em; vertical-align:middle; opacity:0.7;"></i>
+			
+			Talvez seja necessário desabilitar o bloqueador de popups de seu navegador para realizar a impressão.
+			
+		</div>
 			
 			
 			

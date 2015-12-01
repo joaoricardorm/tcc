@@ -1024,6 +1024,12 @@ class CertificadoController extends AppBaseController
 		
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		
+		if($this->GetRouter()->GetUrlParam('substituir') === 'true'){
+			$substituir = true;
+		} else {
+			$substituir = false;
+		}
+		
 		if($this->GetRouter()->GetUrlParam('palestrantes')){
 			
 			//PalestraParticipante
@@ -1051,7 +1057,7 @@ class CertificadoController extends AppBaseController
 		}
 
 		foreach($pessoas as $pessoa){
-			$this->GeraCertificadoParticipante($pessoa, $idPalestra,true,$ehPalestrante); //false=substitui os certificados existentes
+			$this->GeraCertificadoParticipante($pessoa, $idPalestra,$substituir,$ehPalestrante); //false=substitui os certificados existentes
 		}
 		
 		

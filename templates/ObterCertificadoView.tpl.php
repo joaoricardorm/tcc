@@ -8,6 +8,7 @@
 
 <script type="text/javascript" src="./scripts/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="./scripts/jquery.maskedinput.min.js"></script>
+<script type="text/javascript" src="./scripts/app.js"></script>
 
 <script type="text/javascript">
 	//$LAB.script(base+"scripts/app/emitir-certificados.js?"+Math.floor((Math.random() * 1000) + 1));
@@ -15,6 +16,12 @@
 	$(document).ready(function(){
 		//mascara para telefone e cnpj
 		$("#cpf").mask("999.999.999-99",{placeholder:"_", autoclear: false });
+		
+		$('.btnImprimirCertificado').click(function(e){
+			e.preventDefault();
+			var urlPDFImpressao = $(this).attr('href');
+			app.printPDF(urlPDFImpressao);
+		});
 	});
 </script>
 
@@ -68,8 +75,10 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 	<?php 
 		if(isset($this->Participante->IdPalestrante)){
 			$urlDownload = './api/downloadcertificadopalestrante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdPalestrante.'/';
+			$urlImprimir = './api/mesclarcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?palestrantes=['.$this->Participante->IdPalestrante.']';
 		} else {
 			$urlDownload = './api/downloadcertificadoparticipante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdParticipante.'/';
+			$urlImprimir = './certificados-gerados/'.AppBaseController::ParseUrl($palestraParticipante['Palestra']->Nome).'-'.$palestraParticipante['Palestra']->IdPalestra.'/palestra'.$this->Participante->IdParticipante.'.pdf';
 		}
 	?>
 	
@@ -79,19 +88,31 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 		<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
 	</a>
 	
-	<a id="btnObterCertificado" href="./api/downloadcertificado/<?php echo $palestraParticipante['Certificado']->IdCertificado; ?>" class="btn btn-default margin-right-bigger-sm margin-bottom-5px">
+	<a id="btnImprimirCertificado" href="<?php echo $urlImprimir; ?>" class="btnImprimirCertificado btn btn-default margin-right-bigger-sm margin-bottom-5px">
 		<i class="icon-print icon-margin-right"></i> Imprimir
 	</a>
 	
 	<a id="btnObterCertificado" href="./api/downloadcertificado/<?php echo $palestraParticipante['Certificado']->IdCertificado; ?>" class="btn btn-default margin-bottom-5px">
 		<i class="icon-envelope icon-margin-right"></i> Enviar para o e-mail do participante
-	</a>
+	</a>	
 	
-	</p>
+	</p>	
+	
 <?php 
 } //foreach 
 } //sizeofarray
 ?>
+
+<div id="alertaHabilitarPopup" class="hide alert alert-dark text-large" style="padding-left:8px; margin:-5px 0 20px 0;">
+	
+			<button type="button" class="close" data-dismiss="alert" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+			
+			<i class="icon-print icon-big icon-margin-right icon-large" style="font-size:2em; vertical-align:middle; opacity:0.7;"></i>
+			<i class="icon-exclamation icon-margin-right icon-large" style="font-size:1.2em; vertical-align:middle; opacity:0.7;"></i>
+			
+			Talvez seja necessário desabilitar o bloqueador de popups de seu navegador para realizar a impressão.
+			
+</div>	
 
 <?php } else if(isset($_GET['cpf']) && $this->CPFValido == false){ ?>
 
