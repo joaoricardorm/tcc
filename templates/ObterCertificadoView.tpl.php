@@ -74,29 +74,58 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 	
 	<?php 
 		if(isset($this->Participante->IdPalestrante)){
-			$urlDownload = './api/downloadcertificadopalestrante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdPalestrante.'/';
+			$urlDownload = './api/downloadcertificadopalestrante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdPalestrante.'/';			
 			$urlImprimir = './api/mesclarcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?palestrantes=['.$this->Participante->IdPalestrante.']';
 			$urlEmail = './api/enviaremailcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?palestrantes=['.$this->Participante->IdPalestrante.']&voltar=true';
 		} else {
 			$urlDownload = './api/downloadcertificadoparticipante/'.$palestraParticipante['Palestra']->IdPalestra.'/'.$this->Participante->IdParticipante.'/';
 			$urlImprimir = './certificados-gerados/'.AppBaseController::ParseUrl($palestraParticipante['Palestra']->Nome).'-'.$palestraParticipante['Palestra']->IdPalestra.'/palestra'.$this->Participante->IdParticipante.'.pdf';
-			$urlEmail = './api/enviaremailcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?participantes=['.$this->Participante->IdParticipante.']&voltar=true';
+			$urlEmail = './api/enviaremailcertificados/palestra/'.$palestraParticipante['Palestra']->IdPalestra.'?participantes=['.$this->Participante->IdParticipante.']&voltar=true';				
 		}
+		
+		//VERIFICA SE EXISTE ARQUIVO PARA DOWNLOAD
+		$handle = curl_init($this->ROOT_URL.$urlDownload);
+		curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+
+		/* Get the HTML or whatever is linked in $url. */
+		$response = curl_exec($handle);
+
+		/* Check for 404 (file not found). */
+		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+		if($httpCode == 401 or $httpCode == 404) {
+			$temArquivoDownload = false;
+		} else {
+			$temArquivoDownload = true;
+		}
+
+		curl_close($handle);
 	?>
 	
 	<p>
 	
-	<a id="btnObterCertificado" href="<?php echo $urlDownload; ?>" type="submit" class="btn btn-success margin-right-bigger-sm margin-bottom-5px">
-		<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
-	</a>
+	<?php if($temArquivoDownload){ ?>
+		<a id="btnObterCertificado" href="<?php echo $urlDownload; ?>" type="submit" class="btn btn-success margin-right-bigger-sm margin-bottom-5px">
+			<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
+		</a>
 	
-	<a id="btnImprimirCertificado" href="<?php echo $urlImprimir; ?>" class="btnImprimirCertificado btn btn-default margin-right-bigger-sm margin-bottom-5px">
-		<i class="icon-print icon-margin-right"></i> Imprimir
-	</a>
-	
-	<a id="btnObterCertificado" href="<?php echo $urlEmail; ?>" class="btn btn-default margin-bottom-5px">
-		<i class="icon-envelope icon-margin-right"></i> Enviar para o e-mail do participante
-	</a>	
+		<a id="btnImprimirCertificado" href="<?php echo $urlImprimir; ?>" class="btnImprimirCertificado btn btn-default margin-right-bigger-sm margin-bottom-5px">
+			<i class="icon-print icon-margin-right"></i> Imprimir
+		</a>
+		
+		<a id="btnObterCertificado" href="<?php echo $urlEmail; ?>" class="btn btn-default margin-bottom-5px">
+			<i class="icon-envelope icon-margin-right"></i> Enviar para o e-mail do participante
+		</a>
+	<?php } else { ?>
+		<div class="well grey well-small">
+		<small>
+		<p class="sem-margin-bottom">O arquivo do certificado para <?php echo ($palestraParticipante['Palestra']->ProprioEvento) ? 'este evento' : 'esta atividade' ; ?> ainda não foi gerado pelo administrador do sistema.</p>
+		<p class="sem-margin-bottom">Aguarde alguns dias ou entre em contato conosco:<br>
+			<strong><?php echo $this->Configuracao->NomeInstituicao; ?></strong><br>
+			<i class="icon icon-phone"></i> <?php echo $this->Configuracao->Telefone; ?>
+		</p>
+		</small>
+		</div>
+	<?php } ?>	
 	
 	</p>	
 	

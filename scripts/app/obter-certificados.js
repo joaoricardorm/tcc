@@ -272,7 +272,7 @@ function imprimirCertificados(substituirArquivos){
 		$.each( ArrParticipantesInt , function(key, idParticipante) {
 				console.log('IDPART',idParticipante);
 				
-			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']');
+			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']&admin=true');
 			
 			console.log(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+idParticipante+']');
 
@@ -325,7 +325,7 @@ function imprimirCertificados(substituirArquivos){
 		$.each( ArrPalestrantesInt , function(key, idPalestrante) {
 			console.log('IDPAL',idPalestrante);
 				
-			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?palestrantes=['+idPalestrante+']');
+			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?palestrantes=['+idPalestrante+']&admin=true');
 
 			enviarCertificado.complete(function(response){
 				

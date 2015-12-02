@@ -16,7 +16,7 @@
 
 <!--["111","112","113","115","116","117","118"]-->
 
-<textarea name="listaParticipantes" id="listaParticipantes">
+<textarea style="display:none" name="listaParticipantes" id="listaParticipantes">
 <?php if(isset($_POST['cbParticipante'])) echo json_encode($_POST['cbParticipante']); ?>
 </textarea>
 

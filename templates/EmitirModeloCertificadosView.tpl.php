@@ -28,8 +28,6 @@
 <link href="bootstrap/editor-textos/index.css" rel="stylesheet" />
 
 <link href="scripts/tagit-dark-grey.css" rel="stylesheet" />
-
-<?php print_r($_POST); ?>
 	
 
 <?php
@@ -155,11 +153,11 @@
 		
 				
 				
-	 <div id="toolBarDiv" class="btn-toolbar" data-spy="affix" data-offset-top="720" data-role="editor-toolbar" data-target="#editor" style="z-index:999;">
+	 <div id="toolBarDiv" class="btn-toolbar" data-spy="affix" data-offset-top="620" data-role="editor-toolbar" data-target="#editor" style="z-index:999;">
 	  
 	  <div class="pull-left text-center-sm block-sm">
 	   
-	   <legend class="text-center">Estilos para o conteúdo dinâmico</legend>
+	   <legend class="text-center">Cor do conteúdo dinâmico</legend>
 	   
 	   <div>
 		   
@@ -199,7 +197,7 @@
 			</div>
 
 			
-			<input class="inputcordbitem btn btn-default small" type="color"  title="Cor do texto do certificado" onchange="$($(this).parent().data('target')).css('color',$(this).val())">
+			<input class="inputcordbitem btn btn-default small sem-margin-bottom" type="color"  title="Cor do texto do certificado" style="border-radius:4px;" onchange="$($(this).parent().data('target')).css('color',$(this).val())">
 			
 			
 			</div>
@@ -230,7 +228,7 @@
 		
 			<a class="btn" data-edit="bold" title="Negrito"><i class="icon-bold"></i></a>
 			<a class="btn" data-edit="italic" title="Itálico"><i class="icon-italic"></i></a>
-			<input class="btn btn-default small" type="color"  title="Cor do texto do certificado" onchange="$($(this).parent().data('target')).css('color',$(this).val())">
+			<input class="btn btn-default small sem-margin-bottom" type="color"  title="Cor do texto do certificado" onchange="$($(this).parent().data('target')).css('color',$(this).val())">
 		  </div>
 	  
 	  </div>

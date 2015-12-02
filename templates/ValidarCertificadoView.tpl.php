@@ -33,11 +33,30 @@
 		} else {
 			$urlDownload = './api/downloadcertificadoparticipante/'.$this->Palestra->IdPalestra.'/'.$this->Participante->IdParticipante.'/';
 		}
+		
+		//VERIFICA SE EXISTE ARQUIVO PARA DOWNLOAD
+		$handle = curl_init($this->ROOT_URL.$urlDownload);
+		curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+
+		/* Get the HTML or whatever is linked in $url. */
+		$response = curl_exec($handle);
+
+		/* Check for 404 (file not found). */
+		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+		if($httpCode == 401 or $httpCode == 404) {
+			$temArquivoDownload = false;
+		} else {
+			$temArquivoDownload = true;
+		}
+
+		curl_close($handle);
 	?>
 	
-	<a id="btnObterCertificado" href="<?php echo $urlDownload; ?>" type="submit" class="btn btn-success btn-large">
-		<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
-	</a></p>
+	<?php if($temArquivoDownload){ ?>
+		<a id="btnObterCertificado" href="<?php echo $urlDownload; ?>" type="submit" class="btn btn-success btn-large">
+			<i class="icon-file-pdf-o icon-margin-right"></i> Obter cópia do certificado em PDF
+		</a></p>
+	<?php } ?>	
 	
 <?php } ?>
 
