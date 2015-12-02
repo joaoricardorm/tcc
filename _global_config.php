@@ -66,6 +66,9 @@ class GlobalConfig
 
 	/** @var int if level 2 cache is specified, the timeout in seconds*/
 	public static $LEVEL_2_CACHE_TIMEOUT = 15;
+	
+	//LIMITE DE MEMORIA AUMENTAR
+	ini_set('memory_limit','512M'); // set memory to prevent fatal errors
 
 	private static $INSTANCE;
 	private static $IS_INITIALIZED = false;
