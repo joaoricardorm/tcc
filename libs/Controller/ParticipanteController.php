@@ -450,7 +450,7 @@ class ParticipanteController extends AppBaseController
 			$errors_p = array();
 			
 			$row = 0;
-			foreach ($unique as $json){ //trocar $unique por $json->data se nao for usa-lo
+			foreach ($json->data as $json){ //trocar $unique por $json->data se nao for usa-lo
 				
 				if($json->idParticipante == '' && $json->nome == '' && $json->email == '' && $json->nome == ''){
 				  //se linha estiver em branco

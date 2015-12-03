@@ -417,7 +417,7 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	
    // contextMenu: ["row_above", "row_below", "remove_row", "undo", "redo"],
 	height: $(window).height()-( $(window).height()/3.4 ),
-	colWidths: [0.1], //ESCONDE ID 0.1
+	colWidths: [10], //ESCONDE ID 0.1
 	stretchH: 'all',
 	currentRowClassName: 'currentRow',
     currentColClassName: 'currentCol',
@@ -852,6 +852,8 @@ var customRenderer = function (instance, td, row, col, prop, value) {
 	});	
 	
 	request.success(function( response ) {
+		
+		console.log(response);
 		
 		// reset any previous errors
 		$('#modelAlert').html('');
