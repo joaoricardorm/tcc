@@ -150,6 +150,10 @@ GlobalConfig::$ROUTE_MAP = array(
 	'GET:api/enviaremailcertificados/palestra/(:num)' => array('route' => 'Certificado.EnviarEmailCertificadosPalestra', 'params' => array('idPalestra' => 3)),
 	'POST:api/enviaremailcertificados/palestra/(:num)' => array('route' => 'Certificado.EnviarEmailCertificadosPalestra', 'params' => array('idPalestra' => 3)),
 	
+	//envia certificados por email - admin zip
+	'GET:api/enviaremailcertificadosadmin/palestra/(:num)' => array('route' => 'Certificado.EnviarEmailCertificadosPalestraAdmin', 'params' => array('idPalestra' => 3)),
+	'POST:api/enviaremailcertificadosadmin/palestra/(:num)' => array('route' => 'Certificado.EnviarEmailCertificadosPalestraAdmin', 'params' => array('idPalestra' => 3)),	
+	
 	
 	
 	//gerar ata de certificados da palestra

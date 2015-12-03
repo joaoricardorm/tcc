@@ -1141,6 +1141,108 @@ class CertificadoController extends AppBaseController
 		
 	}
 	
+	//*****///**** ADMIN ZIP- FUNÇÃO PARA ENVIAR OS CERTIFICADOS DE CADA PARTICIPANTE E PALESTRANTE DA PALESTRA PARA OS E-MAILS******///*****///
+	
+	public function InstanciaEmail(){
+		require_once './vendor/PHPMailer/PHPMailerAutoload.php';
+
+		$mail = new PHPMailer;
+		
+		//debug
+		//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+		$mail->isSMTP();                                      // Set mailer to use SMTP
+		$mail->Host = 'mail.avivalista.com.br;mail.lojapotencial.com.br';  // Specify main and backup SMTP servers
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->Username = 'aviva';                 // SMTP username
+		$mail->Password = 'ieabrm';                           // SMTP password
+		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = 587;                                    // TCP port to connect to
+		$mail->CharSet = 'UTF-8';
+		$mail->setFrom('contato@avivalista.com.br', $this->Configuracao->NomeInstituicao);
+		$mail->addReplyTo('joaoricardo.rm@gmail.com', $this->Configuracao->NomeInstituicao); //REPLY TO MEU PARA NÃO IR PARA O DA IGREJA
+		//$mail->addBCC('joaoricardo.rm@live.com');
+		
+		$mail->isHTML(true); // Set email format to HTML	
+
+		return $mail;
+	}	
+	
+	public function EnviarEmailCertificadosPalestraAdmin(){
+		
+		
+		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
+		$participantes = $this->GetRouter()->GetUrlParam('participantes');
+		
+		$voltar = false;
+		$voltar = $this->GetRouter()->GetUrlParam('voltar');
+			
+		//Palestra
+		$palestra = $this->Phreezer->Get('Palestra',$idPalestra);
+		
+		//usuario logado
+		$usuario = Controller::GetCurrentUser();
+		
+		if($this->GetRouter()->GetUrlParam('palestrantes')){
+			$pessoas = json_decode($this->GetRouter()->GetUrlParam('palestrantes'));
+			$ehPalestrante = true;			
+		} else {
+			$pessoas = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+			$ehPalestrante = false;
+		}
+		
+		$caminho = '/certificados-gerados/'.AppBaseController::ParseUrl($palestra->Nome).'-'.$palestra->IdPalestra.'/';
+		
+		if($ehPalestrante)
+			$tipo = 'palestrante';
+		else
+			$tipo = 'palestra';
+		
+		$palestraOuEvento = ' do evento ';
+		if($palestra->ProprioEvento == 0)
+			$palestraOuEvento = ' da atividade ';
+		
+		
+		//INSTANCIA CONFIGURAÇÕES DO EMAIL
+		$mail = $this->InstanciaEmail();
+		
+		//Adiciona e-mail do usuario logado como copia oculta
+		$mail->addAddress($usuario->Email, $usuario->Nome);
+		
+		$result['success'] = false;
+		
+		//ZIP PARA CERTIFICADOS USUARIO DO SISTEMA
+		$zip = $this->CompactarCertificados(false,$paramParticipantes=$pessoas); //false pra nao baixar
+	
+		$mail->addAttachment($zip['arquivo'], $zip['novo_nome']);
+		
+		$mail->Subject = 'Certificado(s)'.$palestraOuEvento;	
+
+
+		//Corpo do e-mail
+		$mail->Body  = '<h1><img width="200" style="max-height:200px;" alt="'.$this->Configuracao->NomeInstituicao.'" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'. $this->Configuracao->ImagemLogo .'"></h1>';
+		$mail->Body .= '<p>Os certificados soliciadados de <b>'.$palestra->Nome.'</b> estão em anexo.</p>';
+		
+		//Corpo alternativo
+		$mail->AltBody = 'Os certificados soliciadados de '.$palestra->Nome.' estão em anexo.';
+	
+		if(!$mail->send()) {
+			// echo 'Message could not be sent.';
+			// echo 'Mailer Error: ' . $mail->ErrorInfo;
+			
+			$result['success'] = false;
+		} else {
+			$result['success'] = true;
+			$result['email'] = $usuario->Email;
+			$mail->clearAttachments(); //remove o zip dos anexos
+		}					
+		
+		if($voltar == true)
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+		else
+			$this->RenderJSON($result);
+		
+	}
 	
 	//*****///****FUNÇÃO PARA ENVIAR OS CERTIFICADOS DE CADA PARTICIPANTE E PALESTRANTE DA PALESTRA PARA OS E-MAILS******///*****///
 	
@@ -1174,37 +1276,21 @@ class CertificadoController extends AppBaseController
 		else
 			$tipo = 'palestra';
 		
-		//ENVIAR POR E-MAIL
-		require_once './vendor/PHPMailer/PHPMailerAutoload.php';
-
-		$mail = new PHPMailer;
-		
-		//debug
-		//$mail->SMTPDebug = 3;                               // Enable verbose debug output
-
-		$mail->isSMTP();                                      // Set mailer to use SMTP
-		$mail->Host = 'mail.avivalista.com.br;mail.lojapotencial.com.br';  // Specify main and backup SMTP servers
-		$mail->SMTPAuth = true;                               // Enable SMTP authentication
-		$mail->Username = 'aviva';                 // SMTP username
-		$mail->Password = 'ieabrm';                           // SMTP password
-		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-		$mail->Port = 587;                                    // TCP port to connect to
-		$mail->CharSet = 'UTF-8';
-		$mail->setFrom('contato@avivalista.com.br', $this->Configuracao->NomeInstituicao);
-		$mail->addReplyTo('joaoricardo.rm@gmail.com', $this->Configuracao->NomeInstituicao); //REPLY TO MEU PARA NÃO IR PARA O DA IGREJA
-		//$mail->addBCC('joaoricardo.rm@live.com');
-		
-		$mail->isHTML(true);                                  // Set email format to HTML
-
 		$palestraOuEvento = ' do evento ';
 		if($palestra->ProprioEvento == 0)
 			$palestraOuEvento = ' da atividade ';
 		
-		$mail->Subject = 'Certificado'.$palestraOuEvento;		
+	
+		//INSTANCIA CONFIGURAÇÕES DO EMAIL
+		$mail = $this->InstanciaEmail();		
 		
-		//Adiciona e-mail do usuario logado como copia oculta
-		$mail->addBCC($usuario->Email, $usuario->Nome);
+		//Adiciona e-mail do usuario logado como copia oculta quando alguem pedir o certificado no site
+		//para caso adicionar cabecalho para admin do sistema que alguem pediu certificado
+		$mail->Body = '';
 		
+		//ENCAMINHA PARA O MEU PARA PODER MOSTRAR LÁ NA HORA E TAL, REMOVER DEPOIS
+		//$mail->addBCC($usuario->Email, $usuario->Nome);	
+	
 		$result['success'] = false;
 		foreach($pessoas as $idPessoa){
 			
@@ -1239,8 +1325,10 @@ class CertificadoController extends AppBaseController
 			else
 				$participadoOuMinistrado = 'participado';
 			
+			$mail->Subject = 'Certificado'.$palestraOuEvento;	
+			
 			//Corpo do e-mail
-			$mail->Body  = '<h1><img alt="'.$this->Configuracao->NomeInstituicao.'" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'. $this->Configuracao->ImagemLogo .'"></h1>';
+			$mail->Body  .= '<h1><img width="200" style="max-height:200px;" alt="'.$this->Configuracao->NomeInstituicao.'" src="'.GlobalConfig::$ROOT_URL.'images/uploads/logos/small/'. $this->Configuracao->ImagemLogo .'"></h1>';
 			$mail->Body .= '<p><b>'.$nomePessoa.'</b>, obrigado por ter '.$participadoOuMinistrado.$palestraOuEvento.'<b>'.$palestra->Nome.'</b> em <b>'.date('d/m/Y',strtotime($palestra->Data)).'</b>.</p>';
 			$mail->Body .= '<p>O seu certificado está em anexo.</p>';
 			
@@ -1260,13 +1348,13 @@ class CertificadoController extends AppBaseController
 		}//foreach
 		
 		if($voltar == true)
-			header('Location: ' . $_SERVER['HTTP_REFERER']);
+			header('Location: ' . $_SERVER['HTTP_REFERER'].'&s');
 		else
 			$this->RenderJSON($result);
 		
 	}
 	
-	public function CompactarCertificados(){
+	public function CompactarCertificados($baixar=true,$paramParticipantes=false,$paramPalestrantes=false){
 	
 		$idPalestra = $this->GetRouter()->GetUrlParam('idPalestra');
 		
@@ -1278,6 +1366,12 @@ class CertificadoController extends AppBaseController
 			$participantes = json_decode($this->GetRouter()->GetUrlParam('palestrantes'));
 		} else {
 			$participantes = json_decode($this->GetRouter()->GetUrlParam('participantes'));
+		}
+		
+		if($paramParticipantes != false){
+			$participantes = $paramParticipantes;
+		} elseif($paramPalestrantes != false){
+			$participantes = $paramPalestrantes;
 		}
 		
 		//Palestra
@@ -1302,7 +1396,7 @@ class CertificadoController extends AppBaseController
 			//$arquivos[] = './certificados-gerados/workshop-tecnicas-avancadas-de-pog-128/palestra113.pdf';
 		}
 		
-		print_r( $arquivos );
+		//print_r( $arquivos );
 		//print_r($nomeFinal);
 	
 		// $arquivo = 'arquivo-em-pdf-22.pdf';
@@ -1320,7 +1414,13 @@ class CertificadoController extends AppBaseController
 		else
 			$novo_nome = 'Certificados '.$eventoOuPalestra.$palestra->Nome.'.zip';
 		
-		AppBaseController::send_download($zip, $novo_nome);
+		if($baixar)	
+			AppBaseController::send_download($zip, $novo_nome);
+		else {
+			$result['arquivo'] = $zip;
+			$result['novo_nome'] = $novo_nome;
+			return $result;
+		}
 		
 	}
 	

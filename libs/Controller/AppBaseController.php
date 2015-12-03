@@ -116,7 +116,7 @@ class AppBaseController extends Controller
 		
 		$i=0;
 		foreach ($files as $file) {
-			echo  $file ;
+			//echo  $file ;
 			if($novosNomes)
 				$new_filename = $novosNomes[$i];
 			else

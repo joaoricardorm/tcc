@@ -14,6 +14,10 @@ function toggleBtnObterCertificados(){
 
 toggleBtnObterCertificados();
 $("input[type=checkbox]").change(function() {
+	//Deixa somente o atual checkado
+	$('.checkbox-custom').prop('checked',false);
+	$(this).prop('checked',true);
+	
     toggleBtnObterCertificados();
 });
 
@@ -266,7 +270,13 @@ function imprimirCertificados(substituirArquivos){
 	
 	//ENVIAR CERTIFICADOS POR EMAIL
 	function enviarEmailCertificados(){
-
+		
+		//ENVIA ZIP PARA O ADMIN
+		enviarAdminPart = $.ajax(base+'api/enviaremailcertificadosadmin/palestra/'+app.getUrlParameter('idPalestra')+'?participantes=['+ArrParticipantesInt+']');
+		enviarAdminPart.complete(function(response){
+			console.log(response);
+		});
+		
 		var qtd=1;
 			
 		$.each( ArrParticipantesInt , function(key, idParticipante) {
@@ -316,15 +326,22 @@ function imprimirCertificados(substituirArquivos){
 	}	
 	
 	
+	http://localhost:85/tcc/api/enviaremailcertificadosadmin/palestra/128?participantes=[114,116]
 	
 	//ENVIAR CERTIFICADOS POR EMAIL DOS PALESTRANTES
 	function enviarEmailCertificadosPalestrantes(){
-
+		
+		//ENVIA ZIP PARA O ADMIN
+		enviarAdminPal = $.ajax(base+'api/enviaremailcertificadosadmin/palestra/'+app.getUrlParameter('idPalestra')+'?palestrantes=['+ArrPalestrantesInt+']');
+		enviarAdminPal.complete(function(response){
+			console.log(response);
+		});
+		
 		var qtd=1;
 			
 		$.each( ArrPalestrantesInt , function(key, idPalestrante) {
 			console.log('IDPAL',idPalestrante);
-				
+			
 			enviarCertificado = $.ajax(base+'api/enviaremailcertificados/palestra/'+app.getUrlParameter('idPalestra')+'?palestrantes=['+idPalestrante+']&admin=true');
 
 			enviarCertificado.complete(function(response){

@@ -22,6 +22,16 @@
 			var urlPDFImpressao = $(this).attr('href');
 			app.printPDF(urlPDFImpressao);
 		});
+		
+		if(typeof app.getUrlParameter('s') !== 'undefined' && app.getUrlParameter('s') !== ''){
+			app.alertaAnimado('body', 'mousemove', '#alertaEmailEnviado',7000);
+			
+			setTimeout(function(){
+				$('body').unbind('mousemove');
+				$('#alertaEmailEnviado').addClass('hidden');
+			}, 7000);
+		}
+
 	});
 </script>
 
@@ -112,9 +122,12 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 			<i class="icon-print icon-margin-right"></i> Imprimir
 		</a>
 		
-		<a id="btnObterCertificado" href="<?php echo $urlEmail; ?>" class="btn btn-default margin-bottom-5px">
-			<i class="icon-envelope icon-margin-right"></i> Enviar para o e-mail do participante
-		</a>
+		<?php if($this->Participante->Email != ''){ ?>
+			<a id="btnObterCertificado" href="<?php echo $urlEmail; ?>" class="btn btn-default margin-bottom-5px">
+				<i class="icon-envelope icon-margin-right"></i> Enviar para o e-mail do participante
+			</a>
+		<?php } ?>
+		
 	<?php } else { ?>
 		<div class="well grey well-small">
 		<small>
@@ -142,6 +155,17 @@ foreach($this->ArrPalestraParticipantes as $palestraParticipante){ ?>
 			<i class="icon-exclamation icon-margin-right icon-large" style="font-size:1.2em; vertical-align:middle; opacity:0.7;"></i>
 			
 			Talvez seja necessário desabilitar o bloqueador de popups de seu navegador para realizar a impressão.
+			
+</div>	
+
+<div id="alertaEmailEnviado" class="hide alert alert-dark text-large" style="padding-left:8px; margin:-5px 0 20px 0;">
+	
+			<button type="button" class="close" data-dismiss="alert" aria-label="Fechar"><span aria-hidden="true">&times;</span></button>
+			
+			<i class="icon-envelope icon-big icon-margin-right icon-large" style="font-size:2em; vertical-align:middle; opacity:0.7;"></i>
+			<i class="icon-ok icon-margin-right icon-large" style="font-size:1.2em; vertical-align:middle; opacity:0.7;"></i>
+			
+			O certificado foi enviado para o e-mail.
 			
 </div>	
 
