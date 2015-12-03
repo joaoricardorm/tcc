@@ -555,7 +555,7 @@ $('#icone-acao-modal').removeClass('icon-plus-sign');
 
 			$('#deletePalestranteButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeletePalestranteContainer').show('fast');
+				$('#confirmDeletePalestranteContainer').show('fast').removeClass('hide');
 			});
 
 			$('#cancelDeletePalestranteButton').click(function(e) {

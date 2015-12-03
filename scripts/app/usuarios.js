@@ -282,7 +282,7 @@ var page = {
 
 			$('#deleteUsuarioButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeleteUsuarioContainer').show('fast');
+				$('#confirmDeleteUsuarioContainer').show('fast').removeClass('hide');
 			});
 
 			$('#cancelDeleteUsuarioButton').click(function(e) {

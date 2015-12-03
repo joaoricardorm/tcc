@@ -81,7 +81,7 @@
 						<span class="block-md">	
 						Imprimir
 						<div class="margin-top-10px">
-							<input checked id="cbkImprimir" class="checkbox-custom" name="checkbox-3" type="checkbox">
+							<input id="cbkImprimir" class="checkbox-custom" name="checkbox-3" type="checkbox">
 							<label for="cbkImprimir"class="checkbox-custom-label"></label>   
 						</div>
 						</span>
@@ -100,7 +100,7 @@
 						<span class="block-md">	
 						PDF
 						<div class="margin-top-10px">
-							<input checked="true" id="cbkPDF" class="checkbox-custom" name="checkbox-3" type="checkbox">
+							<input id="cbkPDF" class="checkbox-custom" name="checkbox-3" type="checkbox">
 							<label for="cbkPDF"class="checkbox-custom-label"></label>   
 						</div>
 						</span>

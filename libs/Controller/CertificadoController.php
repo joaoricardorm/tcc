@@ -93,6 +93,7 @@ class CertificadoController extends AppBaseController
 		} else {
 				require_once('Model/Evento.php');
 				$criteria = new EventoCriteria();
+				$criteria->SetOrder('IdEvento',1);
 				$listaEventos = $this->Phreezer->Query('Evento',$criteria)->ToObjectArray(true,$this->SimpleObjectParams());
 
 				$this->Assign('ListaEventos',$listaEventos);

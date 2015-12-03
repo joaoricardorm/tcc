@@ -729,7 +729,7 @@ var page = {
 
 			$('#deletePalestraButton').click(function(e) {
 				e.preventDefault();
-				$('#confirmDeletePalestraContainer').show('fast');
+				$('#confirmDeletePalestraContainer').show('fast').removeClass('hide');
 			});
 			
 			$('#cancelDeletePalestraButton').click(function(e) {
