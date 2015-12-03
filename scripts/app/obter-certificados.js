@@ -1,6 +1,7 @@
 $(document).ready(function(){
 
 jaBaixou = false;
+jaMandouEmail = false;
 	
 app.alertaAnimado('#btnObterAta', 'click', '#alertaDownloadAta',4000);
 
@@ -60,6 +61,7 @@ palestrantesPalestra.complete(function(td){
 	$('#btnObterCertificados').click(function(){
 		
 		jaBaixou = false;
+		jaMandouEmail = false;
 		
 		$('#btnObterCertificados .icon-spin').removeClass('hidden');
 		
@@ -165,7 +167,12 @@ palestrantesPalestra.complete(function(td){
 					
 					//CHAMA FUNÇÃO PARA baixar Os CERTIFICADOS se o checkbox de pdf estiver marcado
 					if($('#cbkPDF').is(':checked')){
-						setTimeout(function(){  downloadCertificados(); },500);
+						setTimeout(function(){
+							
+							jaMandouEmail = true; //para nao mandar emails repetidos
+							
+							downloadCertificados(); 
+						},500);
 					}
 					
 					
